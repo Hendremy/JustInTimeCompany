@@ -1,6 +1,7 @@
 ﻿namespace JustInTimeCompany.Models
 {
-    public class Pilot
+    public class Pilot : JITCUser
     {
+        public ICollection<FlightInstance> FlightInstances 
     }
 }

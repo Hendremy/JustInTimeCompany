@@ -12,10 +12,13 @@ namespace JustInTimeCompany.Models
         public Airport To { get; set; }
         public DateTime Landing { get; set; }
 
-        public ICollection<Booking> Bookings { get; set; }
-        public Pilot Pilot { get; set; }
-
         public double Distance => 0;
 
+        public Frequency Frequency { get; set; }
+    }
+
+    public enum Frequency
+    {
+        Everyday, Weekly, Monthly, Unique
     }
 }

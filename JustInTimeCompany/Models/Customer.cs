@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace JustInTimeCompany.Models
 {
-    public class Customer
+    public class Customer : JITCUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
