@@ -8,9 +8,17 @@ namespace JustInTimeCompany.Models
     public class Aircraft
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int PassengerCapacity { get; set; }
-        public double Speed { get; set; }
-        public ICollection<Engine> Engines { get; set; }
+        
+        public AircraftModel Model { get; set; }
+
+        public DateTime LastRevision { get; set; }
+
+        public ICollection<FlightInstance> FlightsInstances { get; set; }
+
+        //TODO: Sûrement à adapter au DbContext pour pas devoir charger ts les vols
+        public bool NeedsCheckup => (from FlightInstance in FlightsInstances
+                                    where FlightInstance.Schedule.TakeOff > LastRevision
+                                    select FlightInstance).Count() >= 5;
+
     }
 }
