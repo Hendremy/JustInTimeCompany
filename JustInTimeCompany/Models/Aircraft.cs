@@ -11,6 +11,8 @@ namespace JustInTimeCompany.Models
         
         public AircraftModel Model { get; set; }
 
+        public int Capacity => Model.PassengerCapacity;
+
         public DateTime LastRevision { get; set; }
 
         public ICollection<FlightInstance> FlightsInstances { get; set; }
@@ -19,6 +21,11 @@ namespace JustInTimeCompany.Models
         public bool NeedsCheckup => (from FlightInstance in FlightsInstances
                                     where FlightInstance.Schedule.TakeOff > LastRevision
                                     select FlightInstance).Count() >= 5;
+
+        public void CheckUpDone ()
+        {
+            LastRevision = DateTime.Now;
+        }
 
     }
 }

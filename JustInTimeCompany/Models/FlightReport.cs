@@ -4,9 +4,9 @@
     {
 
         public FlightInstance FlightInstance { get; set; }
-        public Schedule ActSchedule { get; set; }
+        public Schedule ActualSchedule { get; set; }
 
-        public double Delay => (ActSchedule.Landing - FlightInstance.Schedule.Landing).TotalMinutes;
+        public double Delay => (ActualSchedule.Landing - FlightInstance.Landing).TotalMinutes;
         
         public string DelayJustification { get; set; }
     }

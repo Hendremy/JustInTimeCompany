@@ -16,6 +16,10 @@
 
         public ICollection<Booking> Bookings { get; set; }
 
-        public int RemainingSeats => Aircraft.PassengerCapacity - Bookings.Count;
+        public int RemainingSeats => Aircraft.Capacity - Bookings.Count;
+
+        public DateTime Landing => Schedule.Landing;
+
+        public DateTime TakeOff => Schedule.TakeOff;
     }
 }

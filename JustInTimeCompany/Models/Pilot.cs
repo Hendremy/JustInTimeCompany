@@ -2,6 +2,6 @@
 {
     public class Pilot : JITCUser
     {
-        public ICollection<FlightInstance> FlightInstances 
+        public ICollection<FlightInstance> FlightInstances;
     }
 }

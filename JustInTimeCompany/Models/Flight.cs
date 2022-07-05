@@ -10,7 +10,7 @@ namespace JustInTimeCompany.Models
         public int Id { get; set; }
         public Airport From { get; set; }
         public Airport To { get; set; }
-
+        public ICollection<FlightInstance> FlightInstances { get; set; }
         public double Distance => 0;
     }
 }
