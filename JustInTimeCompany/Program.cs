@@ -1,7 +1,16 @@
+using JustInTimeCompany.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
+builder.Services.AddDbContext<JITCDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
 var app = builder.Build();
 
