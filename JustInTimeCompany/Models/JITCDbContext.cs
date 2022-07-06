@@ -14,6 +14,10 @@ namespace JustInTimeCompany.Models
 
             modelBuilder.Entity<Booking>().HasKey(b => new { b.FlightId, b.CustomerId });
 
+            modelBuilder.Entity<FlightReport>().HasOne(fr => fr.FlightInstance)
+                .WithOne(fi => fi.FlightReport)
+                .HasForeignKey<FlightReport>(fr => fr.FlightInstanceId);
+
             Seed(modelBuilder);
         }
 

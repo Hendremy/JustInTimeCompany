@@ -1,4 +1,6 @@
-﻿namespace JustInTimeCompany.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace JustInTimeCompany.Models
 {
     public class FlightInstance
     {
@@ -16,10 +18,13 @@
 
         public ICollection<Booking> Bookings { get; set; }
 
+        [NotMapped]
         public int RemainingSeats => Aircraft.Capacity - Bookings.Count;
 
+        [NotMapped]
         public DateTime Landing => Schedule.Landing;
 
+        [NotMapped]
         public DateTime TakeOff => Schedule.TakeOff;
     }
 }
