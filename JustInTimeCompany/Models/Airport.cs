@@ -11,7 +11,5 @@ namespace JustInTimeCompany.Models
         public string Name { get; init; }
         public double Longitude { get; init; }
         public double Latitude { get; init; }
-
-        //public ICollection<Flight> Flights { get; init; }
     }
 }
