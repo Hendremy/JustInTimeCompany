@@ -15,7 +15,7 @@ namespace JustInTimeCompany.Models
         public Schedule Schedule { get; set; }
 
         public FlightReport FlightReport { get; set; }
-
+        
         public ICollection<Booking> Bookings { get; set; }
 
         [NotMapped]

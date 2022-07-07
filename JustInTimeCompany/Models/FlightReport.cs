@@ -12,6 +12,6 @@ namespace JustInTimeCompany.Models
         [NotMapped]
         public double Delay => (ActualSchedule.Landing - FlightInstance.Landing).TotalMinutes;
         
-        public string DelayJustification { get; set; }
+        public string? DelayJustification { get; set; }
     }
 }

@@ -22,10 +22,10 @@ namespace JustInTimeCompany.Models
         public ICollection<FlightInstance> FlightInstances { get; set; }
 
         //TODO: Sûrement à adapter au DbContext pour pas devoir charger ts les vols
-        [NotMapped]
+        /*[NotMapped]
         public bool NeedsCheckup => (from FlightInstance in FlightInstances
                                     where FlightInstance.Schedule.TakeOff > LastRevision
-                                    select FlightInstance).Count() >= 5;
+                                    select FlightInstance).Count() >= 5;*/
 
         public void CheckUpDone ()
         {
