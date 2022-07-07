@@ -37,12 +37,14 @@ namespace JustInTimeCompany.Models
                 .HasForeignKey(f => f.ToId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<EngineInAircraft>().HasKey(eia => new { eia.EngineId, eia.ModelId });
+
             Seed(modelBuilder);
         }
 
         private void Seed(ModelBuilder modelBuilder)
         {
-
+            DbContextSeed.SeedAircraft(modelBuilder);
         }
 
         public DbSet<Booking> Bookings { get; set; }

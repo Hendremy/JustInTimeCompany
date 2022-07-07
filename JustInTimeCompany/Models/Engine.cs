@@ -7,5 +7,7 @@
         public string Model { get; set; }
 
         public string Brand { get; set; }
+
+        public ICollection<EngineInAircraft> EngineInAircraft { get; init; }
     }
 }

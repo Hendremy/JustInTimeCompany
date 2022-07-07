@@ -11,6 +11,8 @@ namespace JustInTimeCompany.Models
     {
         public int Id { get; set; }
         
+        public int ModelId { get; set; }
+
         [Required]
         public AircraftModel Model { get; set; }
 

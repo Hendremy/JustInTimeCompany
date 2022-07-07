@@ -7,6 +7,6 @@
         public int PassengerCapacity { get; set; }
         public double Speed { get; set; }
 
-        public ICollection<Engine> Engines { get; set; }
+        public ICollection<EngineInAircraft> Engines { get; init; }
     }
 }
