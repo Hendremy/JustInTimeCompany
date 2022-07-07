@@ -8,8 +8,9 @@ namespace JustInTimeCompany.Models
 {
     public class Flight
     {
-        public int Id { get; set; }
+        public int FromId { get; set; }
         public Airport From { get; set; }
+        public int ToId { get; set; }
         public Airport To { get; set; }
         public ICollection<FlightInstance> FlightInstances { get; set; }
 
