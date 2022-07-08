@@ -4,6 +4,7 @@ using JustInTimeCompany.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    partial class JITCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220708100504_Aircraft_Seed")]
+    partial class Aircraft_Seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,19 +48,19 @@ namespace JustInTimeCompany.Migrations
                         new
                         {
                             Id = 1,
-                            LastRevision = new DateTime(2022, 7, 8, 12, 51, 14, 603, DateTimeKind.Local).AddTicks(9208),
+                            LastRevision = new DateTime(2022, 7, 8, 12, 5, 4, 685, DateTimeKind.Local).AddTicks(6877),
                             ModelId = 1
                         },
                         new
                         {
                             Id = 2,
-                            LastRevision = new DateTime(2022, 7, 8, 12, 51, 14, 603, DateTimeKind.Local).AddTicks(9258),
+                            LastRevision = new DateTime(2022, 7, 8, 12, 5, 4, 685, DateTimeKind.Local).AddTicks(6921),
                             ModelId = 2
                         },
                         new
                         {
                             Id = 3,
-                            LastRevision = new DateTime(2022, 7, 8, 12, 51, 14, 603, DateTimeKind.Local).AddTicks(9260),
+                            LastRevision = new DateTime(2022, 7, 8, 12, 5, 4, 685, DateTimeKind.Local).AddTicks(6923),
                             ModelId = 3
                         });
                 });
@@ -130,36 +132,6 @@ namespace JustInTimeCompany.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Airports");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Latitude = 50.63583079,
-                            Longitude = 5.4393315759999998,
-                            Name = "Aéroport de Liège"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Latitude = 50.900829729999998,
-                            Longitude = 4.4839980639999997,
-                            Name = "Aéroport de Bruxelles-National"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Latitude = 51.193165894000003,
-                            Longitude = 2.8581632340000001,
-                            Name = "Aéroport d'Ostende-Bruges"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Latitude = 50.455998176000001,
-                            Longitude = 4.4516648600000002,
-                            Name = "Aéroport de Charleroi Bruxelles-Sud"
-                        });
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Booking", b =>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JustInTimeCompany.Models.Seed;
+using Microsoft.EntityFrameworkCore;
 
 namespace JustInTimeCompany.Models
 {
@@ -44,7 +45,8 @@ namespace JustInTimeCompany.Models
 
         private void Seed(ModelBuilder modelBuilder)
         {
-            DbContextSeed.SeedAircraft(modelBuilder);
+            AircraftSeed.Generate(modelBuilder);
+            AirportSeed.Generate(modelBuilder);
         }
 
         public DbSet<Booking> Bookings { get; set; }
