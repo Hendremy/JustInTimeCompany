@@ -8,5 +8,15 @@ namespace JustInTimeCompany.Controllers
         {
             return View();
         }
+
+        public IActionResult Flights()
+        {
+            return RedirectToAction("Index", "Flight");
+        }
+
+        public IActionResult Aircrafts()
+        {
+            return RedirectToAction("Index", "Aircraft");
+        }
     }
 }
