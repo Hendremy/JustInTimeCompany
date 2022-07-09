@@ -8,5 +8,15 @@ namespace JustInTimeCompany.Controllers
         {
             return View();
         }
+
+        public IActionResult Bookings()
+        {
+            return RedirectToAction("Index", "Booking");
+        }
+
+        public IActionResult Search()
+        {
+            return RedirectToAction("Search", "Booking");
+        }
     }
 }

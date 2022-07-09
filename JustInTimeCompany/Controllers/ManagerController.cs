@@ -18,5 +18,10 @@ namespace JustInTimeCompany.Controllers
         {
             return RedirectToAction("Index", "Aircraft");
         }
+
+        public IActionResult Stats()
+        {
+            return RedirectToAction("Index", "Stats");
+        }
     }
 }

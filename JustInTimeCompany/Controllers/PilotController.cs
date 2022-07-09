@@ -6,7 +6,12 @@ namespace JustInTimeCompany.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Report");
+        }
+
+        public IActionResult Report()
+        {
+            return RedirectToAction("Report","Flight");
         }
     }
 }
