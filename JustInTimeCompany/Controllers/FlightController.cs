@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JustInTimeCompany.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JustInTimeCompany.Controllers
 {
@@ -7,6 +8,19 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Flight flight)
+        {
+
+
+            return View(flight); 
         }
     }
 }

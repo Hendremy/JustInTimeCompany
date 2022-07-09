@@ -1,0 +1,17 @@
+﻿@model Flight
+
+@{
+    ViewBag.Title = "Ajouter un vol";
+    ViewBag.FormAction = "Create";
+    ViewBag.ButtonValue = "Ajouter le vol";
+}
+
+<h1>Créer un vol</h1>
+
+<partial name="FlightEdit" model=Model/>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
