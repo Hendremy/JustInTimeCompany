@@ -94,21 +94,21 @@ namespace JustInTimeCompany.Models
             {
                 Id = 1,
                 ModelId = 1,
-                LastRevision = DateTime.Now
+                LastCheckUpDate = new DateTime(11,07,22,15,0,0)
             };
 
             var aircraft2 = new
             {
                 Id = 2,
                 ModelId = 2,
-                LastRevision = DateTime.Now
+                LastCheckUpDate = new DateTime(11, 07, 22, 15, 0, 0)
             };
 
             var aircraft3 = new
             {
                 Id = 3,
                 ModelId = 3,
-                LastRevision = DateTime.Now
+                LastCheckUpDate = new DateTime(11, 07, 22, 15, 0, 0)
             };
 
             mb.Entity<Aircraft>().HasData(aircraft1, aircraft2, aircraft3);

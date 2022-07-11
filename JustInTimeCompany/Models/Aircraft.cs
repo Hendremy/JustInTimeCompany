@@ -9,6 +9,7 @@ namespace JustInTimeCompany.Models
 {
     public class Aircraft
     {
+        [Display(Name ="#")]
         public int Id { get; set; }
         
         public int ModelId { get; set; }
@@ -19,19 +20,22 @@ namespace JustInTimeCompany.Models
         [NotMapped]
         public int Capacity => Model.PassengerCapacity;
 
-        public DateTime LastRevision { get; set; }
+        [Display(Name ="Dernière révision")]
+        public DateTime LastCheckUpDate { get; set; }
 
         public ICollection<FlightInstance> FlightInstances { get; set; }
 
-        //TODO: Sûrement à adapter au DbContext pour pas devoir charger ts les vols
-        /*[NotMapped]
-        public bool NeedsCheckup => (from FlightInstance in FlightInstances
-                                    where FlightInstance.Schedule.TakeOff > LastRevision
-                                    select FlightInstance).Count() >= 5;*/
+        [NotMapped, Display(Name ="Nombre de vols depuis la dernière révision")]
+        public int NbFlightsSinceCheckup => (from FlightInstance in FlightInstances
+                                                  where FlightInstance.Schedule.TakeOff > LastCheckUpDate
+                                                  select FlightInstance).Count();
 
-        public void CheckUpDone ()
+        [NotMapped]
+        public bool NeedsCheckup => NbFlightsSinceCheckup >= 5;
+
+        public void UpdateRevisionDate ()
         {
-            LastRevision = DateTime.Now;
+            LastCheckUpDate = DateTime.Now;
         }
 
     }

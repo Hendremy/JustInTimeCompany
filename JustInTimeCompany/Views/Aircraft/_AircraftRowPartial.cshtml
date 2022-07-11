@@ -1,0 +1,27 @@
+﻿@model Aircraft
+
+<tr class="@ViewBag.RowClass">
+    <td>
+        @Html.DisplayFor(modelItem => Model.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Model.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.NbFlightsSinceCheckup)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.LastCheckUpDate)
+    </td>
+    <td>
+        @if (Model.NeedsCheckup)
+        {
+            <span class="text-danger">Besoin d'être révisé !</span>
+            <a class="btn btn-danger" asp-action="UpdateRevisionDate" asp-route-id=@Model.Id>Vérification Ok<i class="bi bi-x-lg"></i></a>
+        }
+        else
+        {
+            <span class="text-success">OK</span>    
+        }
+    </td>
+</tr>
