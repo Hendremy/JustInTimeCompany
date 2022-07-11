@@ -1,5 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<FlightInstance>
+
 @{
+    ViewData["Title"] = "Gérer les vols";
 }
+
+<h1>Gérer les donjons</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Créer un vol<i class="bi bi-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Flight.From)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Flight.To)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Flight.CalcDistance())
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dungeon in Model) {
+                <partial name="../DisplayTemplates/DungeonRow" model=dungeon/>
+        }
+    </tbody>
+</table>
