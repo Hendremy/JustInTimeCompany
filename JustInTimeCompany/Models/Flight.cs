@@ -1,43 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustInTimeCompany.Models
 {
     public class Flight
     {
-        public int FromId { get; set; }
-        public Airport From { get; set; }
-        public int ToId { get; set; }
-        public Airport To { get; set; }
-        public ICollection<FlightInstance> FlightInstances { get; set; }
+        public int Id { get; set; }
 
-        public double CalcDistance()
+        public Path Path { get; set; }
+
+        public Pilot Pilot { get; set; }
+
+        public Aircraft Aircraft { get; set; }
+
+        public Schedule Schedule { get; set; }
+
+        public FlightReport FlightReport { get; set; }
+        
+        public ICollection<Booking> Bookings { get; set; }
+
+        [NotMapped]
+        public int RemainingSeats => Aircraft.Capacity - Bookings.Count;
+
+        [NotMapped]
+        public DateTime Landing => Schedule.Landing;
+
+        [NotMapped]
+        public DateTime TakeOff => Schedule.TakeOff;
+
+        public Flight()
         {
-            double longFrom = ConvertToRadians(From.Longitude);
-            double latFrom = ConvertToRadians(From.Latitude);
-            double longTo = ConvertToRadians(To.Longitude);
-            double latTo = ConvertToRadians(To.Latitude);
-
-            double latDiff = latTo - latFrom;
-            double longDiff = longTo - longFrom;
-
-            double a = Math.Pow(Math.Sin(latDiff / 2), 2) +
-                  Math.Cos(latFrom) * Math.Cos(latTo) *
-                  Math.Pow(Math.Sin(longDiff / 2), 2);
-
-            double c = 2 * Math.Asin(Math.Sqrt(a));
-
-            return c * 6371;
+            Schedule = new Schedule(DateTime.Now, DateTime.Now.AddHours(1));
         }
-
-        private double ConvertToRadians(double Angle)
-        {
-            return (Angle * Math.PI)/180;
-        }
-
-
     }
 }

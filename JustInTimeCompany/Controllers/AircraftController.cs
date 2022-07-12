@@ -15,12 +15,7 @@ namespace JustInTimeCompany.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index()
-        {
-            return RedirectToAction("Manage");
-        }
-
-        public IActionResult Manage() 
+        public IActionResult Index() 
         {
             var aircrafts = _dbContext.Aircrafts
                 .Include(air => air.FlightInstances)
@@ -38,7 +33,7 @@ namespace JustInTimeCompany.Controllers
             aircraft.UpdateRevisionDate();
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Manage");
+            return RedirectToAction("Index");
         }
 
     }

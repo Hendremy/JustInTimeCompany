@@ -8,7 +8,7 @@ namespace JustInTimeCompany.Models
     public class Booking
     {
         public int FlightId { get; set; }
-        public FlightInstance FlightInstance { get; set; }
+        public Flight FlightInstance { get; set; }
         
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }

@@ -6,6 +6,11 @@
         public DateTime TakeOff { get; set; }
         public DateTime Landing { get; set; }
 
+        public Schedule (DateTime takeOff, DateTime landing)
+        {
+            TakeOff = takeOff;
+            Landing = landing;
+        }
         public bool TimeIsInBetween(DateTime time)
         {
             return time < TakeOff && Landing < time;

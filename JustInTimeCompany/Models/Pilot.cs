@@ -2,7 +2,7 @@
 {
     public class Pilot : JITCUser
     {
-        public ICollection<FlightInstance> FlightInstances;
+        public ICollection<Flight> FlightInstances;
 
         public bool IsAvailableForSchedule(Schedule sched)
         {

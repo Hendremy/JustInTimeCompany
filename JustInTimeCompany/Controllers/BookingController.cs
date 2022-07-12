@@ -29,7 +29,7 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpPost]
-        public IActionResult Book(FlightInstance flightInstance)
+        public IActionResult Book(Flight flightInstance)
         {
             return View();
         }

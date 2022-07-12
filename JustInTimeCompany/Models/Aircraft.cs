@@ -23,7 +23,7 @@ namespace JustInTimeCompany.Models
         [Display(Name ="Dernière révision")]
         public DateTime LastCheckUpDate { get; set; }
 
-        public ICollection<FlightInstance> FlightInstances { get; set; }
+        public ICollection<Flight> FlightInstances { get; set; }
 
         [NotMapped, Display(Name ="Nombre de vols depuis la dernière révision")]
         public int NbFlightsSinceCheckup => (from FlightInstance in FlightInstances

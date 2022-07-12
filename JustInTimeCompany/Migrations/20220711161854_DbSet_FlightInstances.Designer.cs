@@ -4,6 +4,7 @@ using JustInTimeCompany.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    partial class JITCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220711161854_DbSet_FlightInstances")]
+    partial class DbSet_FlightInstances
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,9 +172,14 @@ namespace JustInTimeCompany.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("FlightInstanceId")
+                        .HasColumnType("int");
+
                     b.HasKey("FlightId", "CustomerId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("FlightInstanceId");
 
                     b.ToTable("Bookings");
                 });
@@ -283,6 +290,21 @@ namespace JustInTimeCompany.Migrations
 
             modelBuilder.Entity("JustInTimeCompany.Models.Flight", b =>
                 {
+                    b.Property<int>("FromId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FromId", "ToId");
+
+                    b.HasIndex("ToId");
+
+                    b.ToTable("Flights");
+                });
+
+            modelBuilder.Entity("JustInTimeCompany.Models.FlightInstance", b =>
+                {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
@@ -292,10 +314,10 @@ namespace JustInTimeCompany.Migrations
                     b.Property<int>("AircraftId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PathFromId")
+                    b.Property<int>("FlightFromId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PathToId")
+                    b.Property<int>("FlightToId")
                         .HasColumnType("int");
 
                     b.Property<int>("PilotId")
@@ -312,9 +334,9 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasIndex("ScheduleId");
 
-                    b.HasIndex("PathFromId", "PathToId");
+                    b.HasIndex("FlightFromId", "FlightToId");
 
-                    b.ToTable("Flights");
+                    b.ToTable("FlightInstances");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.FlightReport", b =>
@@ -342,21 +364,6 @@ namespace JustInTimeCompany.Migrations
                         .IsUnique();
 
                     b.ToTable("FlightReport");
-                });
-
-            modelBuilder.Entity("JustInTimeCompany.Models.Path", b =>
-                {
-                    b.Property<int>("FromId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ToId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FromId", "ToId");
-
-                    b.HasIndex("ToId");
-
-                    b.ToTable("Paths");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>
@@ -422,9 +429,9 @@ namespace JustInTimeCompany.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JustInTimeCompany.Models.Flight", "FlightInstance")
+                    b.HasOne("JustInTimeCompany.Models.FlightInstance", "FlightInstance")
                         .WithMany("Bookings")
-                        .HasForeignKey("FlightId")
+                        .HasForeignKey("FlightInstanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -454,6 +461,25 @@ namespace JustInTimeCompany.Migrations
 
             modelBuilder.Entity("JustInTimeCompany.Models.Flight", b =>
                 {
+                    b.HasOne("JustInTimeCompany.Models.Airport", "From")
+                        .WithMany("OutgoingFlights")
+                        .HasForeignKey("FromId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("JustInTimeCompany.Models.Airport", "To")
+                        .WithMany("IncomingFlights")
+                        .HasForeignKey("ToId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("From");
+
+                    b.Navigation("To");
+                });
+
+            modelBuilder.Entity("JustInTimeCompany.Models.FlightInstance", b =>
+                {
                     b.HasOne("JustInTimeCompany.Models.Aircraft", "Aircraft")
                         .WithMany("FlightInstances")
                         .HasForeignKey("AircraftId")
@@ -472,15 +498,15 @@ namespace JustInTimeCompany.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JustInTimeCompany.Models.Path", "Path")
+                    b.HasOne("JustInTimeCompany.Models.Flight", "Flight")
                         .WithMany("FlightInstances")
-                        .HasForeignKey("PathFromId", "PathToId")
+                        .HasForeignKey("FlightFromId", "FlightToId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Aircraft");
 
-                    b.Navigation("Path");
+                    b.Navigation("Flight");
 
                     b.Navigation("Pilot");
 
@@ -495,7 +521,7 @@ namespace JustInTimeCompany.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JustInTimeCompany.Models.Flight", "FlightInstance")
+                    b.HasOne("JustInTimeCompany.Models.FlightInstance", "FlightInstance")
                         .WithOne("FlightReport")
                         .HasForeignKey("JustInTimeCompany.Models.FlightReport", "FlightInstanceId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -504,25 +530,6 @@ namespace JustInTimeCompany.Migrations
                     b.Navigation("ActualSchedule");
 
                     b.Navigation("FlightInstance");
-                });
-
-            modelBuilder.Entity("JustInTimeCompany.Models.Path", b =>
-                {
-                    b.HasOne("JustInTimeCompany.Models.Airport", "From")
-                        .WithMany("OutgoingFlights")
-                        .HasForeignKey("FromId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("JustInTimeCompany.Models.Airport", "To")
-                        .WithMany("IncomingFlights")
-                        .HasForeignKey("ToId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("From");
-
-                    b.Navigation("To");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Aircraft", b =>
@@ -554,15 +561,15 @@ namespace JustInTimeCompany.Migrations
 
             modelBuilder.Entity("JustInTimeCompany.Models.Flight", b =>
                 {
+                    b.Navigation("FlightInstances");
+                });
+
+            modelBuilder.Entity("JustInTimeCompany.Models.FlightInstance", b =>
+                {
                     b.Navigation("Bookings");
 
                     b.Navigation("FlightReport")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("JustInTimeCompany.Models.Path", b =>
-                {
-                    b.Navigation("FlightInstances");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>

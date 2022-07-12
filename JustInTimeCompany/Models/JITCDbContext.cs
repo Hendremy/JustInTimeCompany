@@ -20,20 +20,20 @@ namespace JustInTimeCompany.Models
                 .HasForeignKey<FlightReport>(fr => fr.FlightInstanceId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<FlightInstance>().HasOne(fi => fi.Aircraft).WithMany(fr => fr.FlightInstances);
+            modelBuilder.Entity<Flight>().HasOne(fi => fi.Aircraft).WithMany(fr => fr.FlightInstances);
 
-            modelBuilder.Entity<FlightInstance>().HasOne(fi => fi.Pilot).WithMany(p => p.FlightInstances);
+            modelBuilder.Entity<Flight>().HasOne(fi => fi.Pilot).WithMany(p => p.FlightInstances);
 
             modelBuilder.Entity<Customer>().HasMany(c => c.Bookings).WithOne(b => b.Customer);
 
-            modelBuilder.Entity<Flight>().HasKey(f => new { f.FromId, f.ToId });
+            modelBuilder.Entity<Path>().HasKey(f => new { f.FromId, f.ToId });
 
-            modelBuilder.Entity<Flight>().HasOne(f => f.From)
+            modelBuilder.Entity<Path>().HasOne(f => f.From)
                 .WithMany(a => a.OutgoingFlights)
                 .HasForeignKey(f => f.FromId)
                 .OnDelete(DeleteBehavior.NoAction);
             
-            modelBuilder.Entity<Flight>().HasOne(f => f.To)
+            modelBuilder.Entity<Path>().HasOne(f => f.To)
                 .WithMany(a => a.IncomingFlights)
                 .HasForeignKey(f => f.ToId)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -60,6 +60,8 @@ namespace JustInTimeCompany.Models
         public DbSet<Airport> Airports { get; set; }
 
         public DbSet<Pilot> Pilots { get; set; }
+
+        public DbSet<Path> Paths { get; set; }
 
         public DbSet<Flight> Flights { get; set; }
     }

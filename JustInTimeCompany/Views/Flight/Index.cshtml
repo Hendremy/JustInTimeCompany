@@ -1,10 +1,10 @@
-﻿@model IEnumerable<FlightInstance>
+﻿@model IEnumerable<Flight>
 
 @{
     ViewData["Title"] = "Gérer les vols";
 }
 
-<h1>Gérer les donjons</h1>
+<h1>Vols</h1>
 
 <p>
     <a class="btn btn-primary" asp-action="Create">Créer un vol<i class="bi bi-plus"></i></a>
@@ -16,20 +16,20 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => model.Flight.From)
+                @Html.DisplayNameFor(model => model.Path.From)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => model.Flight.To)
+                @Html.DisplayNameFor(model => model.Path.To)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => model.Flight.CalcDistance())
+                Distance
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var dungeon in Model) {
-                <partial name="../DisplayTemplates/DungeonRow" model=dungeon/>
+        @foreach (var flight in Model) {
+                <partial name="FlightRowPartial" model=flight/>
         }
     </tbody>
 </table>

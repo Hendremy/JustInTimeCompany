@@ -6,7 +6,7 @@ namespace JustInTimeCompany.Models
     {
         public int Id { get; set; }
         public int FlightInstanceId { get; set; }
-        public FlightInstance FlightInstance { get; set; }
+        public Flight FlightInstance { get; set; }
         public Schedule ActualSchedule { get; set; }
 
         [NotMapped]
