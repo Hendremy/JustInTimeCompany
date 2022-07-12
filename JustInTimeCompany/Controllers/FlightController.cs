@@ -34,7 +34,7 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Flight flight)
+        public IActionResult Create([Bind ("From, To, Pilot, Aircraft, Schedule")]Flight flight)
         {
 
 
@@ -53,7 +53,7 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Flight flightInstance)
+        public IActionResult Edit([Bind("From, To, Pilot, Aircraft, Schedule")] Flight flightInstance)
         {
             return View();
         }
@@ -61,6 +61,12 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Delete(int id)
         {
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Report(int id)
+        {
+            var flight = _dbContext.Flights.First(fl=> fl.Id == id);
+            return View(flight);
         }
     }
 }
