@@ -8,7 +8,7 @@ namespace JustInTimeCompany.Controllers
     public class AircraftController : Controller
     {
 
-        private JITCDbContext _dbContext;
+        private readonly JITCDbContext _dbContext;
 
         public AircraftController([FromServices] JITCDbContext dbContext)
         {

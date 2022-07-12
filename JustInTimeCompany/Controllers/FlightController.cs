@@ -8,7 +8,7 @@ namespace JustInTimeCompany.Controllers
     public class FlightController : Controller
     {
 
-        private JITCDbContext _dbContext;
+        private readonly JITCDbContext _dbContext;
 
         public FlightController([FromServices] JITCDbContext dbContext)
         {
@@ -61,12 +61,6 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Delete(int id)
         {
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Report(int id)
-        {
-            var flight = _dbContext.Flights.First(fl=> fl.Id == id);
-            return View(flight);
         }
     }
 }

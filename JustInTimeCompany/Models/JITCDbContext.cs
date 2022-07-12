@@ -15,9 +15,9 @@ namespace JustInTimeCompany.Models
 
             modelBuilder.Entity<Booking>().HasKey(b => new { b.FlightId, b.CustomerId });
 
-            modelBuilder.Entity<FlightReport>().HasOne(fr => fr.FlightInstance)
+            modelBuilder.Entity<FlightReport>().HasOne(fr => fr.Flight)
                 .WithOne(fi => fi.FlightReport)
-                .HasForeignKey<FlightReport>(fr => fr.FlightInstanceId)
+                .HasForeignKey<FlightReport>(fr => fr.FlightId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Flight>().HasOne(fi => fi.Aircraft).WithMany(fr => fr.FlightInstances);
@@ -64,5 +64,7 @@ namespace JustInTimeCompany.Models
         public DbSet<Path> Paths { get; set; }
 
         public DbSet<Flight> Flights { get; set; }
+
+        public DbSet<FlightReport> FlightReports { get; set; }
     }
 }

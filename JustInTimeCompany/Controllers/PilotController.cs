@@ -11,7 +11,7 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Report()
         {
-            return RedirectToAction("Report","Flight");
+            return RedirectToAction("Index","FlightReport");
         }
     }
 }
