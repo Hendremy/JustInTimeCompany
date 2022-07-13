@@ -15,7 +15,8 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var flights = _dbContext.Flights.Include(fl => fl.FlightReport);
+            return View(flights);
         }
 
         public IActionResult Report(int id)

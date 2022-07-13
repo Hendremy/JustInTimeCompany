@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustInTimeCompany.Models
 {
@@ -22,10 +23,15 @@ namespace JustInTimeCompany.Models
         public int RemainingSeats => Aircraft.Capacity - Bookings.Count;
 
         [NotMapped]
+        [Display (Name = "Arrivée")]
         public DateTime Landing => Schedule.Landing;
 
         [NotMapped]
+        [Display (Name ="Départ")]
         public DateTime TakeOff => Schedule.TakeOff;
+
+        [NotMapped]
+        public bool HasReport => FlightReport != null;
 
         public Flight()
         {

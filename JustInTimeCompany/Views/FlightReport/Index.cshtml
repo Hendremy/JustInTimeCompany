@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Flight>
+
 @{
+    ViewBag.Title = "Gérer les appareils";
 }
+
+<h1>Gérer les appareils</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Path.From)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Path.To)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.TakeOff)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Landing)
+            </th>
+            <th>
+                Rapport
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var flight in Model) {
+            {
+                ViewBag.RowClass = flight.HasReport ? "table-success" : "table-danger" ;
+            }
+                <partial name="_AircraftRowPartial" model=flight/>
+            }
+        }
+    </tbody>
+</table>

@@ -1,5 +1,30 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Flight
+
+<tr class="@ViewBag.RowClass">
+    <td>
+        @Html.DisplayFor(modelItem => Model.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Path.From)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Path.To)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Schedule.TakeOff)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Schedule.Landing)
+    </td>
+    <td>
+        @if (Model.HasReport)
+        {
+            <span class="text-danger">Rapport Manquant</span>
+            <a class="btn btn-danger" asp-action="UpdateRevisionDate" asp-route-id=@Model.Id>Compléter<i class="bi bi-x-lg"></i></a>
+        }
+        else
+        {
+            <span class="text-success">Voir le rapport</span>
+        }
+    </td>
+</tr>
