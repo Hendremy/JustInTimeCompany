@@ -5,14 +5,17 @@ namespace JustInTimeCompany.Controllers
 {
     public class BookingController : Controller
     {
-        public IActionResult Index()
+        private readonly JITCDbContext _dbContext;
+
+        public BookingController([FromServices] JITCDbContext dbContext)
         {
-            return View();
+            _dbContext = dbContext;
         }
 
-        public IActionResult Search()
+        public IActionResult Index()
         {
-            return View();
+            var airports = _dbContext.Airports;
+            return View(airports);
         }
 
         [HttpPost]

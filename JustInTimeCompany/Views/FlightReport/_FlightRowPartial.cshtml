@@ -20,7 +20,7 @@
         @if (Model.HasReport)
         {
             <span class="text-danger">Rapport Manquant</span>
-            <a class="btn btn-danger" asp-action="UpdateRevisionDate" asp-route-id=@Model.Id>Compléter<i class="bi bi-x-lg"></i></a>
+            <a class="btn btn-danger" asp-action="Report" asp-route-id=@Model.Id>Compléter<i class="bi bi-x-lg"></i></a>
         }
         else
         {
