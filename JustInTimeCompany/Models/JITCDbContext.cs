@@ -25,7 +25,7 @@ namespace JustInTimeCompany.Models
 
             modelBuilder.Entity<Flight>().HasOne(fi => fi.Pilot).WithMany(p => p.FlightInstances);
 
-            modelBuilder.Entity<Customer>().HasMany(c => c.Bookings).WithOne(b => b.Customer);
+            //modelBuilder.Entity<Customer>().HasMany(c => c.Bookings).WithOne(b => b.Customer);
 
             modelBuilder.Entity<Path>().HasKey(f => new { f.FromId, f.ToId });
 
@@ -52,20 +52,18 @@ namespace JustInTimeCompany.Models
 
         public DbSet<Booking> Bookings { get; set; }
 
-        public DbSet<Customer> Customers { get; set; }
-
         public DbSet<Aircraft> Aircrafts { get; set; }
 
         public DbSet<AircraftModel> AircraftModels { get; set; }
 
         public DbSet<Airport> Airports { get; set; }
 
-        public DbSet<Pilot> Pilots { get; set; }
-
         public DbSet<Path> Paths { get; set; }
 
         public DbSet<Flight> Flights { get; set; }
 
         public DbSet<FlightReport> FlightReports { get; set; }
+
+        public DbSet<JITCUser> JITCUsers { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Create()
         {
             var flight = new Flight();
-            var pilots = _dbContext.Pilots;//where isavailableforschedule => api ?
+            var pilots = new List<Pilot>();//where isavailableforschedule => api ?
             //ou bien load ts les pilotes & puis trier avec du JS
             var aircrafts = _dbContext.Aircrafts.Include(air => air.Model);
             var airports = _dbContext.Airports;
@@ -44,7 +44,7 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Edit(int id)
         {
             var flight = _dbContext.Flights.First(fl => fl.Id == id);
-            var pilots = _dbContext.Pilots;//where isavailableforschedule => api ?
+            var pilots = new List<Pilot>();//where isavailableforschedule => api ?
             //ou bien load ts les pilotes & puis trier avec du JS
             var aircrafts = _dbContext.Aircrafts.Include(air => air.Model);
             var airports = _dbContext.Airports;

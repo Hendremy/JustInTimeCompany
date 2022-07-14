@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    [Migration("20220714084440_IdentityUser_Et_Seed")]
+    [Migration("20220714095023_IdentityUser_Et_Seed")]
     partial class IdentityUser_Et_Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
