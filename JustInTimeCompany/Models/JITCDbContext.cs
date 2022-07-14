@@ -1,9 +1,10 @@
 ﻿using JustInTimeCompany.Models.Seed;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace JustInTimeCompany.Models
 {
-    public class JITCDbContext : DbContext
+    public class JITCDbContext : IdentityDbContext<JITCUser>
     {
         public JITCDbContext(DbContextOptions<JITCDbContext> options) : base(options)
         {

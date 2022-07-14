@@ -2,7 +2,7 @@
 
 namespace JustInTimeCompany.Models
 {
-    public abstract class JITCUser /*: IdentityUser*/
+    public abstract class JITCUser : IdentityUser
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
