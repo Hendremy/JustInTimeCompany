@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    [Migration("20220716122905_IdentityUsers_And_Seed")]
-    partial class IdentityUsers_And_Seed
+    [Migration("20220716201149_IdentityUser_And_Seed")]
+    partial class IdentityUser_And_Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -169,14 +169,27 @@ namespace JustInTimeCompany.Migrations
                     b.Property<int>("FlightId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.HasKey("FlightId", "CustomerId");
 
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("JustInTimeCompany.Models.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Engine", b =>
@@ -275,9 +288,8 @@ namespace JustInTimeCompany.Migrations
                     b.Property<int>("PathToId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PilotId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PilotId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ScheduleId")
                         .HasColumnType("int");
@@ -334,9 +346,8 @@ namespace JustInTimeCompany.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -377,6 +388,9 @@ namespace JustInTimeCompany.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("PilotId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -389,6 +403,10 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId")
+                        .IsUnique()
+                        .HasFilter("[CustomerId] IS NOT NULL");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -397,9 +415,11 @@ namespace JustInTimeCompany.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.HasIndex("PilotId")
+                        .IsUnique()
+                        .HasFilter("[PilotId] IS NOT NULL");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("JITCUser");
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Path", b =>
@@ -415,6 +435,19 @@ namespace JustInTimeCompany.Migrations
                     b.HasIndex("ToId");
 
                     b.ToTable("Paths");
+                });
+
+            modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pilots");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Schedule", b =>
@@ -569,20 +602,6 @@ namespace JustInTimeCompany.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("JustInTimeCompany.Models.Customer", b =>
-                {
-                    b.HasBaseType("JustInTimeCompany.Models.JITCUser");
-
-                    b.HasDiscriminator().HasValue("Customer");
-                });
-
-            modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>
-                {
-                    b.HasBaseType("JustInTimeCompany.Models.JITCUser");
-
-                    b.HasDiscriminator().HasValue("Pilot");
-                });
-
             modelBuilder.Entity("JustInTimeCompany.Models.Aircraft", b =>
                 {
                     b.HasOne("JustInTimeCompany.Models.AircraftModel", "Model")
@@ -686,6 +705,21 @@ namespace JustInTimeCompany.Migrations
                     b.Navigation("Flight");
                 });
 
+            modelBuilder.Entity("JustInTimeCompany.Models.JITCUser", b =>
+                {
+                    b.HasOne("JustInTimeCompany.Models.Customer", "Customer")
+                        .WithOne("User")
+                        .HasForeignKey("JustInTimeCompany.Models.JITCUser", "CustomerId");
+
+                    b.HasOne("JustInTimeCompany.Models.Pilot", "Pilot")
+                        .WithOne("User")
+                        .HasForeignKey("JustInTimeCompany.Models.JITCUser", "PilotId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Pilot");
+                });
+
             modelBuilder.Entity("JustInTimeCompany.Models.Path", b =>
                 {
                     b.HasOne("JustInTimeCompany.Models.Airport", "From")
@@ -773,6 +807,14 @@ namespace JustInTimeCompany.Migrations
                     b.Navigation("OutgoingFlights");
                 });
 
+            modelBuilder.Entity("JustInTimeCompany.Models.Customer", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("User")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("JustInTimeCompany.Models.Engine", b =>
                 {
                     b.Navigation("EngineInAircraft");
@@ -791,14 +833,12 @@ namespace JustInTimeCompany.Migrations
                     b.Navigation("FlightInstances");
                 });
 
-            modelBuilder.Entity("JustInTimeCompany.Models.Customer", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
             modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>
                 {
                     b.Navigation("FlightInstances");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

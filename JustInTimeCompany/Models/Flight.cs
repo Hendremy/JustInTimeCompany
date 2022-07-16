@@ -9,7 +9,7 @@ namespace JustInTimeCompany.Models
 
         public Path Path { get; set; }
 
-        public string PilotId { get; set; }
+        public int PilotId { get; set; }
 
         public Pilot Pilot { get; set; }
 

@@ -6,7 +6,6 @@
 
         public ICollection<Flight> FlightInstances;
 
-        public string UserId { get; set; }
         public JITCUser User { get; set; }
 
         public string FirstName => User.FirstName;

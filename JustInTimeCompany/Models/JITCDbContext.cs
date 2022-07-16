@@ -16,33 +16,12 @@ namespace JustInTimeCompany.Models
 
             BuildBooking(modelBuilder);
 
-            modelBuilder.Entity<FlightReport>().HasOne(fr => fr.Flight)
-                .WithOne(fi => fi.FlightReport)
-                .HasForeignKey<FlightReport>(fr => fr.FlightId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Flight>().HasOne(fl => fl.Aircraft).WithMany(fr => fr.FlightInstances);
-
-            modelBuilder.Entity<Flight>().HasOne(fl => fl.Pilot)
-                .WithMany(p => p.FlightInstances)
-                .HasForeignKey(fl => fl.PilotId)
-                .OnDelete(DeleteBehavior.NoAction);
-
+            BuildFlight(modelBuilder);
             
-            modelBuilder.Entity<Path>().HasKey(f => new { f.FromId, f.ToId });
+            BuildPath(modelBuilder);
 
-            modelBuilder.Entity<Path>().HasOne(f => f.From)
-                .WithMany(a => a.OutgoingFlights)
-                .HasForeignKey(f => f.FromId)
-                .OnDelete(DeleteBehavior.NoAction);
+            BuildEngineInAircraft(modelBuilder);
             
-            modelBuilder.Entity<Path>().HasOne(f => f.To)
-                .WithMany(a => a.IncomingFlights)
-                .HasForeignKey(f => f.ToId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<EngineInAircraft>().HasKey(eia => new { eia.EngineId, eia.ModelId });
-
             BuildUser(modelBuilder);
 
             Seed(modelBuilder);
@@ -55,11 +34,28 @@ namespace JustInTimeCompany.Models
             modelBuilder.Entity<Customer>().HasMany(c => c.Bookings)
                 .WithOne(b => b.Customer)
                 .HasForeignKey(c => c.CustomerId);
+        }
+
+        private void BuildFlight(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FlightReport>().HasOne(fr => fr.Flight)
+                .WithOne(fi => fi.FlightReport)
+                .HasForeignKey<FlightReport>(fr => fr.FlightId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Flight>().HasOne(fl => fl.Aircraft).WithMany(fr => fr.FlightInstances);
+
+            modelBuilder.Entity<Flight>().HasOne(fl => fl.Pilot)
+                .WithMany(p => p.FlightInstances)
+                .HasForeignKey(fl => fl.PilotId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
 
-        private void BuildUser(ModelBuilder modelBuilder)
+        private void BuildPath(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Path>().HasKey(f => new { f.FromId, f.ToId });
+
             modelBuilder.Entity<Path>().HasOne(f => f.From)
                 .WithMany(a => a.OutgoingFlights)
                 .HasForeignKey(f => f.FromId)
@@ -69,6 +65,22 @@ namespace JustInTimeCompany.Models
                 .WithMany(a => a.IncomingFlights)
                 .HasForeignKey(f => f.ToId)
                 .OnDelete(DeleteBehavior.NoAction);
+        }
+
+        private void BuildEngineInAircraft(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EngineInAircraft>().HasKey(eia => new { eia.EngineId, eia.ModelId });
+        }
+
+        private void BuildUser(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<JITCUser>()
+                .HasOne(user => user.Customer)
+                .WithOne(cust => cust.User);
+
+            modelBuilder.Entity<JITCUser>()
+                .HasOne(user => user.Pilot)
+                .WithOne(pilot => pilot.User);
         }
 
         private void Seed(ModelBuilder modelBuilder)
