@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace JustInTimeCompany.Migrations
 {
-    public partial class IdentityUser_Et_Seed : Migration
+    public partial class Identity_And_UserSeed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
