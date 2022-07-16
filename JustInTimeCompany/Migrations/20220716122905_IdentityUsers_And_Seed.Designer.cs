@@ -4,6 +4,7 @@ using JustInTimeCompany.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    partial class JITCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220716122905_IdentityUsers_And_Seed")]
+    partial class IdentityUsers_And_Seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +42,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.ToTable("Aircrafts", (string)null);
+                    b.ToTable("Aircrafts");
 
                     b.HasData(
                         new
@@ -83,7 +85,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AircraftModels", (string)null);
+                    b.ToTable("AircraftModels");
 
                     b.HasData(
                         new
@@ -129,7 +131,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Airports", (string)null);
+                    b.ToTable("Airports");
 
                     b.HasData(
                         new
@@ -174,7 +176,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Engine", b =>
@@ -199,7 +201,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Engine", (string)null);
+                    b.ToTable("Engine");
 
                     b.HasData(
                         new
@@ -233,7 +235,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.ToTable("EngineInAircraft", (string)null);
+                    b.ToTable("EngineInAircraft");
 
                     b.HasData(
                         new
@@ -290,7 +292,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasIndex("PathFromId", "PathToId");
 
-                    b.ToTable("Flights", (string)null);
+                    b.ToTable("Flights");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.FlightReport", b =>
@@ -317,7 +319,7 @@ namespace JustInTimeCompany.Migrations
                     b.HasIndex("FlightId")
                         .IsUnique();
 
-                    b.ToTable("FlightReports", (string)null);
+                    b.ToTable("FlightReports");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.JITCUser", b =>
@@ -412,7 +414,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasIndex("ToId");
 
-                    b.ToTable("Paths", (string)null);
+                    b.ToTable("Paths");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Schedule", b =>
@@ -431,7 +433,7 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Schedule", (string)null);
+                    b.ToTable("Schedule");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

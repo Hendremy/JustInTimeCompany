@@ -21,11 +21,14 @@ namespace JustInTimeCompany.Models
                 .HasForeignKey<FlightReport>(fr => fr.FlightId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Flight>().HasOne(fi => fi.Aircraft).WithMany(fr => fr.FlightInstances);
+            modelBuilder.Entity<Flight>().HasOne(fl => fl.Aircraft).WithMany(fr => fr.FlightInstances);
 
-            modelBuilder.Entity<Flight>().HasOne(fi => fi.Pilot).WithMany(p => p.FlightInstances);
+            modelBuilder.Entity<Flight>().HasOne(fl => fl.Pilot)
+                .WithMany(p => p.FlightInstances)
+                .HasForeignKey(fl => fl.PilotId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            //modelBuilder.Entity<Customer>().HasMany(c => c.Bookings).WithOne(b => b.Customer);
+            modelBuilder.Entity<Customer>().HasMany(c => c.Bookings).WithOne(b => b.Customer).HasForeignKey(c => c.CustomerId);
 
             modelBuilder.Entity<Path>().HasKey(f => new { f.FromId, f.ToId });
 
@@ -65,5 +68,7 @@ namespace JustInTimeCompany.Models
         public DbSet<FlightReport> FlightReports { get; set; }
 
         public DbSet<JITCUser> JITCUsers { get; set; }
+
+        public DbSet<Pilot> Pilots { get; set; }
     }
 }

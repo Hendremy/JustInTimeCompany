@@ -10,7 +10,7 @@ namespace JustInTimeCompany.Models
         public int FlightId { get; set; }
         public Flight FlightInstance { get; set; }
         
-        public int CustomerId { get; set; }
+        public string CustomerId { get; set; }
         public Customer Customer { get; set; }
     }
 }
