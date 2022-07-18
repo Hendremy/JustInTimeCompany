@@ -18,8 +18,12 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Index()
         {
             var flights = _dbContext.Paths
-                .Include(path => path.FlightInstances)
-                .ThenInclude(fl => fl.Pilot)
+                .Include(p => p.From)
+                .Include(p => p.To)
+                .Include(p => p.FlightInstances)
+                .ThenInclude(fi => fi.Schedule)
+                .Include(p => p.FlightInstances)
+                .ThenInclude(fi => fi.Pilot)
                 .ThenInclude(p => p.User);
 
             return View(flights);
@@ -33,14 +37,18 @@ namespace JustInTimeCompany.Controllers
             return View(new FlightEditViewModel(flight, airports));
         }
 
-        [HttpPost]
-        public IActionResult Create(Flight flight)
-        {
 
-            return RedirectToAction("DetailsAdd");
+        [HttpPost]
+        public IActionResult Create([Bind("Path, Schedule")] Flight flight)
+        {
+            flight.Path.From = _dbContext.Airports.First(airp => airp.Id == flight.Path.FromId);
+            flight.Path.To = _dbContext.Airports.First(airp => airp.Id == flight.Path.ToId);
+
+            return RedirectToAction("DetailsCreate","Flight", new RouteValueDictionary(flight));
         }
 
-        public IActionResult DetailsEdit(Flight flight)
+
+        public IActionResult DetailsCreate(Flight flight)
         {
             var aircrafts = _dbContext.Aircrafts.Include(air => air.Model);
 
@@ -53,14 +61,6 @@ namespace JustInTimeCompany.Controllers
             var pilots = pilotsInDb.Where(p => p.IsAvailableForSchedule(flight.Schedule));
 
             return View(new FlightDetailsEditViewModel(flight, aircrafts, pilots));
-        }
-
-        [HttpPost]
-        public IActionResult Create([Bind ("From, To, Pilot, Aircraft, Schedule")]Flight flight)
-        {
-
-
-            return View(flight); 
         }
 
         public IActionResult Edit(int id)

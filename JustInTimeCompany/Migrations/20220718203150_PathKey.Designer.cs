@@ -4,6 +4,7 @@ using JustInTimeCompany.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    partial class JITCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220718203150_PathKey")]
+    partial class PathKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,48 +302,6 @@ namespace JustInTimeCompany.Migrations
                     b.HasIndex("ScheduleId");
 
                     b.ToTable("Flights");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AircraftId = 1,
-                            PathId = 1,
-                            PilotId = 1,
-                            ScheduleId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AircraftId = 1,
-                            PathId = 1,
-                            PilotId = 3,
-                            ScheduleId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AircraftId = 2,
-                            PathId = 2,
-                            PilotId = 3,
-                            ScheduleId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AircraftId = 3,
-                            PathId = 3,
-                            PilotId = 2,
-                            ScheduleId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AircraftId = 3,
-                            PathId = 3,
-                            PilotId = 2,
-                            ScheduleId = 5
-                        });
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.FlightReport", b =>
@@ -480,26 +440,6 @@ namespace JustInTimeCompany.Migrations
                     b.HasIndex("ToId");
 
                     b.ToTable("Paths");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            FromId = 1,
-                            ToId = 4
-                        },
-                        new
-                        {
-                            Id = 2,
-                            FromId = 4,
-                            ToId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            FromId = 3,
-                            ToId = 1
-                        });
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>
@@ -532,38 +472,6 @@ namespace JustInTimeCompany.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Schedule");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Landing = new DateTime(22, 10, 5, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            TakeOff = new DateTime(22, 10, 5, 15, 30, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Landing = new DateTime(22, 9, 15, 14, 0, 0, 0, DateTimeKind.Unspecified),
-                            TakeOff = new DateTime(22, 9, 15, 12, 30, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Landing = new DateTime(22, 9, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            TakeOff = new DateTime(22, 9, 20, 14, 30, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Landing = new DateTime(22, 7, 15, 11, 0, 0, 0, DateTimeKind.Unspecified),
-                            TakeOff = new DateTime(22, 7, 15, 9, 30, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Landing = new DateTime(22, 7, 18, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            TakeOff = new DateTime(22, 7, 18, 20, 30, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -54,8 +54,6 @@ namespace JustInTimeCompany.Models
 
         private void BuildPath(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Path>().HasKey(f => new { f.FromId, f.ToId });
-
             modelBuilder.Entity<Path>().HasOne(f => f.From)
                 .WithMany(a => a.OutgoingFlights)
                 .HasForeignKey(f => f.FromId)
@@ -87,6 +85,7 @@ namespace JustInTimeCompany.Models
         {
             AircraftSeed.Generate(modelBuilder);
             AirportSeed.Generate(modelBuilder);
+            FlightSeed.Generate(modelBuilder);
         }
 
         public DbSet<Booking> Bookings { get; set; }

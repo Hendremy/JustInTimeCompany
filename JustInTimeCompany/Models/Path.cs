@@ -9,6 +9,7 @@ namespace JustInTimeCompany.Models
 {
     public class Path
     {
+        public int Id { get; set; }
         public int FromId { get; set; }
         [Display (Name="Départ")]
         public Airport From { get; set; }

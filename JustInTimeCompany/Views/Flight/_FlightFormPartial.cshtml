@@ -36,14 +36,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Flight.From" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Flight.From, 
+                @Html.DropDownListFor(model => model.Flight.Path.FromId, 
                     airportsFrom,
                     "Départ", new { @class = "form-control" })
                 <span asp-validation-for="Flight.From" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Flight.To" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Flight.To,
+                @Html.DropDownListFor(model => model.Flight.Path.ToId,
                     airportsTo,
                     "Destination", new { @class = "form-control" })
                 <span asp-validation-for="Flight.To" class="text-danger"></span>

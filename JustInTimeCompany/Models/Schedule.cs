@@ -6,8 +6,10 @@ namespace JustInTimeCompany.Models
     {
         public int Id { get; set; }
         [Display(Name ="Heure de décollage")]
+        [DataType(DataType.DateTime)]
         public DateTime TakeOff { get; set; }
         [Display(Name = "Heure d'atterrissage")]
+        [DataType(DataType.DateTime)]
         public DateTime Landing { get; set; }
 
         public Schedule (DateTime takeOff, DateTime landing)
