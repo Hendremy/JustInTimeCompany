@@ -33,6 +33,14 @@ namespace JustInTimeCompany.Models
         public DateTime TakeOff => Schedule.TakeOff;
 
         [NotMapped]
+        [Display(Name = "Lieu de départ")]
+        public Airport From => Path?.From;
+
+        [NotMapped]
+        [Display(Name = "Lieu d'arrivée")]
+        public Airport To => Path?.To;
+
+        [NotMapped]
         public bool HasReport => FlightReport != null;
 
         public Flight()

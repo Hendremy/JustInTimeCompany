@@ -35,18 +35,18 @@
             <input type="hidden" asp-for="Flight.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Flight.Path.From" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Flight.Path.From, 
+                <label asp-for="Flight.From" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Flight.From, 
                     airportsFrom,
                     "Départ", new { @class = "form-control" })
-                <span asp-validation-for="Flight.Path.From" class="text-danger"></span>
+                <span asp-validation-for="Flight.From" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Flight.Path.To" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Flight.Path.To, 
+                <label asp-for="Flight.To" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Flight.To,
                     airportsTo,
                     "Destination", new { @class = "form-control" })
-                <span asp-validation-for="Flight.Path.To" class="text-danger"></span>
+                <span asp-validation-for="Flight.To" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Flight.TakeOff" class="control-label"></label>
