@@ -1,15 +1,15 @@
 ﻿@using JustInTimeCompany.Models.ViewModels
-@model FlightEditViewModel
+@model FlightDetailsEditViewModel
 
 @{
     ViewBag.Title = "Ajouter un vol";
-    ViewBag.FormAction = "DetailsEdit";
+    ViewBag.FormAction = "Create";
     ViewBag.ButtonValue = "Ajouter le vol";
 }
 
 <h1>Créer un vol</h1>
 
-<partial name="_FlightFormPartial" model=Model/>
+<partial name="_FlightDetailsEditFormPartial" model=Model/>
 
 @{
 /*@section Scripts {

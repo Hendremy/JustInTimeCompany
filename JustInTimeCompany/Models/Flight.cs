@@ -13,16 +13,16 @@ namespace JustInTimeCompany.Models
 
         public Pilot Pilot { get; set; }
 
-        public Aircraft Aircraft { get; set; }
+        public Aircraft? Aircraft { get; set; }
 
         public Schedule Schedule { get; set; }
 
         public FlightReport FlightReport { get; set; }
         
-        public ICollection<Booking> Bookings { get; set; }
+        public ICollection<Booking>? Bookings { get; set; }
 
         [NotMapped]
-        public int RemainingSeats => Aircraft.Capacity - Bookings.Count;
+        public int RemainingSeats => /*Aircraft.Capacity - Bookings.Count*/ 0;
 
         [NotMapped]
         [Display (Name = "Arrivée")]

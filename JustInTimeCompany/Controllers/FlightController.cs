@@ -33,10 +33,19 @@ namespace JustInTimeCompany.Controllers
             return View(new FlightEditViewModel(flight, airports));
         }
 
-        public IActionResult AddDetails(Flight flight)
+        public IActionResult DetailsEdit(Flight flight)
         {
+            var aircrafts = _dbContext.Aircrafts.Include(air => air.Model);
 
-            return View();
+            var pilotsInDb = new List<Pilot>(
+                _dbContext.Pilots
+                .Include(p => p.User)
+                .Include(p => p.FlightInstances)
+            );
+
+            var pilots = pilotsInDb.Where(p => p.IsAvailableForSchedule(flight.Schedule));
+
+            return View(new FlightDetailsEditViewModel(flight, aircrafts, pilots));
         }
 
         [HttpPost]
