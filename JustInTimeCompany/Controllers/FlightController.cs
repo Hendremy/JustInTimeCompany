@@ -17,7 +17,10 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Index()
         {
-            var flights = _dbContext.Flights;
+            var flights = _dbContext.Paths
+                .Include(path => path.FlightInstances)
+                .ThenInclude(fl => fl.Pilot)
+                .ThenInclude(p => p.User);
 
             return View(flights);
         }
@@ -25,12 +28,15 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Create()
         {
             var flight = new Flight();
-            var pilots = new List<Pilot>();//where isavailableforschedule => api ?
-            //ou bien load ts les pilotes & puis trier avec du JS
-            var aircrafts = _dbContext.Aircrafts.Include(air => air.Model);
             var airports = _dbContext.Airports;
 
-            return View(new FlightEditViewModel(flight, pilots, airports, aircrafts));
+            return View(new FlightEditViewModel(flight, airports));
+        }
+
+        public IActionResult AddDetails(Flight flight)
+        {
+
+            return View();
         }
 
         [HttpPost]
@@ -44,12 +50,9 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Edit(int id)
         {
             var flight = _dbContext.Flights.First(fl => fl.Id == id);
-            var pilots = new List<Pilot>();//where isavailableforschedule => api ?
-            //ou bien load ts les pilotes & puis trier avec du JS
-            var aircrafts = _dbContext.Aircrafts.Include(air => air.Model);
             var airports = _dbContext.Airports;
 
-            return View(new FlightEditViewModel(flight, pilots, airports, aircrafts));
+            return View(new FlightEditViewModel(flight, airports));
         }
 
         [HttpPost]

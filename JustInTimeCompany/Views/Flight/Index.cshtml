@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Flight>
+﻿@model IEnumerable<Path>
 
 @{
     ViewData["Title"] = "Gérer les vols";
@@ -7,29 +7,10 @@
 <h1>Vols</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Créer un vol<i class="bi bi-plus"></i></a>
+    <a class="btn btn-outline-primary" asp-action="Create">Nouveau Vol<i class="bi bi-plus"></i></a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.Path.From)
-            </th>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.Path.To)
-            </th>
-            <th scope="col">
-                Distance
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var flight in Model) {
-                <partial name="FlightRowPartial" model=flight/>
+<div id="paths" class="">
+        @foreach (var path in Model) {
+                <partial name="_PathRowPartial" model=path/>
         }
-    </tbody>
-</table>
+</div>

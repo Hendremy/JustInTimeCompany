@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Flight>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.TakeOff)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Landing)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Pilot)
+            </th>
+            <th>
+                <a class="btn btn-outline-primary" asp-action="Add">Ajouter un horaire<i class="bi bi-plus"/></a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var flight in Model) {
+             <partial name="_FlightRowPartial" model=flight/>
+        }
+    </tbody>
+</table>
