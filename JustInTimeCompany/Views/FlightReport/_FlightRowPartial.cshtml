@@ -2,19 +2,16 @@
 
 <tr class="@ViewBag.RowClass">
     <td>
-        @Html.DisplayFor(modelItem => Model.Id)
+        @Html.DisplayFor(modelItem => Model.From.Name)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => Model.Path.From)
+        @Html.DisplayFor(modelItem => Model.To.Name)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => Model.Path.To)
+        @Html.DisplayFor(modelItem => Model.TakeOff)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => Model.Schedule.TakeOff)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => Model.Schedule.Landing)
+        @Html.DisplayFor(modelItem => Model.Landing)
     </td>
     <td>
         @if (Model.HasReport)

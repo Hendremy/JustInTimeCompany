@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<Flight>
 
+@{
+    var flights = Model.OrderByDescending(fl => fl.Landing);
+}
 <table class="table">
     <thead>
         <tr>
@@ -18,7 +21,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var flight in Model) {
+        @foreach (var flight in flights) {
             if (flight.IsPassed)
             {
                 if (flight.HasReport)
@@ -30,12 +33,12 @@
                     ViewBag.RowClass = "table-danger";
                 }
                 //Sans edit ou supp
-                <partial name="_FlightRowPartial" model=flight/>
+                <partial name="_FlightRow" model=flight/>
             }
             else
             {
                 ViewBag.RowClass = "";
-                <partial name="_FlightRowPartial" model=flight/>
+                <partial name="_FlightRow" model=flight/>
             }
         }
     </tbody>

@@ -24,36 +24,36 @@ namespace JustInTimeCompany.Models.Seed
         {
             var fut1 = new { 
                 Id = 1,
-                TakeOff = new DateTime(22, 10, 5, 15, 30, 0) ,
-                Landing = new DateTime(22, 10, 5, 18, 0, 0)
+                TakeOff = new DateTime(2022, 10, 5, 15, 30, 0) ,
+                Landing = new DateTime(2022, 10, 5, 18, 0, 0)
             };
 
             var fut2 = new
             {
                 Id = 2,
-                TakeOff = new DateTime(22, 9, 15, 12, 30, 0),
-                Landing = new DateTime(22, 9, 15, 14, 0, 0)
+                TakeOff = new DateTime(2022, 9, 15, 12, 30, 0),
+                Landing = new DateTime(2022, 9, 15, 14, 0, 0)
             };
 
             var fut3 = new
             {
                 Id = 3,
-                TakeOff = new DateTime(22, 9, 20, 14, 30, 0),
-                Landing = new DateTime(22, 9, 20, 16, 0, 0)
+                TakeOff = new DateTime(2022, 9, 20, 14, 30, 0),
+                Landing = new DateTime(2022, 9, 20, 16, 0, 0)
             };
 
             var pass1 = new
             {
                 Id = 4,
-                TakeOff = new DateTime(22, 7, 15, 9, 30, 0),
-                Landing = new DateTime(22, 7, 15, 11, 0, 0)
+                TakeOff = new DateTime(2022, 7, 15, 9, 30, 0),
+                Landing = new DateTime(2022, 7, 15, 11, 0, 0)
             };
 
             var pass2 = new
             {
                 Id = 5,
-                TakeOff = new DateTime(22, 7, 18, 20, 30, 0),
-                Landing = new DateTime(22, 7, 18, 22, 0, 0)
+                TakeOff = new DateTime(2022, 7, 18, 20, 30, 0),
+                Landing = new DateTime(2022, 7, 18, 22, 0, 0)
             };
 
             mb.Entity<Schedule>().HasData(fut1, fut2, fut3, pass1, pass2);

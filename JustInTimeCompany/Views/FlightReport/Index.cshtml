@@ -1,17 +1,14 @@
 ﻿@model IEnumerable<Flight>
 
 @{
-    ViewBag.Title = "Gérer les appareils";
+    ViewBag.Title = "Rapports de vol";
 }
 
-<h1>Gérer les appareils</h1>
+<h1>Rapports de vol</h1>
 
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
             <th scope="col">
                 @Html.DisplayNameFor(model => model.Path.From)
             </th>
@@ -34,7 +31,7 @@
             {
                 ViewBag.RowClass = flight.HasReport ? "table-success" : "table-danger" ;
             }
-                <partial name="_AircraftRowPartial" model=flight/>
+                <partial name="_FlightRowPartial" model=flight/>
             }
         }
     </tbody>
