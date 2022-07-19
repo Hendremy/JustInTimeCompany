@@ -1,17 +1,18 @@
 ﻿@model Flight
 
-<tr>
-    <th scope="col">
+
+<tr class="@ViewBag.RowClass">
+    <td scope="col">
         @Html.DisplayFor(model => model.TakeOff)
-    </th>
-    <th scope="col">
+    </td>
+    <td scope="col">
         @Html.DisplayFor(model => model.Landing)
-    </th>
-    <th scope="col">
+    </td>
+    <td scope="col">
         @Html.DisplayFor(model => model.Pilot.FullName)
-    </th>
-    <th>
+    </td>
+    <td>
         <a class="btn btn-outline-primary" asp-action="Edit"><i class="bi bi-pencil-square"></i></a>
         <a class="btn btn-outline-primary" asp-action="Delete"><i class="bi bi-trash"></i></a>
-    </th>
+    </td>
 </tr>

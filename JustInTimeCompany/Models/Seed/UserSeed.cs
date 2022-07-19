@@ -46,11 +46,38 @@ namespace JustInTimeCompany.Models.Seed
                     FirstName = "Mo", LastName = "Ney" 
                 };
 
+                JITCUser cust1 = new JITCUser()
+                {
+                    Email = "test1@test.com",
+                    UserName = "test@test.com",
+                    FirstName = "Test",
+                    LastName = "Osterone"
+                };
+
+                JITCUser cust2 = new JITCUser()
+                {
+                    Email = "test2@test.com",
+                    UserName = "test2@test.com",
+                    FirstName = "Toto",
+                    LastName = "Roro"
+                };
+
+                JITCUser cust3 = new JITCUser()
+                {
+                    Email = "test3@test.com",
+                    UserName = "test3@test.com",
+                    FirstName = "Tom",
+                    LastName = "Oroland"
+                };
 
                 var add = um.CreateAsync(pilot1, "Test123/").Result;
                 add = um.CreateAsync(pilot2, "Test123/").Result;
                 add = um.CreateAsync(pilot3, "Test123/").Result;
                 add = um.CreateAsync(manager, "Test123/").Result;
+                add = um.CreateAsync(cust1, "Test123/").Result;
+                add = um.CreateAsync(cust2, "Test123/").Result;
+                add = um.CreateAsync(cust3, "Test123/").Result;
+
 
                 if (add != null)
                 {
@@ -58,6 +85,10 @@ namespace JustInTimeCompany.Models.Seed
                     up = um.AddToRoleAsync(pilot1, "Pilot").Result;
                     up = um.AddToRoleAsync(pilot2, "Pilot").Result;
                     up = um.AddToRoleAsync(pilot3, "Pilot").Result;
+                    up = um.AddToRoleAsync(cust1, "Customer").Result;
+                    up = um.AddToRoleAsync(cust2, "Customer").Result;
+                    up = um.AddToRoleAsync(cust3, "Customer").Result;
+
                 }
             }
         }

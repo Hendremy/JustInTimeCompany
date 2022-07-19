@@ -43,6 +43,9 @@ namespace JustInTimeCompany.Models
         [NotMapped]
         public bool HasReport => FlightReport != null;
 
+        [NotMapped]
+        public bool IsPassed => Landing < DateTime.Now;
+
         public Flight()
         {
             Schedule = new Schedule(DateTime.Now, DateTime.Now.AddHours(1));
