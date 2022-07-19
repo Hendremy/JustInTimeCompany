@@ -86,6 +86,7 @@ namespace JustInTimeCompany.Models
             AircraftSeed.Generate(modelBuilder);
             AirportSeed.Generate(modelBuilder);
             FlightSeed.Generate(modelBuilder);
+            BookingSeed.Generate(modelBuilder);
         }
 
         public DbSet<Booking> Bookings { get; set; }

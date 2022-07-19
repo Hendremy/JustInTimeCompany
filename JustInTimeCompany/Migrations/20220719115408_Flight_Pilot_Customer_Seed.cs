@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace JustInTimeCompany.Migrations
 {
-    public partial class FlightSeed : Migration
+    public partial class Flight_Pilot_Customer_Seed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    [Migration("20220718203818_FlightSeed")]
-    partial class FlightSeed
+    [Migration("20220719115408_Flight_Pilot_Customer_Seed")]
+    partial class Flight_Pilot_Customer_Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

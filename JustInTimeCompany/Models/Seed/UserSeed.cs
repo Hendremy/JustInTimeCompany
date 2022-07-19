@@ -51,7 +51,8 @@ namespace JustInTimeCompany.Models.Seed
                     Email = "test1@test.com",
                     UserName = "test@test.com",
                     FirstName = "Test",
-                    LastName = "Osterone"
+                    LastName = "Osterone",
+                    Customer = new Customer()
                 };
 
                 JITCUser cust2 = new JITCUser()
@@ -59,7 +60,8 @@ namespace JustInTimeCompany.Models.Seed
                     Email = "test2@test.com",
                     UserName = "test2@test.com",
                     FirstName = "Toto",
-                    LastName = "Roro"
+                    LastName = "Roro",
+                    Customer = new Customer()
                 };
 
                 JITCUser cust3 = new JITCUser()
@@ -67,7 +69,8 @@ namespace JustInTimeCompany.Models.Seed
                     Email = "test3@test.com",
                     UserName = "test3@test.com",
                     FirstName = "Tom",
-                    LastName = "Oroland"
+                    LastName = "Oroland",
+                    Customer = new Customer()
                 };
 
                 var add = um.CreateAsync(pilot1, "Test123/").Result;
