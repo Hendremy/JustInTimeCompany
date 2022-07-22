@@ -82,17 +82,22 @@ namespace JustInTimeCompany.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public JsonResult GetPilotsJson(long TakeOff, long Landing )
+        [HttpGet]
+        public JsonResult GetPilotsJson([Bind("TakeOff, Landing")]Schedule sched)
         {
-            Schedule schedule = new Schedule(DateTime.Now, DateTime.Now.AddHours(1));
+            Schedule schedule = new Schedule(sched.TakeOff, sched.Landing);
             var pilots = _dbContext.Pilots
                 .Include(p => p.User)
                 .Include(p => p.FlightInstances)
                 .ThenInclude(fi => fi.Schedule);
 
             var pilotlist = pilots.ToList().Where(p => p.IsAvailableForSchedule(schedule));
-            return Json(new List<Object>() { new { Id = 5 }, new { Id = 4 } });
+            var pilotJson = new List<Object>();
+            foreach(Pilot pilot in pilotlist)
+            {
+                pilotJson.Add( new {Id = pilot.Id, Fullname = pilot.FullName});
+            }
+            return Json(pilotJson);
         }
     }
 }

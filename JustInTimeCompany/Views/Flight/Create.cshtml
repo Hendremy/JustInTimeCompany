@@ -20,20 +20,22 @@
 
 <h1>Créer un vol</h1>
 <p id="ok"></p>
+<div id="pilotList"></div>
 
 <partial name="_FlightForm" model=Model/>
 
 @section Scripts{
     <script>
-        let statusMessage = document.createElement('p');
-        let url = '@Url.Action("GetPilotsJson","Flight")';
-        let data = {"Landing" : Date.now(), "TakeOff": Date.now() };
+        function getPilots(landing, takeoff){
+            let statusMessage = document.createElement('p');
+            let url = '@Url.Action("GetPilotsJson","Flight")';
+            let data = {"Landing" : landing, "TakeOff": takeoff };
+            let params = `?TakeOff=${landing}&Landing=${landing}`;
 
-        fetch(url, 
+            fetch(url + params,
             {
-            method : 'post', 
-            body : JSON.stringify(data),
-            headers: {
+                method : 'get',
+                headers: {
                     "Content-Type": "application/json; charset=utf-8",
                     "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
                 }
@@ -45,14 +47,19 @@
                 return response;
             })
             .then(response => response.json())
-            .then(result => {
-                result.forEach(p => {
-                    document.getElementById('ok').innerHTML += p.Id;
+            .then(pilotArray => {
+                let pilotlist = document.getElementById("pilotList");
+                pilotArray.forEach(p => {
+                    let pilotChoice = document.createElement("p");
+                    pilotChoice.innerHTML = `${p.id} ${p.name}`;
+                    pilotlist.appendChild(pilotChoice);
                 })
-            
             })
             .catch(error => {
                 document.getElementById('ok').innerHTML = `Exception: ${error.message}`;
             });
+            }
+
+            getPilots("05-10-22 15:30:00","05-10-22 15:40:00");
     </script>
 }

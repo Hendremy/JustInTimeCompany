@@ -54,9 +54,9 @@ namespace JustInTimeCompany.Controllers
                 .Include(fr => fr.Flight)
                 .ThenInclude(fl => fl.Schedule)
                 .Include(fr => fr.ActualSchedule)
-                .First(fr => fr.Id == id);
+                .ToList();
 
-            return View(report);
+            return View(report.First(fr => fr.Id == id));
         }
     }
 }

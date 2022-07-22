@@ -16,6 +16,13 @@ namespace JustInTimeCompany.Models
         {
 
         }
+
+        public Schedule (String takeoff, String landing)
+        {
+            TakeOff = DateTime.Parse(takeoff);
+            Landing = DateTime.Parse(landing);
+        }
+
         public Schedule (DateTime takeOff, DateTime landing)
         {
             TakeOff = takeOff;
