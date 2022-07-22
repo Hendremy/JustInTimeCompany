@@ -5,7 +5,6 @@
 }
 
 <h1>Rapports de vol</h1>
-
 <table class="table">
     <thead>
         <tr>
@@ -28,11 +27,10 @@
     </thead>
     <tbody>
         @foreach (var flight in Model) {
-            {
-                ViewBag.RowClass = flight.HasReport ? "table-success" : "table-danger" ;
-            }
+                {
+                    ViewBag.RowClass = flight.HasReport ? "table-success" : "table-danger" ;
+                }
                 <partial name="_FlightRowPartial" model=flight/>
             }
-        }
     </tbody>
 </table>

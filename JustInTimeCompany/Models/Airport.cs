@@ -9,6 +9,7 @@ namespace JustInTimeCompany.Models
     {
         public int Id { get; set; }
         public string Name { get; init; }
+        public string Location { get; init; }
         public double Longitude { get; init; }
         public double Latitude { get; init; }
 

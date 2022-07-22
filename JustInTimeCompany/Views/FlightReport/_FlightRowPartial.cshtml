@@ -2,10 +2,10 @@
 
 <tr class="@ViewBag.RowClass">
     <td>
-        @Html.DisplayFor(modelItem => Model.From.Name)
+        @Html.DisplayFor(modelItem => Model.From.Location)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => Model.To.Name)
+        @Html.DisplayFor(modelItem => Model.To.Location)
     </td>
     <td>
         @Html.DisplayFor(modelItem => Model.TakeOff)
@@ -16,12 +16,12 @@
     <td>
         @if (Model.HasReport)
         {
-            <span class="text-danger">Rapport Manquant</span>
-            <a class="btn btn-danger" asp-action="Report" asp-route-id=@Model.Id>Compléter<i class="bi bi-x-lg"></i></a>
+            <a class="btn btn-success" asp-action="SeeReport" asp-route-id=@Model.Id>Voir le rapport <i class="bi bi-eye"></i></a>
         }
         else
         {
-            <span class="text-success">Voir le rapport</span>
+            <span class="text-danger">Manquant</span>
+            <a class="btn btn-danger" asp-action="Report" asp-route-id=@Model.Id>Compléter <i class="bi bi-pencil"></i></a>
         }
     </td>
 </tr>

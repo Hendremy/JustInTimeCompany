@@ -12,6 +12,10 @@ namespace JustInTimeCompany.Models
         [DataType(DataType.DateTime)]
         public DateTime Landing { get; set; }
 
+        public Schedule()
+        {
+
+        }
         public Schedule (DateTime takeOff, DateTime landing)
         {
             TakeOff = takeOff;

@@ -1,5 +1,4 @@
-﻿@using JustInTimeCompany.Models.ViewModels
-@model FlightReport
+﻿@model FlightReport
 
 <a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Retour</a>
 
@@ -9,17 +8,28 @@
     <div class="col-md-4">
         <form asp-action="Report" method="post">
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Flight.Id" />
+            <div class="form-group">
+                <label asp-for="Flight.TakeOff" class="control-label"></label>
+                <input readonly="@(true)" asp-for="Flight.TakeOff" class="form-control" />
+                <span asp-validation-for="Flight.TakeOff" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Flight.Landing" class="control-label"></label>
+                <input readonly="@(true)" asp-for="Flight.Landing" class="form-control" />
+                <span asp-validation-for="Flight.Landing" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TakeOff" class="control-label"></label>
+                <input asp-for="TakeOff" class="form-control" />
+                <span asp-validation-for="TakeOff" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Landing" class="control-label"></label>
+                <input asp-for="Landing" class="form-control" />
+                <span asp-validation-for="Landing" class="text-danger"></span>
+            </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ActualSchedule.TakeOff" class="control-label"></label>
-                <input asp-for="ActualSchedule.TakeOff" class="form-control" />
-                <span asp-validation-for="ActualSchedule.TakeOff" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ActualSchedule.Landing" class="control-label"></label>
-                <input asp-for="ActualSchedule.Landing" class="form-control" />
-                <span asp-validation-for="ActualSchedule.Landing" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="DelayJustification" class="control-label"></label>
                 <input asp-for="DelayJustification" class="form-control" />
