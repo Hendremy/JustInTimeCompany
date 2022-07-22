@@ -5,29 +5,22 @@
 <h4>Rapport de vol</h4>
 <hr/>
 <div>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Flight.Schedule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Flight.Schedule)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ActualSchedule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ActualSchedule)
-        </dd>
+        <h5>Horaire prévu</h5>
+        <div>
+            <p>Décollage: @Model.Flight.TakeOff</p>
+            <p>Atterrissage: @Model.Flight.Landing</p>
+        </div>
+        <h5>Horaire réel</h5>
+        <div>
+            <p>Décollage: @Model.TakeOff</p>
+            <p>Atterrissage: @Model.Landing</p>
+        </div>
         @if (Model.HasDelay)
-        {
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.DelayJustification)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.DelayJustification)
-            </dd>
-        }
-    </dl>
+    {
+        <div>
+            <p>Raison du retard : @Model.DelayJustification</p>
+        </div>
+    }
 </div>
 
 @section Scripts {

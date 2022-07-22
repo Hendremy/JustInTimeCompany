@@ -33,9 +33,12 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpPost]
-        public IActionResult Report([Bind("Id, FlightId, Flight.Schedule" +
-            "ActualSchedule, DelayJustification")]FlightReport report)
+        public IActionResult Report([Bind("FlightId, ActualSchedule, DelayJustification")]FlightReport report)
         {
+            report.Flight = _dbContext.Flights
+                .Include(fl => fl.Schedule)
+                .First(fl => fl.Id == report.FlightId);
+
             if (ModelState.IsValid)
             {
                 _dbContext.FlightReports.Add(report);
@@ -51,7 +54,6 @@ namespace JustInTimeCompany.Controllers
                 .Include(fr => fr.Flight)
                 .ThenInclude(fl => fl.Schedule)
                 .Include(fr => fr.ActualSchedule)
-                .Include(fr => fr.DelayJustification)
                 .First(fr => fr.Id == id);
 
             return View(report);
