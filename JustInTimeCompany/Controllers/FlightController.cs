@@ -81,5 +81,18 @@ namespace JustInTimeCompany.Controllers
         {
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public JsonResult GetPilotsJson(long TakeOff, long Landing )
+        {
+            Schedule schedule = new Schedule(DateTime.Now, DateTime.Now.AddHours(1));
+            var pilots = _dbContext.Pilots
+                .Include(p => p.User)
+                .Include(p => p.FlightInstances)
+                .ThenInclude(fi => fi.Schedule);
+
+            var pilotlist = pilots.ToList().Where(p => p.IsAvailableForSchedule(schedule));
+            return Json(new List<Object>() { new { Id = 5 }, new { Id = 4 } });
+        }
     }
 }

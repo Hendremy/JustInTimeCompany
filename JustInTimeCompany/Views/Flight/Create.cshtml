@@ -1,6 +1,17 @@
 ﻿@using JustInTimeCompany.Models.ViewModels
 @model FlightEditViewModel
 
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@functions
+{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+
 @{
     ViewBag.Title = "Ajouter un vol";
     ViewBag.FormAction = "Create";
@@ -8,13 +19,40 @@
 }
 
 <h1>Créer un vol</h1>
+<p id="ok"></p>
 
-<partial name="_FlightFormPartial" model=Model/>
+<partial name="_FlightForm" model=Model/>
 
-@{
-/*@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}*/
+@section Scripts{
+    <script>
+        let statusMessage = document.createElement('p');
+        let url = '@Url.Action("GetPilotsJson","Flight")';
+        let data = {"Landing" : Date.now(), "TakeOff": Date.now() };
+
+        fetch(url, 
+            {
+            method : 'post', 
+            body : JSON.stringify(data),
+            headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
+                }
+            })
+            .then(response => {
+                if (!response.ok){
+                    throw new Error(`[${response.status}]: ${response.statusText} `);
+                }
+                return response;
+            })
+            .then(response => response.json())
+            .then(result => {
+                result.forEach(p => {
+                    document.getElementById('ok').innerHTML += p.Id;
+                })
+            
+            })
+            .catch(error => {
+                document.getElementById('ok').innerHTML = `Exception: ${error.message}`;
+            });
+    </script>
 }
