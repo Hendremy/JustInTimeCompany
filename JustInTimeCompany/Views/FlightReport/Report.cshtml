@@ -30,12 +30,12 @@
                 <input asp-for="ActualSchedule.Landing" class="form-control" />
                 <span asp-validation-for="ActualSchedule.Landing" class="text-danger"></span>
             </div>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="DelayJustification" class="control-label"></label>
                 <input asp-for="DelayJustification" class="form-control" />
                 <span asp-validation-for="DelayJustification" class="text-danger"></span>
             </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>

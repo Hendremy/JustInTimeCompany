@@ -14,13 +14,20 @@
         @Html.DisplayFor(modelItem => Model.Landing)
     </td>
     <td>
-        @if (Model.HasReport)
+        @if (Model.IsPassed)
         {
-            <a class="btn btn-success" asp-action="SeeReport" asp-route-id=@Model.Id>Voir le rapport <i class="bi bi-eye"></i></a>
+            if (Model.HasReport)
+            {
+                <a class="btn btn-success" asp-action="SeeReport" asp-route-id=@Model.Id>Voir le rapport <i class="bi bi-eye"></i></a>
+            }
+            else
+            {
+                <a class="btn btn-danger" asp-action="Report" asp-route-id=@Model.Id>Compléter <i class="bi bi-pencil"></i></a>
+            }
         }
         else
         {
-            <a class="btn btn-danger" asp-action="Report" asp-route-id=@Model.Id>Compléter <i class="bi bi-pencil"></i></a>
+            <span>Vol futur</span>
         }
     </td>
 </tr>

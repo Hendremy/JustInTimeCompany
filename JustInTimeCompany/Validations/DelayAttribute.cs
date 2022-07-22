@@ -1,20 +1,26 @@
 ﻿using JustInTimeCompany.Models;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace DungeonHero.Validations
 {
     public class DelayAttribute : ValidationAttribute
     {
-        public override bool IsValid(object? value)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
+            if (value == null) return new ValidationResult("Erreur");
+            var _dbContext = validationContext.GetService<JITCDbContext>();
             FlightReport report = (FlightReport) value;
+            report.Flight = _dbContext.Flights
+                .Include(fl => fl.Schedule)
+                .First(fl => fl.Id == report.FlightId);
 
-            if (report.HasDelay && report.DelayJustification == null)
+            if(report.HasDelay && String.IsNullOrEmpty(report.DelayJustification))
             {
-                return false;
+                return new ValidationResult("Veuillez renseigner la raison du retard de votre vol");
             }
 
-            return base.IsValid(value);
+            return ValidationResult.Success;
         }
     }
 }
