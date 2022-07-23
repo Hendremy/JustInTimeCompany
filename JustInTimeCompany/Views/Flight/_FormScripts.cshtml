@@ -1,17 +1,4 @@
-﻿@using JustInTimeCompany.Models.ViewModels
-@model FlightFormViewModel
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
-
-
-@{
-    ViewBag.Title = "Ajouter un vol";
-    ViewBag.FormAction = "Create";
-    ViewBag.ButtonValue = "Ajouter le vol";
-}
-
-<h1>Créer un vol</h1>
-
-<partial name="_FlightForm" model=Model/>
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 
 @functions
 {
@@ -87,13 +74,11 @@
         
         from.addEventListener('change', airportChosen);
         to.addEventListener('change', airportChosen);
+        console.log("event ok");
 
         function scheduleChosen(){
 
         }
-        
-        landing.addEventListener('change', scheduleChosen);
-        takeOff.addEventListener('change', scheduleChosen);
 
     </script>
 }
