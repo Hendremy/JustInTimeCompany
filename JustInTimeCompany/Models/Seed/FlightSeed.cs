@@ -17,7 +17,7 @@ namespace JustInTimeCompany.Models.Seed
             var ostendliege = new { Id = 2, FromId = 4, ToId = 1 };
             var brusselsliege = new { Id = 3, FromId = 3, ToId = 1 };
 
-            mb.Entity<Path>().HasData(liegeostend, ostendliege, brusselsliege);
+            mb.Entity<FlightPath>().HasData(liegeostend, ostendliege, brusselsliege);
         }
 
         static private void SeedSchedules(ModelBuilder mb)

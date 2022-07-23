@@ -54,12 +54,12 @@ namespace JustInTimeCompany.Models
 
         private void BuildPath(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Path>().HasOne(f => f.From)
+            modelBuilder.Entity<FlightPath>().HasOne(f => f.From)
                 .WithMany(a => a.OutgoingFlights)
                 .HasForeignKey(f => f.FromId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Path>().HasOne(f => f.To)
+            modelBuilder.Entity<FlightPath>().HasOne(f => f.To)
                 .WithMany(a => a.IncomingFlights)
                 .HasForeignKey(f => f.ToId)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -97,7 +97,7 @@ namespace JustInTimeCompany.Models
 
         public DbSet<Airport> Airports { get; set; }
 
-        public DbSet<Path> Paths { get; set; }
+        public DbSet<FlightPath> Paths { get; set; }
 
         public DbSet<Flight> Flights { get; set; }
 

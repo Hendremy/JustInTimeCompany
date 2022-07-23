@@ -1,28 +1,28 @@
 ﻿@using JustInTimeCompany.Models.ViewModels
-@model FlightEditViewModel
+@model FlightFormViewModel
 
 <a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Retour</a>
 
 @{
-    List<SelectListItem> airportsFrom = new List<SelectListItem>();
+    List<SelectListItem> airports = new List<SelectListItem>();
 
-    foreach(var from in Model.Airports)
+    foreach(var airport in Model.Airports)
     {
-        airportsFrom.Add(new SelectListItem() 
-        { 
-            Text = from.Name, 
-            Value = from.Id.ToString()
+        airports.Add(new SelectListItem() 
+        {
+            Text = airport.Name,
+            Value = airport.Id.ToString()
         });
     }
 
-    List<SelectListItem> airportsTo = new List<SelectListItem>();
+    List<SelectListItem> aircrafts = new List<SelectListItem>();
 
-    foreach(var to in Model.Airports)
+    foreach(var aircraft in Model.Aircrafts)
     {
-        airportsTo.Add(new SelectListItem() 
+        aircrafts.Add(new SelectListItem()
         { 
-            Text = to.Name, 
-            Value = to.Id.ToString()
+            Text = $"{aircraft.Model.Name} ({aircraft.Model.PassengerCapacity} places / {aircraft.Model.Speed} km/h)", 
+            Value = aircraft.Id.ToString()
         });
     }
 }
@@ -30,33 +30,47 @@
 <h4>Vol</h4>
 <hr/>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="@ViewBag.FormAction" method="post">
             <input type="hidden" asp-for="Flight.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Flight.From" class="control-label"></label>
+                <label asp-for="Flight.Path.From" class="control-label"></label>
                 @Html.DropDownListFor(model => model.Flight.Path.FromId, 
-                    airportsFrom,
-                    "Départ", new { @class = "form-control" })
-                <span asp-validation-for="Flight.From" class="text-danger"></span>
+                    airports, new { @class = "form-control" })
+                <span asp-validation-for="Flight.Path.From" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Flight.To" class="control-label"></label>
+                <label asp-for="Flight.Path.To" class="control-label"></label>
                 @Html.DropDownListFor(model => model.Flight.Path.ToId,
-                    airportsTo,
-                    "Destination", new { @class = "form-control" })
-                <span asp-validation-for="Flight.To" class="text-danger"></span>
+                    airports, new { @class = "form-control" })
+                <span asp-validation-for="Flight.Path.To" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Flight.TakeOff" class="control-label"></label>
-                <input asp-for="Flight.TakeOff" class="form-control" />
-                <span asp-validation-for="Flight.TakeOff" class="text-danger"></span>
+                <label class="control-label">Distance</label>
+                <p id="airportDistance">0 km</p>
+            </div>
+            <div class="form-group schedule">
+                <label asp-for="Flight.Schedule.TakeOff" class="control-label"></label>
+                <input asp-for="Flight.Schedule.TakeOff" class="form-control" />
+                <span asp-validation-for="Flight.Schedule.TakeOff" class="text-danger"></span>
+            </div>
+            <div class="form-group schedule">
+                <label asp-for="Flight.Schedule.Landing" class="control-label"></label>
+                <input asp-for="Flight.Schedule.Landing" class="form-control" />
+                <span asp-validation-for="Flight.Schedule.Landing" class="text-danger"></span>
+            </div>
+            <div id ="pilot" class="form-group">
+                <label asp-for="Flight.Pilot" class="control-label"></label>
+                <p>Sélectionnez l'horaire de vol pour choisir un pilote disponible</p>
+                <select asp-for="Flight.Pilot" hidden></select>
+                <span asp-validation-for="Flight.Pilot" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Flight.Landing" class="control-label"></label>
-                <input asp-for="Flight.Landing" class="form-control" />
-                <span asp-validation-for="Flight.Landing" class="text-danger"></span>
+                <label asp-for="Flight.Aircraft" class="control-label"></label>
+                @Html.DropDownListFor(model => model.Flight.Aircraft,
+                    aircrafts, new { @class = "form-control" })
+                <span asp-validation-for="Flight.Aircraft" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="@ViewBag.ButtonValue" class="btn btn-primary" />
@@ -65,6 +79,3 @@
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

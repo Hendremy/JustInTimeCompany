@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JustInTimeCompany.Models
 {
-    public class Path
+    public class FlightPath
     {
         public int Id { get; set; }
         public int FromId { get; set; }
@@ -18,6 +18,16 @@ namespace JustInTimeCompany.Models
         [Display (Name ="Destination")]
         public Airport To { get; set; }
         public ICollection<Flight> FlightInstances { get; set; }
+
+        public FlightPath()
+        {
+        }
+
+        public FlightPath(Airport From, Airport To)
+        {
+            this.From = From;
+            this.To = To;
+        }
 
         public double CalcDistance()
         {

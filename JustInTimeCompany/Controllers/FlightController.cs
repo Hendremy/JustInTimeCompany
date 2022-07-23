@@ -33,13 +33,14 @@ namespace JustInTimeCompany.Controllers
         {
             var flight = new Flight();
             var airports = _dbContext.Airports;
+            var aircrafts = _dbContext.Aircrafts.Include(ac => ac.Model);
 
-            return View(new FlightEditViewModel(flight, airports));
+            return View(new FlightFormViewModel(flight, airports, aircrafts));
         }
 
 
         [HttpPost]
-        public IActionResult Create([Bind("Path, Schedule")] Flight flight)
+        public IActionResult Create([Bind("Path, Schedule, Pilot, Aircraft")] Flight flight)
         {
             flight.Path.From = _dbContext.Airports.First(airp => airp.Id == flight.Path.FromId);
             flight.Path.To = _dbContext.Airports.First(airp => airp.Id == flight.Path.ToId);
@@ -47,28 +48,13 @@ namespace JustInTimeCompany.Controllers
             return RedirectToAction("DetailsCreate","Flight", new RouteValueDictionary(flight));
         }
 
-
-        public IActionResult DetailsCreate(Flight flight)
-        {
-            var aircrafts = _dbContext.Aircrafts.Include(air => air.Model);
-
-            var pilotsInDb = new List<Pilot>(
-                _dbContext.Pilots
-                .Include(p => p.User)
-                .Include(p => p.FlightInstances)
-            );
-
-            var pilots = pilotsInDb.Where(p => p.IsAvailableForSchedule(flight.Schedule));
-
-            return View(new FlightDetailsEditViewModel(flight, aircrafts, pilots));
-        }
-
         public IActionResult Edit(int id)
         {
             var flight = _dbContext.Flights.First(fl => fl.Id == id);
             var airports = _dbContext.Airports;
+            var aircrafts = _dbContext.Aircrafts.Include(ac => ac.Model);
 
-            return View(new FlightEditViewModel(flight, airports));
+            return View(new FlightFormViewModel(flight, airports, aircrafts));
         }
 
         [HttpPost]
@@ -85,19 +71,34 @@ namespace JustInTimeCompany.Controllers
         [HttpGet]
         public JsonResult GetPilotsJson([Bind("TakeOff, Landing")]Schedule sched)
         {
-            Schedule schedule = new Schedule(sched.TakeOff, sched.Landing);
             var pilots = _dbContext.Pilots
                 .Include(p => p.User)
                 .Include(p => p.FlightInstances)
                 .ThenInclude(fi => fi.Schedule);
 
-            var pilotlist = pilots.ToList().Where(p => p.IsAvailableForSchedule(schedule));
+            var pilotlist = pilots.ToList().Where(p => p.IsAvailableForSchedule(sched));
             var pilotJson = new List<Object>();
             foreach(Pilot pilot in pilotlist)
             {
                 pilotJson.Add( new {Id = pilot.Id, Fullname = pilot.FullName});
             }
             return Json(pilotJson);
+        }
+
+        [HttpGet]
+        public double GetAirportDistance(int fromId, int toId)
+        {
+            var from = _dbContext.Airports.FirstOrDefault(air => air.Id == fromId);
+            var to = _dbContext.Airports.FirstOrDefault(air => air.Id == toId);
+
+            if(from == null || to == null)
+            {
+                return -1;
+            }
+            else
+            {
+                return new FlightPath(from, to).CalcDistance();
+            }
         }
     }
 }
