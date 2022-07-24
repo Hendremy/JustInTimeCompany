@@ -1,5 +1,7 @@
 ﻿using JustInTimeCompany.Models;
+using JustInTimeCompany.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JustInTimeCompany.Controllers
 {
@@ -15,15 +17,22 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Index()
         {
             var airports = _dbContext.Airports;
-            return View(airports);
+            var path = new FlightPath();
+            return View(new FlightSearchViewModel(airports, path));
         }
 
         [HttpPost]
         public IActionResult Search(Airport from, Airport to)
         {
-            ViewBag.From = from;
-            ViewBag.To = to;
-            return View();
+            var flights = _dbContext.Flights
+                .Include(fl => fl.Path).ThenInclude(p => p.From)
+                .Include(fl => fl.Path).ThenInclude(p => p.To)
+                .Include(fl => fl.Aircraft).ThenInclude(ac => ac.Model)
+                .Include(fl => fl.Schedule)
+                .GroupBy(fl => fl.Path);
+
+            var searchResult = flights.Where(entry => entry.Key.From == from && entry.Key.To == to);
+            return View(searchResult);
         }
 
         public IActionResult Book(int id)

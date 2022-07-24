@@ -1,5 +1,5 @@
 ﻿@using JustInTimeCompany.Models.ViewModels
-@model BookingSearchFormViewModel
+@model FlightSearchViewModel
 
 <a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Retour</a>
 
@@ -19,12 +19,12 @@
 <h4>Chercher un vol</h4>
 <hr/>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="@ViewBag.FormAction" method="post">
+    <div class="col-md-6">
+        <form asp-action="Search" method="post">
             <input type="hidden"/>
             <div class="form-group">
                 <label asp-for="Path.From" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Path.FromId, 
+                @Html.DropDownListFor(model => model.Path.FromId,
                     airports, new { @class = "form-control" })
                 <span asp-validation-for="Path.From" class="text-danger"></span>
             </div>
@@ -36,7 +36,7 @@
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="submit" value="@ViewBag.ButtonValue" class="btn btn-primary" />
+                <input type="submit" value="Chercher" class="btn btn-primary" />
             </div>
         </form>
     </div>
