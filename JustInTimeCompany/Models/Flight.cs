@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using JustInTimeCompany.Validations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustInTimeCompany.Models
@@ -15,6 +16,7 @@ namespace JustInTimeCompany.Models
 
         public Aircraft? Aircraft { get; set; }
 
+        [ScheduleAttribute(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]
         public Schedule Schedule { get; set; }
 
         public FlightReport FlightReport { get; set; }

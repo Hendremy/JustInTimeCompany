@@ -1,4 +1,4 @@
-﻿using DungeonHero.Validations;
+﻿using JustInTimeCompany.Validations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

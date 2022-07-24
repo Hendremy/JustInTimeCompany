@@ -62,7 +62,7 @@
             </div>
             <div id ="pilot" class="form-group">
                 <label asp-for="Flight.Pilot" class="control-label"></label>
-                <p>Sélectionnez l'horaire de vol pour choisir un pilote disponible</p>
+                <p id="pilotText">Sélectionnez l'horaire de vol pour choisir un pilote disponible</p>
                 <select asp-for="Flight.Pilot" hidden></select>
                 <span asp-validation-for="Flight.Pilot" class="text-danger"></span>
             </div>

@@ -8,11 +8,7 @@
     }
 }
 
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="module">
+<script type="module">
         function getAirportDistance(fromAirId, toAirId, url, token) {
         let params = `?toId=${fromAirId}&fromId=${toAirId}`;
 
@@ -56,7 +52,8 @@
         let takeOff = document.getElementById("Flight_Schedule_TakeOff");
         let landing = document.getElementById("Flight_Schedule_Landing");
         let distance = document.getElementById("airportDistance");
-        let pilots = document.getElementById("");
+        let pilots = document.getElementById("Flight_Pilot");
+        let pilotsText = document.getElementById("pilotText");
 
         function airportChosen(){
             if(from.value > 0 && to.value > 0){
@@ -74,11 +71,24 @@
         
         from.addEventListener('change', airportChosen);
         to.addEventListener('change', airportChosen);
-        console.log("event ok");
 
         function scheduleChosen(){
-
+            if(landing.value > 0 && takeOff.value > 0){
+                let url = '@Url.Action("GetPilotsJson","Flight")'
+                let token = '@GetAntiXsrfRequestToken()';
+                getPilots(takeOff.value, landing.value, url, token)
+                .then(response => {
+                    pilotText.style.display = "none";
+                    pilots.style.display = "inline-block";
+                    pilots.innerText = `Bouyah`;
+                })
+                .catch(error => {
+                    pilots.innerText = 'Erreur : Veuillez réessayer';
+                });
+            }
         }
+        
+        landing.addEventListener('change', scheduleChosen);
+        takeOff.addEventListener('change', scheduleChosen);
 
     </script>
-}

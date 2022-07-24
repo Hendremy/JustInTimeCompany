@@ -1,7 +1,5 @@
 ﻿@using JustInTimeCompany.Models.ViewModels
 @model FlightFormViewModel
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
-
 
 @{
     ViewBag.Title = "Ajouter un vol";
@@ -13,87 +11,7 @@
 
 <partial name="_FlightForm" model=Model/>
 
-@functions
-{
-    public string GetAntiXsrfRequestToken()
-    {
-        return Xsrf.GetAndStoreTokens(Context).RequestToken;
-    }
-}
-
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="module">
-        function getAirportDistance(fromAirId, toAirId, url, token) {
-        let params = `?toId=${fromAirId}&fromId=${toAirId}`;
-
-        return fetch(url + params,
-        {
-            method: 'get',
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "RequestVerificationToken": token
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`[${response.status}]: ${response.statusText} `);
-            }
-            return response;
-        })
-        .then(response => response.json())};
-
-        function getPilots(landing, takeoff, url, token) {
-        let params = `?TakeOff=${landing}&Landing=${takeoff}`;
-        return fetch(url + params,
-        {
-            method: 'get',
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "RequestVerificationToken": token
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`[${response.status}]: ${response.statusText} `);
-            }
-            return response;
-        })
-        .then(response => response.json())
-}
-
-        let from = document.getElementById("Flight_Path_FromId");
-        let to = document.getElementById("Flight_Path_ToId");
-        let takeOff = document.getElementById("Flight_Schedule_TakeOff");
-        let landing = document.getElementById("Flight_Schedule_Landing");
-        let distance = document.getElementById("airportDistance");
-        let pilots = document.getElementById("");
-
-        function airportChosen(){
-            if(from.value > 0 && to.value > 0){
-                let url = '@Url.Action("GetAirportDistance","Flight")'
-                let token = '@GetAntiXsrfRequestToken()';
-                getAirportDistance(from.value, to.value, url, token)
-                .then(response => {
-                    distance.innerText = `${response} km`;
-                })
-                .catch(error => {
-                    distance.innerText = '0 km';
-                });
-            }
-        }
-        
-        from.addEventListener('change', airportChosen);
-        to.addEventListener('change', airportChosen);
-
-        function scheduleChosen(){
-
-        }
-        
-        landing.addEventListener('change', scheduleChosen);
-        takeOff.addEventListener('change', scheduleChosen);
-
-    </script>
+    @{await Html.RenderPartialAsync("_FormScripts");}
 }

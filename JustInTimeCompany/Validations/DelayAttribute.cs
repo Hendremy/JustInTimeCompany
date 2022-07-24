@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace DungeonHero.Validations
+namespace JustInTimeCompany.Validations
 {
     public class DelayAttribute : ValidationAttribute
     {
