@@ -5,26 +5,7 @@
 <h4>Réserver un vol</h4>
 <hr/>
 <div class="row">
-    <div class="row">
-        <div class="col-md-4">
-            <h5>@Model.Flight.From.Name <i class="bi bi-arrow-right"></i> @Model.Flight.To.Name</h5>
-            <p>Décollage : @Model.Flight.TakeOff</p>
-            <p>Atterrissage : @Model.Flight.Landing</p>
-            <p>Places disponibles : @Model.Flight.RemainingSeats</p>
-        </div>
-        <div class="col-md-4">
-            <h5>Hélicoptère</h5>
-            <p>Modèle : @Model.Flight.AircraftModel.Name</p>
-            <p>Capacité passagers : @Model.Flight.AircraftModel.PassengerCapacity</p>
-            <p>Vitesse : @Model.Flight.AircraftModel.Speed</p>
-            <p>Moteurs : 
-                @foreach(var engine in Model.Flight.AircraftModel.Engines)
-                {
-                    @Html.Raw($"{engine.Quantity} {engine.Engine.ToString}, ")
-                }
-            </p>
-        </div>
-    </div>
+    <partial name="_FlightDetails" model=Model.Flight/>
     <div class="col-md-6">
         <form asp-action="Book" method="post">
             <input type="hidden" asp-for="FlightId" />

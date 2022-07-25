@@ -1,0 +1,22 @@
+﻿@model Flight
+
+<div class="row">
+        <div class="col-md-4">
+            <h5>@Model.From.Name <i class="bi bi-arrow-right"></i> @Model.To.Name</h5>
+            <p>Décollage : @Model.TakeOff</p>
+            <p>Atterrissage : @Model.Landing</p>
+            <p>Places disponibles : @Model.RemainingSeats</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Hélicoptère</h5>
+            <p>Modèle : @Model.AircraftModel.Name</p>
+            <p>Capacité passagers : @Model.AircraftModel.PassengerCapacity</p>
+            <p>Vitesse : @Model.AircraftModel.Speed</p>
+            <p>Moteurs : 
+                @foreach(var engine in Model.AircraftModel.Engines)
+                {
+                    @Html.Raw($"{engine.Quantity} {engine.Engine.ToString}, ")
+                }
+            </p>
+        </div>
+</div>

@@ -71,13 +71,37 @@ namespace JustInTimeCompany.Controllers
         [HttpPost]
         public IActionResult Book([Bind("FlightId, SeatsTaken")]Booking booking)
         {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(booking);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Success");
+            }
+            return View();
+        }
+
+        public IActionResult Success()
+        {
             return View();
         }
 
         //Afficher l'historique des réservations
         public IActionResult History()
         {
-            return View();
+            var bookings = _dbContext.Bookings.ToList();
+
+            foreach(var booking in bookings)
+            {
+                booking.Flight = _dbContext.Flights
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.From)
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.To)
+                    .Include(fl => fl.Schedule)
+                    .First(fl => fl.Id == booking.FlightId);
+            }
+
+            return View(bookings);
         }
 
         //Annuler une réservation

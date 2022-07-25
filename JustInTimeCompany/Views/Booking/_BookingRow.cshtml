@@ -1,0 +1,23 @@
+﻿@model Booking
+
+<tr class="@ViewBag.RowClass">
+    <td>
+        @Html.DisplayFor(modelItem => Model.Flight.From.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Flight.To.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Flight.Schedule.TakeOff)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Flight.Schedule.Landing)
+    </td>
+    <td>
+        <a class="btn btn-success" asp-action="Details" asp-route-id=@Model.FlightId>Voir <i class="bi bi-eye"></i></a>
+        @if (!Model.IsPassed)
+        {
+            <button id="cancel-@Model.Flight" class="btn btn-danger">Annuler<i class="bi bi-x-lg"></button>
+        }
+    </td>
+</tr>
