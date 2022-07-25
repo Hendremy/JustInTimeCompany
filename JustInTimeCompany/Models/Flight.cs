@@ -24,6 +24,7 @@ namespace JustInTimeCompany.Models
         public ICollection<Booking>? Bookings { get; set; }
 
         [NotMapped]
+        [Display(Name ="Places restantes")]
         public int RemainingSeats => Aircraft != null || Bookings != null ? Aircraft.Capacity - Bookings.Count : -1;
 
         [NotMapped]

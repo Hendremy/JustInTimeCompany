@@ -2,6 +2,7 @@
 using JustInTimeCompany.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace JustInTimeCompany.Controllers
 {
@@ -22,17 +23,29 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpPost]
-        public IActionResult Search(Airport from, Airport to)
+        public IActionResult Search([Bind("FromId, ToId")]FlightPath path)
         {
-            var flights = _dbContext.Flights
-                .Include(fl => fl.Path).ThenInclude(p => p.From)
-                .Include(fl => fl.Path).ThenInclude(p => p.To)
-                .Include(fl => fl.Aircraft).ThenInclude(ac => ac.Model)
-                .Include(fl => fl.Schedule)
-                .GroupBy(fl => fl.Path);
+            var paths = _dbContext.Paths
+                .Include(p => p.From)
+                .Include(p => p.To)
+                .Include(p => p.FlightInstances)
+                .ThenInclude(fl => fl.Schedule)
+                .Include(p => p.FlightInstances)
+                .ThenInclude(fl => fl.Aircraft)
+                .ThenInclude(ac => ac.Model)
+                .Include(p => p.FlightInstances)
+                .ThenInclude(fl => fl.Bookings)
+                .Where(p => p.FromId == path.FromId && p.ToId == path.ToId);
 
-            var searchResult = flights.Where(entry => entry.Key.From == from && entry.Key.To == to);
-            return View(searchResult);
+            foreach(var flightpath in paths)
+            {
+                flightpath.FlightInstances = flightpath.FlightInstances
+                .Where(fl => !fl.IsPassed)
+                .OrderBy(fl => fl.Schedule.TakeOff)
+                .ToList();
+            }
+
+            return View(paths);
         }
 
         public IActionResult Book(int id)

@@ -17,7 +17,7 @@ namespace JustInTimeCompany.Models
 
         [Display (Name ="Destination")]
         public Airport To { get; set; }
-        public ICollection<Flight> FlightInstances { get; set; }
+        public IEnumerable<Flight> FlightInstances { get; set; }
 
         public FlightPath()
         {

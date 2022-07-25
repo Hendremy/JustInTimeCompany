@@ -2,6 +2,7 @@
 
 <h1> Trajets </h1>
 
-@foreach(var paths in Model){
+@foreach(var pathflight in Model){
+    <partial name="_PathRow" model=pathflight/>
 
 }
