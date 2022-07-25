@@ -29,7 +29,7 @@ namespace JustInTimeCompany.Models
 
         private void BuildBooking(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Booking>().HasKey(b => new { b.FlightId, b.CustomerId });
+            //modelBuilder.Entity<Booking>().HasKey(b => new { b.FlightId, b.CustomerId });
 
             modelBuilder.Entity<Customer>().HasMany(c => c.Bookings)
                 .WithOne(b => b.Customer)

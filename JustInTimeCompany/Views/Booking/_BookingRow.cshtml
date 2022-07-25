@@ -14,10 +14,10 @@
         @Html.DisplayFor(modelItem => Model.Flight.Schedule.Landing)
     </td>
     <td>
-        <a class="btn btn-success" asp-action="Details" asp-route-id=@Model.FlightId>Voir <i class="bi bi-eye"></i></a>
+        <a class="btn btn-success" asp-action="Details" asp-route-id=@Model.Id>Voir <i class="bi bi-eye"></i></a>
         @if (!Model.IsPassed)
         {
-            <button id="cancel-@Model.Flight" class="btn btn-danger">Annuler<i class="bi bi-x-lg"></button>
+            <button id="cancel-@Model.Id" class="btn btn-danger">Annuler<i class="bi bi-x-lg"></button>
         }
     </td>
 </tr>
