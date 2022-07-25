@@ -8,6 +8,8 @@
 
         public string Brand { get; set; }
 
-        public ICollection<EngineInAircraft> EngineInAircraft { get; init; }
+        public string ToString => $"{Type} {Model} {Brand}";
+
+        public IEnumerable<EngineInAircraft> EngineInAircraft { get; init; }
     }
 }

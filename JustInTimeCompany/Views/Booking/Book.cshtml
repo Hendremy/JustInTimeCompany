@@ -1,0 +1,46 @@
+﻿@model Booking
+
+<a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Retour</a>
+
+<h4>Réserver un vol</h4>
+<hr/>
+<div class="row">
+    <div class="row">
+        <div class="col-md-4">
+            <h5>@Model.Flight.From.Name <i class="bi bi-arrow-right"></i> @Model.Flight.To.Name</h5>
+            <p>Décollage : @Model.Flight.TakeOff</p>
+            <p>Atterrissage : @Model.Flight.Landing</p>
+            <p>Places disponibles : @Model.Flight.RemainingSeats</p>
+        </div>
+        <div class="col-md-4">
+            <h5>Hélicoptère</h5>
+            <p>Modèle : @Model.Flight.AircraftModel.Name</p>
+            <p>Capacité passagers : @Model.Flight.AircraftModel.PassengerCapacity</p>
+            <p>Vitesse : @Model.Flight.AircraftModel.Speed</p>
+            <p>Moteurs : 
+                @foreach(var engine in Model.Flight.AircraftModel.Engines)
+                {
+                    @Html.Raw($"{engine.Quantity} {engine.Engine.ToString}, ")
+                }
+            </p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <form asp-action="Book" method="post">
+            <input type="hidden" asp-for="FlightId" />
+            <div class="form-group">
+                <label asp-for="SeatsTaken" class="control-label">Nombres de places</label>
+                <input asp-for="SeatsTaken" class="form-control" />
+                <span asp-validation-for="SeatsTaken" class="text-danger"></span>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Confirmer la réservation" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

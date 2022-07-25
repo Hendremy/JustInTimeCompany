@@ -9,12 +9,24 @@ namespace JustInTimeCompany.Models
     public class Booking
     {
         public int FlightId { get; set; }
-        public Flight FlightInstance { get; set; }
+        public Flight Flight { get; set; }
         
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
+        public int SeatsTaken { get; set; }
+
         [NotMapped]
-        public bool IsPassed => FlightInstance.IsPassed;
+        public bool IsPassed => Flight.IsPassed;
+
+        public Booking()
+        {
+
+        }
+        public Booking(Flight flight, Customer customer)
+        {
+            Flight = flight;
+            Customer = customer;
+        }
     }
 }

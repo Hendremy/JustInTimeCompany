@@ -21,11 +21,11 @@ namespace JustInTimeCompany.Models
 
         public FlightReport FlightReport { get; set; }
         
-        public ICollection<Booking>? Bookings { get; set; }
+        public IEnumerable<Booking>? Bookings { get; set; }
 
         [NotMapped]
         [Display(Name ="Places restantes")]
-        public int RemainingSeats => Aircraft != null || Bookings != null ? Aircraft.Capacity - Bookings.Count : -1;
+        public int RemainingSeats => Aircraft != null || Bookings != null ? Aircraft.Capacity - Bookings.Sum(b => b.SeatsTaken) : -1;
 
         [NotMapped]
         [Display (Name = "Arrivée")]
@@ -42,6 +42,9 @@ namespace JustInTimeCompany.Models
         [NotMapped]
         [Display(Name = "Lieu d'arrivée")]
         public Airport To => Path?.To;
+
+        [NotMapped]
+        public AircraftModel AircraftModel => Aircraft.Model; 
 
         [NotMapped]
         public bool HasReport => FlightReport != null;

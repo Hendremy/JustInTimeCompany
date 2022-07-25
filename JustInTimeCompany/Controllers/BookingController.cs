@@ -19,11 +19,11 @@ namespace JustInTimeCompany.Controllers
         {
             var airports = _dbContext.Airports;
             var path = new FlightPath();
-            return View(new FlightSearchViewModel(airports, path));
+            return View(new FlightSearch(airports, path));
         }
 
         [HttpPost]
-        public IActionResult Search([Bind("FromId, ToId")]FlightPath path)
+        public IActionResult Search([Bind("Path, Date")]FlightSearch search)
         {
             var paths = _dbContext.Paths
                 .Include(p => p.From)
@@ -35,12 +35,13 @@ namespace JustInTimeCompany.Controllers
                 .ThenInclude(ac => ac.Model)
                 .Include(p => p.FlightInstances)
                 .ThenInclude(fl => fl.Bookings)
-                .Where(p => p.FromId == path.FromId && p.ToId == path.ToId);
+                .Where(p => (p.FromId == search.Path.FromId || search.Path.FromId == 0) 
+                && (p.ToId == search.Path.ToId || search.Path.ToId == 0));
 
             foreach(var flightpath in paths)
             {
                 flightpath.FlightInstances = flightpath.FlightInstances
-                .Where(fl => !fl.IsPassed)
+                .Where(fl => !fl.IsPassed && fl.TakeOff > search.Date)
                 .OrderBy(fl => fl.Schedule.TakeOff)
                 .ToList();
             }
@@ -50,11 +51,25 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Book(int id)
         {
-            return View();
+            var flight = _dbContext.Flights
+                .Include(fl => fl.Aircraft)
+                .ThenInclude(ac => ac.Model)
+                .ThenInclude(m => m.Engines)
+                .ThenInclude(e => e.Engine)
+                .Include(fl => fl.Bookings)
+                .Include(fl => fl.Path)
+                .ThenInclude(fl => fl.From)
+                .Include(fl => fl.Path)
+                .ThenInclude(fl => fl.To)
+                .Include(fl => fl.Schedule)
+                .FirstOrDefault(f => f.Id == id);
+
+            //TODO: Récupérer l'id customer du IdentityUser
+            return View(new Booking(flight, new Customer()));
         }
 
         [HttpPost]
-        public IActionResult Book(Flight flightInstance)
+        public IActionResult Book([Bind("FlightId, SeatsTaken")]Booking booking)
         {
             return View();
         }

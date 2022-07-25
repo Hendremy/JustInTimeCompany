@@ -31,7 +31,7 @@ namespace JustInTimeCompany.Models
         [NotMapped]
         public bool HasDelay => Delay > MAX_DELAY;
         
-        [Display(Name="Raison du délai")]
+        [Display(Name="Raison du retard")]
         public string? DelayJustification { get; set; }
 
         public FlightReport()
