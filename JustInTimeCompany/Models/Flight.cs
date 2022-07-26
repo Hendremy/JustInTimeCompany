@@ -56,7 +56,6 @@ namespace JustInTimeCompany.Models
         public bool IsFullyBooked => RemainingSeats == 0;
         public Flight()
         {
-            Schedule = new Schedule(DateTime.Now, DateTime.Now.AddHours(1));
         }
     }
 }

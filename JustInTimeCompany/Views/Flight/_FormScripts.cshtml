@@ -8,87 +8,74 @@
     }
 }
 
+<script src="~/js/flightForm.js" asp-append-version="true"></script>
 <script type="module">
-        function getAirportDistance(fromAirId, toAirId, url, token) {
-        let params = `?toId=${fromAirId}&fromId=${toAirId}`;
+    let from = document.getElementById("Flight_Path_FromId");
+    let to = document.getElementById("Flight_Path_ToId");
+    let takeOff = document.getElementById("Flight_Schedule_TakeOff");
+    let landing = document.getElementById("Flight_Schedule_Landing");
+    let distance = document.getElementById("airportDistance");
+    let pilots = document.getElementById("Flight_Pilot");
+    let pilotsText = document.getElementById("pilotText");
 
-        return fetch(url + params,
-        {
-            method: 'get',
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "RequestVerificationToken": token
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`[${response.status}]: ${response.statusText} `);
-            }
-            return response;
-        })
-        .then(response => response.json())};
-
-        function getPilots(landing, takeoff, url, token) {
-        let params = `?TakeOff=${landing}&Landing=${takeoff}`;
-        return fetch(url + params,
-        {
-            method: 'get',
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "RequestVerificationToken": token
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`[${response.status}]: ${response.statusText} `);
-            }
-            return response;
-        })
-        .then(response => response.json())
-}
-
-        let from = document.getElementById("Flight_Path_FromId");
-        let to = document.getElementById("Flight_Path_ToId");
-        let takeOff = document.getElementById("Flight_Schedule_TakeOff");
-        let landing = document.getElementById("Flight_Schedule_Landing");
-        let distance = document.getElementById("airportDistance");
-        let pilots = document.getElementById("Flight_Pilot");
-        let pilotsText = document.getElementById("pilotText");
-
-        function airportChosen(){
-            if(from.value > 0 && to.value > 0){
-                let url = '@Url.Action("GetAirportDistance","Flight")'
-                let token = '@GetAntiXsrfRequestToken()';
-                getAirportDistance(from.value, to.value, url, token)
-                .then(response => {
-                    distance.innerText = `${response} km`;
-                })
-                .catch(error => {
-                    distance.innerText = '0 km';
-                });
-            }
+    function airportChosen(){
+        if(from.value > 0 && to.value > 0){
+            let url = '@Url.Action("GetAirportDistance","Flight")'
+            let token = '@GetAntiXsrfRequestToken()';
+            getDistance(from.value, to.value, url, token)
+            .then(response => {
+                distance.innerText = `${response} km`;
+            })
+            .catch(error => {
+                distance.innerText = '0 km';
+            });
         }
+    };
         
-        from.addEventListener('change', airportChosen);
-        to.addEventListener('change', airportChosen);
+    from.addEventListener('change', airportChosen);
+    to.addEventListener('change', airportChosen);
 
-        function scheduleChosen(){
-            if(landing.value > 0 && takeOff.value > 0){
-                let url = '@Url.Action("GetPilotsJson","Flight")'
-                let token = '@GetAntiXsrfRequestToken()';
-                getPilots(takeOff.value, landing.value, url, token)
-                .then(response => {
-                    pilotText.style.display = "none";
-                    pilots.style.display = "inline-block";
-                    pilots.innerText = `Bouyah`;
-                })
-                .catch(error => {
-                    pilots.innerText = 'Erreur : Veuillez réessayer';
-                });
-            }
+    function scheduleChosen(){
+        if(Date.parse(landing.value) >= Date.now() && Date.parse(takeOff.value) >= Date.now()){
+            let url = '@Url.Action("GetPilotsJson","Flight")'
+            let token = '@GetAntiXsrfRequestToken()';
+            getPilots(takeOff.value, landing.value, url, token)
+            .then(response => {
+                hidePilotsText();
+                displayPilots(response);
+            })
+            .catch(error => {
+                pilots.innerText = 'Erreur : Veuillez réessayer';
+                hidePilots();
+                showPilotsText();
+            });
+        }else{
+            hidePilots();
+            showPilotsText();
         }
+    };
         
-        landing.addEventListener('change', scheduleChosen);
-        takeOff.addEventListener('change', scheduleChosen);
+    landing.addEventListener('change', scheduleChosen);
+    takeOff.addEventListener('change', scheduleChosen);
+
+    function displayPilots(pilotList){
+        pilots.hidden = false;
+        pilotList.forEach(p => {
+            pilots.innerHTML += `<option value=${p.id}>${p.name}</option>`;
+        });
+    }
+
+    function hidePilots(){
+        pilots.hidden = true;
+        pilots.innerHTML = '';
+    };
+
+    function hidePilotsText(){
+        pilotsText.hidden = true;
+    };
+
+    function showPilotsText(){
+        pilotsText.hidden = false;
+    };
 
     </script>

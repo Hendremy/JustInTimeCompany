@@ -80,7 +80,7 @@ namespace JustInTimeCompany.Controllers
             var pilotJson = new List<Object>();
             foreach(Pilot pilot in pilotlist)
             {
-                pilotJson.Add( new {Id = pilot.Id, Fullname = pilot.FullName});
+                pilotJson.Add( new {Id = pilot.Id, Name = pilot.FullName});
             }
             return Json(pilotJson);
         }

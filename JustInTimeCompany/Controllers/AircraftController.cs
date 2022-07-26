@@ -19,6 +19,7 @@ namespace JustInTimeCompany.Controllers
         {
             var aircrafts = _dbContext.Aircrafts
                 .Include(air => air.FlightInstances)
+                .ThenInclude(fl => fl.Schedule)
                 .Include(air => air.Model)
                 .ThenInclude(m => m.Engines)
                 .ThenInclude(e => e.Engine);
