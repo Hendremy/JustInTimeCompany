@@ -1,11 +1,16 @@
-﻿using System;
+﻿using JustInTimeCompany.Validations;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace JustInTimeCompany.Models
 {
+    [BookPositiveSeatsAttribute(ErrorMessage ="Le nombre de places doit être supérieur ou égal à 1")]
+    [RemainingSeatsAttribute]
+
     public class Booking
     {
         public int Id { get; set; }
@@ -15,6 +20,7 @@ namespace JustInTimeCompany.Models
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
+        [Display(Name="Places réservées")]
         public int SeatsTaken { get; set; }
 
         [NotMapped]
@@ -24,6 +30,7 @@ namespace JustInTimeCompany.Models
         {
 
         }
+
         public Booking(Flight flight, Customer customer)
         {
             Flight = flight;

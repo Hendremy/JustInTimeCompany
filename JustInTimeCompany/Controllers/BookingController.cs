@@ -85,7 +85,6 @@ namespace JustInTimeCompany.Controllers
             return View();
         }
 
-        //Afficher l'historique des réservations
         public IActionResult History()
         {
             var bookings = _dbContext.Bookings.ToList();
@@ -104,7 +103,24 @@ namespace JustInTimeCompany.Controllers
             return View(bookings);
         }
 
-        //Annuler une réservation
+        public IActionResult Details(int id)
+        {
+            var booking = _dbContext.Bookings.First(b => b.Id == id);
+            booking.Flight = _dbContext.Flights
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.From)
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.To)
+                    .Include(fl => fl.Schedule)
+                    .Include(fl => fl.Aircraft)
+                    .ThenInclude(ac => ac.Model)
+                    .ThenInclude(m => m.Engines)
+                    .ThenInclude(e => e.Engine)
+                    .First(fl => fl.Id == booking.FlightId);
+
+            return View(booking);
+        }
+
         public IActionResult Cancel(int id)
         {
             return RedirectToAction("History");

@@ -14,10 +14,16 @@
         @Html.DisplayFor(modelItem => Model.Flight.Schedule.Landing)
     </td>
     <td>
+        @Html.DisplayFor(modelItem => Model.SeatsTaken)
+    </td>
+    <td>
         <a class="btn btn-success" asp-action="Details" asp-route-id=@Model.Id>Voir <i class="bi bi-eye"></i></a>
         @if (!Model.IsPassed)
         {
-            <button id="cancel-@Model.Id" class="btn btn-danger">Annuler<i class="bi bi-x-lg"></button>
+            <partial name="_CancelModal" model=Model/>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancel-@Model.Id">
+                Annuler<i class="bi bi-x-lg"></i>
+            </button>
         }
     </td>
 </tr>

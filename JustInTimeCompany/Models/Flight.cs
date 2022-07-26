@@ -25,7 +25,7 @@ namespace JustInTimeCompany.Models
 
         [NotMapped]
         [Display(Name ="Places restantes")]
-        public int RemainingSeats => Aircraft != null || Bookings != null ? Aircraft.Capacity - Bookings.Sum(b => b.SeatsTaken) : -1;
+        public int RemainingSeats => Aircraft != null && Bookings != null ? Aircraft.Capacity - Bookings.Sum(b => b.SeatsTaken) : -1;
 
         [NotMapped]
         [Display (Name = "Arrivée")]
