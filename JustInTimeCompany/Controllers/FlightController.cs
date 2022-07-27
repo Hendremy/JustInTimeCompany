@@ -40,7 +40,7 @@ namespace JustInTimeCompany.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([Bind("Path, Schedule, Pilot, Aircraft")] Flight flight)
+        public IActionResult Create([Bind("Path, Schedule, PilotId, AircraftId")] Flight flight)
         {
             flight.Path.From = _dbContext.Airports.First(airp => airp.Id == flight.Path.FromId);
             flight.Path.To = _dbContext.Airports.First(airp => airp.Id == flight.Path.ToId);

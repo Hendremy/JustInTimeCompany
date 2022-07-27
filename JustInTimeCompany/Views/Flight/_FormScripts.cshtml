@@ -40,9 +40,16 @@
             let url = '@Url.Action("GetPilotsJson","Flight")'
             let token = '@GetAntiXsrfRequestToken()';
             getPilots(takeOff.value, landing.value, url, token)
-            .then(response => {
-                hidePilotsText();
-                displayPilots(response);
+            .then(pilotArray => {
+                if(pilotArray.length > 0){
+                    hidePilotsText();
+                    displayPilots(pilotArray);
+                }else{
+                    hidePilots();
+                    showPilotsText();
+                    changePilotsText('Aucun pilote disponible')
+                }
+                
             })
             .catch(error => {
                 pilots.innerText = 'Erreur : Veuillez réessayer';
@@ -60,6 +67,7 @@
 
     function displayPilots(pilotList){
         pilots.hidden = false;
+        pilots.innerHTML = '';
         pilotList.forEach(p => {
             pilots.innerHTML += `<option value=${p.id}>${p.name}</option>`;
         });
@@ -77,5 +85,9 @@
     function showPilotsText(){
         pilotsText.hidden = false;
     };
+
+    function changePilotsText(message){
+        pilotsText.innerText = message;
+    }
 
     </script>

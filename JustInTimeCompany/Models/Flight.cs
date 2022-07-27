@@ -8,12 +8,15 @@ namespace JustInTimeCompany.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public FlightPath Path { get; set; }
 
         public int PilotId { get; set; }
 
+        [Display(Name ="Pilote"), Required]
         public Pilot Pilot { get; set; }
 
+        [Display(Name = "Appareil"), Required]
         public Aircraft? Aircraft { get; set; }
 
         [ScheduleAttribute(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]

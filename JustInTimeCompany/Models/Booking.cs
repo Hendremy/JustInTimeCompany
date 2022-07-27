@@ -26,6 +26,9 @@ namespace JustInTimeCompany.Models
         [NotMapped]
         public bool IsPassed => Flight.IsPassed;
 
+        [NotMapped]
+        public bool NeedsPayments => (Flight.TakeOff - DateTime.Now).TotalHours <= 24;  
+
         public Booking()
         {
 

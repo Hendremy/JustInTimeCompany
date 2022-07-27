@@ -10,7 +10,16 @@
         </button>
       </div>
       <div class="modal-body">
-        Confirmez-vous l'annulation de réservation ?
+                @if (Model.NeedsPayments)
+                {
+                    <span class="text-danger">Le vol a lieu dans moins de 24 heures, votre réservation sera facturée
+                        <br>Souhaitez-vous vraiment annuler votre réservation ?
+                    </span>
+                }
+                else
+                {
+                    <span>Confirmez-vous l'annulation de réservation ?</span>
+                }
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
