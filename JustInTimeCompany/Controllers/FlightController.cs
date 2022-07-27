@@ -9,10 +9,12 @@ namespace JustInTimeCompany.Controllers
     {
 
         private readonly JITCDbContext _dbContext;
+        private readonly IFlightRepeater _flightRepeater;
 
-        public FlightController([FromServices] JITCDbContext dbContext)
+        public FlightController([FromServices] JITCDbContext dbContext,[FromServices]IFlightRepeater repeat)
         {
             _dbContext = dbContext;
+            _flightRepeater = repeat;
         }
 
         public IActionResult Index()
@@ -40,17 +42,44 @@ namespace JustInTimeCompany.Controllers
 
 
         [HttpPost]
-        public IActionResult Create([Bind("Path, Schedule, PilotId, AircraftId")] Flight flight)
+        public IActionResult Create([Bind("FromId, ToId, Schedule, PilotId, AircraftId")] Flight flight, Frequency frequency)
         {
-            flight.Path.From = _dbContext.Airports.First(airp => airp.Id == flight.Path.FromId);
-            flight.Path.To = _dbContext.Airports.First(airp => airp.Id == flight.Path.ToId);
+            var path = _dbContext.Paths.FirstOrDefault(p => p.FromId == flight.FromId && p.ToId == flight.ToId);
 
-            return RedirectToAction("DetailsCreate","Flight", new RouteValueDictionary(flight));
+            flight.Path = path != null 
+                ? path 
+                : flight.Path = new FlightPath() { FromId = flight.FromId, ToId = flight.ToId };
+
+            flight.Aircraft = _dbContext.Aircrafts.FirstOrDefault(ac => ac.Id == flight.AircraftId);
+            flight.Pilot = _dbContext.Pilots.FirstOrDefault(p => p.Id == flight.PilotId);
+
+            if (ModelState.IsValid)
+            {
+                var flights = _flightRepeater.RepeatFlight(flight, frequency);
+                _dbContext.Add(flights);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            var airports = _dbContext.Airports;
+            var aircrafts = _dbContext.Aircrafts.Include(ac => ac.Model);
+
+            return View(new FlightFormViewModel(flight, airports, aircrafts));
         }
 
         public IActionResult Edit(int id)
         {
-            var flight = _dbContext.Flights.First(fl => fl.Id == id);
+            var flight = _dbContext.Flights
+                .Include(fl => fl.Path)
+                .ThenInclude(p => p.From)
+                .Include(fl => fl.Path)
+                .ThenInclude(p => p.To)
+                .Include(fl => fl.Pilot)
+                .ThenInclude(p => p.User)
+                .Include(fl => fl.Schedule)
+                .Include(fl => fl.Aircraft)
+                .ThenInclude(ac => ac.Model)
+                .First(fl => fl.Id == id);
             var airports = _dbContext.Airports;
             var aircrafts = _dbContext.Aircrafts.Include(ac => ac.Model);
 

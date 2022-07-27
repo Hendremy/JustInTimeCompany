@@ -8,7 +8,8 @@ namespace JustInTimeCompany.Validations
     {
         public override bool IsValid(object? value)
         {
-            Schedule sched = (Schedule)value;
+            Flight flight = (Flight)value;
+            Schedule sched = flight.Schedule;
 
             if (sched.TakeOff >= sched.Landing)
             {

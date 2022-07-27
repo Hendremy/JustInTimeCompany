@@ -19,6 +19,7 @@ builder.Services.AddIdentity<JITCUser, IdentityRole>()
     .AddDefaultUI()
     .AddEntityFrameworkStores<JITCDbContext>();
 
+builder.Services.AddScoped<IFlightRepeater, FlightRepeater>();
 var app = builder.Build();
 
 

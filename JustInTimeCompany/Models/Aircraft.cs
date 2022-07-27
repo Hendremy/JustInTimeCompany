@@ -15,15 +15,15 @@ namespace JustInTimeCompany.Models
         public int ModelId { get; set; }
 
         [Required]
-        public AircraftModel Model { get; set; }
+        public AircraftModel? Model { get; set; }
 
         [NotMapped]
-        public int Capacity => Model.PassengerCapacity;
+        public int? Capacity => Model.PassengerCapacity;
 
         [Display(Name ="Dernière révision")]
         public DateTime LastCheckUpDate { get; set; }
 
-        public ICollection<Flight> FlightInstances { get; set; }
+        public IEnumerable<Flight>? FlightInstances { get; set; }
 
         [NotMapped, Display(Name ="Nombre de vols depuis la dernière révision")]
         public int NbFlightsSinceCheckup => (from FlightInstance in FlightInstances

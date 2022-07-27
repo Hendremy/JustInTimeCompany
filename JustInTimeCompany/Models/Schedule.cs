@@ -6,7 +6,7 @@ namespace JustInTimeCompany.Models
     public class Schedule
     {
         public int Id { get; set; }
-        [Display(Name ="Décollage")]
+        [Display(Name = "Décollage")]
         [DataType(DataType.DateTime)]
         public DateTime TakeOff { get; set; }
         [Display(Name = "Atterrissage")]
@@ -18,13 +18,13 @@ namespace JustInTimeCompany.Models
 
         }
 
-        public Schedule (String takeoff, String landing)
+        public Schedule(String takeoff, String landing)
         {
             TakeOff = DateTime.Parse(takeoff);
             Landing = DateTime.Parse(landing);
         }
 
-        public Schedule (DateTime takeOff, DateTime landing)
+        public Schedule(DateTime takeOff, DateTime landing)
         {
             TakeOff = takeOff;
             Landing = landing;
@@ -37,6 +37,18 @@ namespace JustInTimeCompany.Models
         public bool CollidesWith(Schedule sched)
         {
             return TimeIsInBetween(sched.TakeOff) || TimeIsInBetween(sched.Landing);
+        }
+
+        public void AddDays(int d)
+        {
+            TakeOff.AddDays(d);
+            Landing.AddDays(d);
+        }
+
+        public void AddMonths(int m)
+        {
+            TakeOff.AddMonths(m);
+            Landing.AddMonths(m);
         }
     }
 }
