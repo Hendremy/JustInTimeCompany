@@ -29,14 +29,10 @@ namespace JustInTimeCompany.Models
             TakeOff = takeOff;
             Landing = landing;
         }
-        public bool TimeIsInBetween(DateTime time)
-        {
-            return time < TakeOff && Landing < time;
-        }
 
         public bool CollidesWith(Schedule sched)
         {
-            return TimeIsInBetween(sched.TakeOff) || TimeIsInBetween(sched.Landing);
+            return this.TakeOff < sched.Landing && sched.TakeOff < this.Landing;
         }
 
         public void AddDays(int d)

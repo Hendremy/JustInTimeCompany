@@ -28,6 +28,7 @@ namespace JustInTimeCompany.Models
         [NotMapped, Display(Name ="Nombre de vols depuis la dernière révision")]
         public int NbFlightsSinceCheckup => (from FlightInstance in FlightInstances
                                                   where FlightInstance.Schedule.TakeOff > LastCheckUpDate
+                                                  && FlightInstance.IsPassed()
                                                   select FlightInstance).Count();
 
         [NotMapped]

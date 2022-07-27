@@ -14,14 +14,18 @@
 
         public string FullName => User.FullName;
 
-        public bool IsAvailableForSchedule(Schedule sched)
+        public IEnumerable <Flight> GetCollidingFlights(Schedule sched)
         {
             return (from FlightInstance in FlightInstances
                     where
                     FlightInstance.Schedule.CollidesWith(sched)
-                    && sched.CollidesWith(FlightInstance.Schedule)
                     select FlightInstance
-                    ).Count() == 0;
+                    );
+        } 
+
+        public bool IsAvailableForSchedule(Schedule sched)
+        {
+            return GetCollidingFlights(sched).Count() == 0;
         }
     }
 }

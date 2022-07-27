@@ -1,0 +1,30 @@
+﻿@model Flight
+
+<div class="modal fade" id="cancel-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="cancel-@Model.Id" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Annuler la réservation</h5>
+        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+                @if (true)
+                {
+                    <span class="text-danger">Le vol a lieu dans moins de 24 heures, votre réservation sera facturée
+                        <br>Souhaitez-vous vraiment annuler votre réservation ?
+                    </span>
+                }
+                else
+                {
+                    <span>Confirmez-vous l'annulation de réservation ?</span>
+                }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+        <a class="btn btn-primary" asp-action="Delete" asp-route-id=Model.Id>Oui</a>
+      </div>
+    </div>
+  </div>
+</div>

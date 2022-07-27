@@ -90,7 +90,7 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit([Bind("From, To, Pilot, Aircraft, Schedule")] Flight flightInstance)
+        public IActionResult Edit(int id,[Bind("Id, FromId, ToId, Schedule, PilotId, AircraftId")] Flight flight)
         {
             return View();
         }
