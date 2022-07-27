@@ -19,6 +19,7 @@
             return (from FlightInstance in FlightInstances
                     where
                     FlightInstance.Schedule.CollidesWith(sched)
+                    && sched.CollidesWith(FlightInstance.Schedule)
                     select FlightInstance
                     ).Count() == 0;
         }

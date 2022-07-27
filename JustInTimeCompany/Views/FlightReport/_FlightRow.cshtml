@@ -14,9 +14,9 @@
         @Html.DisplayFor(modelItem => Model.Landing)
     </td>
     <td>
-        @if (Model.IsPassed)
+        @if (Model.IsPassed())
         {
-            if (Model.HasReport)
+            if (Model.HasReport())
             {
                 <a class="btn btn-success" asp-action="SeeReport" asp-route-id=@Model.FlightReport.Id>Voir le rapport <i class="bi bi-eye"></i></a>
             }

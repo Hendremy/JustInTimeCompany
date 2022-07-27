@@ -37,25 +37,22 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="Flight.Path.From" class="control-label"></label>
-                    @Html.DropDownListFor(model => model.Flight.Path.FromId,
+                    @Html.DropDownListFor(model => model.Flight.FromId,
                         airports, new { @class = "form-control" })
-                    <span asp-validation-for="Flight.Path.From" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Flight.Path.To" class="control-label"></label>
-                    @Html.DropDownListFor(model => model.Flight.Path.ToId,
+                    @Html.DropDownListFor(model => model.Flight.ToId,
                         airports, new { @class = "form-control" })
-                    <span asp-validation-for="Flight.Path.To" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Distance</label>
                     <p id="airportDistance">0 km</p>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Flight.Aircraft" class="control-label"></label>
-                    @Html.DropDownListFor(model => model.Flight.Aircraft.Id,
+                    <label asp-for="Flight.AircraftId" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.Flight.AircraftId,
                         aircrafts, new { @class = "form-control" })
-                    <span asp-validation-for="Flight.Aircraft" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-5">
@@ -73,7 +70,6 @@
                     <label asp-for="Flight.Pilot" class="control-label"></label>
                     <p id="pilotText">Sélectionnez l'horaire de vol pour choisir un pilote disponible</p>
                     <select class="form-control" asp-for="Flight.PilotId" hidden></select>
-                    <span asp-validation-for="Flight.Pilot" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Fréquence du vol</label>

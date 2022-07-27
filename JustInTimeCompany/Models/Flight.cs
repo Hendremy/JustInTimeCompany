@@ -4,35 +4,38 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustInTimeCompany.Models
 {
-    [ScheduleAttribute(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]
+    //[ScheduleAttribute(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]
 
     public class Flight
     {
         public int Id { get; set; }
 
-        [Required]
-        public FlightPath Path { get; set; }
+        public FlightPath? Path { get; set; }
 
         [NotMapped]
+        [Required]
         public int FromId { get; set; }
 
         [NotMapped]
+        [Required]
         public int ToId { get; set; }
+        
+        [Required]
         public int PilotId { get; set; }
 
-        [Display(Name ="Pilote"), Required]
-        public Pilot Pilot { get; set; }
+        [Display(Name ="Pilote")]
+        public Pilot? Pilot { get; set; }
 
-
-        [NotMapped]
+        [Required]
         public int AircraftId { get; set; }
 
-        [Display(Name = "Appareil"), Required]
-        public Aircraft Aircraft { get; set; }
+        [Display(Name = "Appareil")]
+        public Aircraft? Aircraft { get; set; }
         
+        [Required]
         public Schedule Schedule { get; set; }
 
-        public FlightReport FlightReport { get; set; }
+        public FlightReport? FlightReport { get; set; }
         
         public IEnumerable<Booking>? Bookings { get; set; }
 
@@ -50,23 +53,16 @@ namespace JustInTimeCompany.Models
 
         [NotMapped]
         [Display(Name = "Lieu de départ")]
-        public Airport From => Path?.From;
+        public Airport? From => Path?.From;
 
         [NotMapped]
         [Display(Name = "Lieu d'arrivée")]
-        public Airport To => Path?.To;
+        public Airport? To => Path?.To;
 
         [NotMapped]
         public AircraftModel? AircraftModel => Aircraft?.Model; 
 
-        [NotMapped]
-        public bool HasReport => FlightReport != null;
-
-        [NotMapped]
-        public bool IsPassed => Landing < DateTime.Now;
-
-        [NotMapped]
-        public bool IsFullyBooked => RemainingSeats == 0;
+        
         public Flight()
         {
         }
@@ -78,5 +74,9 @@ namespace JustInTimeCompany.Models
             Pilot = pilot;
             Aircraft = aircraft;
         }
+
+        public bool HasReport() => FlightReport != null;
+        public bool IsPassed() => Landing < DateTime.Now;
+        public bool IsFullyBooked() => RemainingSeats == 0;
     }
 }

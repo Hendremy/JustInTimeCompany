@@ -22,9 +22,9 @@
     </thead>
     <tbody>
         @foreach (var flight in flights) {
-            if (flight.IsPassed)
+            if (flight.IsPassed())
             {
-                if (flight.HasReport)
+                if (flight.HasReport())
                 {
                     ViewBag.RowClass = "table-secondary";
                 }

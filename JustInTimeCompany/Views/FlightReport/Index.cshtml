@@ -28,9 +28,9 @@
     <tbody>
         @foreach (var flight in Model) {
                 {
-                if (flight.IsPassed)
+                if (flight.IsPassed())
                 {
-                    ViewBag.RowClass = flight.HasReport ? "table-success" : "table-danger" ;
+                    ViewBag.RowClass = flight.HasReport() ? "table-success" : "table-danger" ;
                 }
                 else
                 {

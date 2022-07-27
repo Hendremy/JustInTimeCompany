@@ -41,7 +41,7 @@ namespace JustInTimeCompany.Controllers
             foreach(var flightpath in paths)
             {
                 flightpath.FlightInstances = flightpath.FlightInstances
-                .Where(fl => !fl.IsPassed && fl.TakeOff > search.Date)
+                .Where(fl => !fl.IsPassed() && fl.TakeOff > search.Date)
                 .OrderBy(fl => fl.Schedule.TakeOff)
                 .ToList();
             }

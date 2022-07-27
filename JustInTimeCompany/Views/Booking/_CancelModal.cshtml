@@ -10,7 +10,7 @@
         </button>
       </div>
       <div class="modal-body">
-                @if (Model.NeedsPayments)
+                @if (Model.NeedsPayments())
                 {
                     <span class="text-danger">Le vol a lieu dans moins de 24 heures, votre réservation sera facturée
                         <br>Souhaitez-vous vraiment annuler votre réservation ?

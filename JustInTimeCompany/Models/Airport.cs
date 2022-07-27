@@ -13,9 +13,9 @@ namespace JustInTimeCompany.Models
         public double Longitude { get; init; }
         public double Latitude { get; init; }
 
-        public ICollection<FlightPath> OutgoingFlights { get; init; }
+        public IEnumerable<FlightPath> OutgoingFlights { get; init; }
 
 
-        public ICollection<FlightPath> IncomingFlights { get; init; }
+        public IEnumerable<FlightPath> IncomingFlights { get; init; }
     }
 }

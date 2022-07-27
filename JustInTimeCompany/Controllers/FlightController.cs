@@ -56,7 +56,10 @@ namespace JustInTimeCompany.Controllers
             if (ModelState.IsValid)
             {
                 var flights = _flightRepeater.RepeatFlight(flight, frequency);
-                _dbContext.Add(flights);
+                foreach(var fl in flights)
+                {
+                    _dbContext.Add(fl);
+                }
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }

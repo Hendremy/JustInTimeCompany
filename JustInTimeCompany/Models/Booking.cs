@@ -22,13 +22,6 @@ namespace JustInTimeCompany.Models
 
         [Display(Name="Places réservées")]
         public int SeatsTaken { get; set; }
-
-        [NotMapped]
-        public bool IsPassed => Flight.IsPassed;
-
-        [NotMapped]
-        public bool NeedsPayments => (Flight.TakeOff - DateTime.Now).TotalHours <= 24;  
-
         public Booking()
         {
 
@@ -39,5 +32,10 @@ namespace JustInTimeCompany.Models
             Flight = flight;
             Customer = customer;
         }
+
+        public bool IsPassed() => Flight.IsPassed();
+
+        public bool NeedsPayments() => (Flight.TakeOff - DateTime.Now).TotalHours <= 24;
+
     }
 }
