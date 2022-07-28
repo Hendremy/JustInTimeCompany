@@ -14,7 +14,7 @@ namespace JustInTimeCompany.Models
                 .ThenInclude(p => p.From)
                 .Include(fl => fl.Path)
                 .ThenInclude(p => p.To)
-                .First(fl => fl.Id == before.FlightId);
+                .First(fl => fl.Id == 1);
 
             if(before.Schedule != after.Schedule)
             {

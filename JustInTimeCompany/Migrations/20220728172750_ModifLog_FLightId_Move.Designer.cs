@@ -4,6 +4,7 @@ using JustInTimeCompany.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    partial class JITCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220728172750_ModifLog_FLightId_Move")]
+    partial class ModifLog_FLightId_Move
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -408,7 +410,13 @@ namespace JustInTimeCompany.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AfterLogId")
+                        .HasColumnType("int");
+
                     b.Property<int>("AircraftId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BeforeLogId")
                         .HasColumnType("int");
 
                     b.Property<int>("PathId")
@@ -422,7 +430,14 @@ namespace JustInTimeCompany.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AfterLogId")
+                        .IsUnique();
+
                     b.HasIndex("AircraftId");
+
+                    b.HasIndex("BeforeLogId")
+                        .IsUnique()
+                        .HasFilter("[BeforeLogId] IS NOT NULL");
 
                     b.HasIndex("PathId");
 
@@ -599,20 +614,10 @@ namespace JustInTimeCompany.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AfterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BeforeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("FlightId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AfterId");
-
-                    b.HasIndex("BeforeId");
 
                     b.ToTable("Modifications");
                 });
@@ -923,11 +928,21 @@ namespace JustInTimeCompany.Migrations
 
             modelBuilder.Entity("JustInTimeCompany.Models.FlightArchive", b =>
                 {
+                    b.HasOne("JustInTimeCompany.Models.ModificationLog", "AfterLog")
+                        .WithOne("After")
+                        .HasForeignKey("JustInTimeCompany.Models.FlightArchive", "AfterLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("JustInTimeCompany.Models.Aircraft", "Aircraft")
                         .WithMany()
                         .HasForeignKey("AircraftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("JustInTimeCompany.Models.ModificationLog", "BeforeLog")
+                        .WithOne("Before")
+                        .HasForeignKey("JustInTimeCompany.Models.FlightArchive", "BeforeLogId");
 
                     b.HasOne("JustInTimeCompany.Models.FlightPath", "Path")
                         .WithMany()
@@ -947,7 +962,11 @@ namespace JustInTimeCompany.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AfterLog");
+
                     b.Navigation("Aircraft");
+
+                    b.Navigation("BeforeLog");
 
                     b.Navigation("Path");
 
@@ -1007,25 +1026,6 @@ namespace JustInTimeCompany.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Pilot");
-                });
-
-            modelBuilder.Entity("JustInTimeCompany.Models.ModificationLog", b =>
-                {
-                    b.HasOne("JustInTimeCompany.Models.FlightArchive", "After")
-                        .WithMany()
-                        .HasForeignKey("AfterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JustInTimeCompany.Models.FlightArchive", "Before")
-                        .WithMany()
-                        .HasForeignKey("BeforeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("After");
-
-                    b.Navigation("Before");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Notification", b =>
@@ -1132,6 +1132,15 @@ namespace JustInTimeCompany.Migrations
             modelBuilder.Entity("JustInTimeCompany.Models.FlightPath", b =>
                 {
                     b.Navigation("FlightInstances");
+                });
+
+            modelBuilder.Entity("JustInTimeCompany.Models.ModificationLog", b =>
+                {
+                    b.Navigation("After")
+                        .IsRequired();
+
+                    b.Navigation("Before")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>

@@ -83,13 +83,7 @@ namespace JustInTimeCompany.Models
 
         private void BuildModificationLogs(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FlightArchive>()
-                .HasOne(fa => fa.AfterLog)
-                .WithOne(ml => ml.After);
-
-            modelBuilder.Entity<FlightArchive>()
-                .HasOne(fa => fa.BeforeLog)
-                .WithOne(ml => ml.Before);
+            
         }
 
         private void Seed(ModelBuilder modelBuilder)

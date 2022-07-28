@@ -7,8 +7,8 @@ namespace JustInTimeCompany.Models
         public ModificationLog Log(Flight before, Flight after, JITCDbContext dbContext)
         {
             var log = new ModificationLog(new FlightArchive(before), new FlightArchive(after));
-
-            dbContext.Modifications.Add(log);
+            dbContext.Add(log);
+            dbContext.SaveChanges();
             return log;
         }
     }

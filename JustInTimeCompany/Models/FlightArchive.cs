@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public int FlightId { get; set; }
+        //public int FlightId { get; set; }
         //public Flight? Flight { get; set; }
 
         public int PilotId { get; set; }
@@ -31,7 +31,7 @@
 
         public FlightArchive(Flight flight)
         {
-            FlightId = flight.Id;
+            //FlightId = flight.Id;
             PilotId = flight.PilotId;
             PathId = flight.Path.Id;
             Schedule = flight.Schedule;

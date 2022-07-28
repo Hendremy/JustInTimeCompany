@@ -115,8 +115,8 @@ namespace JustInTimeCompany.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var log = LogModification(flight);
-                    NotifySchedChange(log);
+                    //var log = LogModification(flight);
+                    //NotifySchedChange(log);
                     _dbContext.Update(flight);
                     _dbContext.SaveChanges();
                     return RedirectToAction("Index");
@@ -143,9 +143,12 @@ namespace JustInTimeCompany.Controllers
 
         private ModificationLog LogModification (Flight after)
         {
-            var before = _dbContext.Flights.Include(f => f.Schedule)
-                .First(f => f.Id == after.Id);
+            var before = _dbContext.Flights
+                .Include(fl => fl.Schedule)
+                .First(fl => fl.Id == after.Id);
+
             _dbContext.Entry<Flight>(before).State = EntityState.Detached;
+
             return _modifLog.Log(before, after, _dbContext);
         }
 
