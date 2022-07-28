@@ -1,10 +1,9 @@
 ﻿using JustInTimeCompany.Models;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace JustInTimeCompany.Validations
 {
-    public class ScheduleAttribute : ValidationAttribute
+    public class CoherentScheduleAttribute : ValidationAttribute
     {
         public override bool IsValid(object? value)
         {
@@ -16,7 +15,7 @@ namespace JustInTimeCompany.Validations
                 return false;
             }
 
-            return base.IsValid(value);
+            return true;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustInTimeCompany.Models
 {
-    //[ScheduleAttribute(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]
+    [CoherentSchedule(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]
 
     public class Flight
     {

@@ -143,6 +143,7 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public JsonResult GetPilotsJson([Bind("TakeOff, Landing")]Schedule sched)
         {
             var pilots = _dbContext.Pilots
@@ -160,6 +161,7 @@ namespace JustInTimeCompany.Controllers
         }
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public double GetAirportDistance(int fromId, int toId)
         {
             var from = _dbContext.Airports.FirstOrDefault(air => air.Id == fromId);

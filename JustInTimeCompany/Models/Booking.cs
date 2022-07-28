@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace JustInTimeCompany.Models
 {
-    [BookPositiveSeatsAttribute(ErrorMessage ="Le nombre de places doit être supérieur ou égal à 1")]
-    [RemainingSeatsAttribute]
+    [BookPositiveSeats(ErrorMessage ="Le nombre de places doit être supérieur ou égal à 1")]
+    [RemainingSeats(ErrorMessage ="Le nombre de places voulu n'est plus disponible")]
 
     public class Booking
     {
