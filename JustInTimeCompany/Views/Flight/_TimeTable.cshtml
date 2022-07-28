@@ -21,9 +21,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var flight in flights)
+        @if(flights.Count() > 0){
+            @foreach (var flight in flights)
+            {
+                <partial name="_FlightRow" model=flight/>
+            }
+        }
+        else
         {
-            <partial name="_FlightRow" model=flight/>
+            <tr><td colspan=4>Aucun vol futur enregistré</td></tr>
         }
     </tbody>
 </table>

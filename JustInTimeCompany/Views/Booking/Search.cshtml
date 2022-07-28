@@ -3,5 +3,8 @@
 <h1> Trajets </h1>
 
 @foreach(var pathflight in Model){
-    <partial name="_PathRow" model=pathflight/>
+    if(pathflight.FlightInstances.Count() != 0)
+    {
+        <partial name="_PathRow" model=pathflight/>
+    }
 }

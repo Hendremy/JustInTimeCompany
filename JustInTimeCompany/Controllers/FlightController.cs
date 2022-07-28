@@ -19,16 +19,22 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Index()
         {
-            var flights = _dbContext.Paths
+            var paths = _dbContext.Paths
                 .Include(p => p.From)
                 .Include(p => p.To)
                 .Include(p => p.FlightInstances)
                 .ThenInclude(fi => fi.Schedule)
                 .Include(p => p.FlightInstances)
                 .ThenInclude(fi => fi.Pilot)
-                .ThenInclude(p => p.User);
+                .ThenInclude(p => p.User)
+                .ToList();
 
-            return View(flights);
+            foreach(var path in paths)
+            {
+                path.FlightInstances = path.FlightInstances.Where(fl => !fl.IsPassed());
+            }
+
+            return View(paths);
         }
 
         public IActionResult Create()
@@ -44,14 +50,7 @@ namespace JustInTimeCompany.Controllers
         [HttpPost]
         public IActionResult Create([Bind("FromId, ToId, Schedule, PilotId, AircraftId")] Flight flight, Frequency frequency)
         {
-            var path = _dbContext.Paths.FirstOrDefault(p => p.FromId == flight.FromId && p.ToId == flight.ToId);
-
-            flight.Path = path != null 
-                ? path 
-                : flight.Path = new FlightPath() { FromId = flight.FromId, ToId = flight.ToId };
-
-            flight.Aircraft = _dbContext.Aircrafts.FirstOrDefault(ac => ac.Id == flight.AircraftId);
-            flight.Pilot = _dbContext.Pilots.FirstOrDefault(p => p.Id == flight.PilotId);
+            GetFlightInfo(flight);
 
             if (ModelState.IsValid)
             {
@@ -87,15 +86,12 @@ namespace JustInTimeCompany.Controllers
         {
             var flight = _dbContext.Flights
                 .Include(fl => fl.Path)
-                .ThenInclude(p => p.From)
-                .Include(fl => fl.Path)
-                .ThenInclude(p => p.To)
-                .Include(fl => fl.Pilot)
-                .ThenInclude(p => p.User)
                 .Include(fl => fl.Schedule)
-                .Include(fl => fl.Aircraft)
-                .ThenInclude(ac => ac.Model)
                 .First(fl => fl.Id == id);
+
+            flight.FromId = flight.Path.FromId;
+            flight.ToId = flight.Path.ToId;
+
             var airports = _dbContext.Airports;
             var aircrafts = _dbContext.Aircrafts.Include(ac => ac.Model);
 
@@ -105,7 +101,34 @@ namespace JustInTimeCompany.Controllers
         [HttpPost]
         public IActionResult Edit(int id,[Bind("Id, FromId, ToId, Schedule, PilotId, AircraftId")] Flight flight)
         {
-            return View();
+            if(id == flight.Id)
+            {
+                GetFlightInfo(flight);
+
+                if (ModelState.IsValid)
+                {
+                    _dbContext.Update(flight);
+                    _dbContext.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+
+            var airports = _dbContext.Airports;
+            var aircrafts = _dbContext.Aircrafts.Include(ac => ac.Model);
+
+            return View(new FlightFormViewModel(flight, airports, aircrafts));
+        }
+
+        public void GetFlightInfo(Flight flight)
+        {
+            var path = _dbContext.Paths.FirstOrDefault(p => p.FromId == flight.FromId && p.ToId == flight.ToId);
+
+            flight.Path = path != null
+                ? path
+                : flight.Path = new FlightPath() { FromId = flight.FromId, ToId = flight.ToId };
+
+            flight.Aircraft = _dbContext.Aircrafts.FirstOrDefault(ac => ac.Id == flight.AircraftId);
+            flight.Pilot = _dbContext.Pilots.FirstOrDefault(p => p.Id == flight.PilotId);
         }
 
         public IActionResult Delete(int id)

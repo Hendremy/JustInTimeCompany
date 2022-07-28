@@ -19,13 +19,51 @@ namespace JustInTimeCompany.Controllers
         {
             var airports = _dbContext.Airports;
             var path = new FlightPath();
+
+            if(TempData["ErrorMessage"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            }
             return View(new FlightSearch(airports, path));
         }
 
         [HttpPost]
-        public IActionResult Search([Bind("Path, Date")]FlightSearch search)
+        public IActionResult Search([Bind("Path, Date")] FlightSearch search)
         {
-            var paths = _dbContext.Paths
+            var paths = SearchPaths(search);
+            var result = FilterThroughPaths(paths, search);
+
+            if(result.Count() == 0)
+            {
+                TempData["ErrorMessage"] = "Aucun vol trouvé";
+                return RedirectToAction("Index");
+            }
+
+            return View(paths);
+        }
+
+        private IEnumerable<FlightPath> FilterThroughPaths(IEnumerable<FlightPath> paths, FlightSearch search)
+        {
+            var searchResult = new List<FlightPath>();
+            foreach (var flightpath in paths)
+            {
+                flightpath.FlightInstances = flightpath.FlightInstances
+                .Where(fl => !fl.IsPassed() && fl.TakeOff.Date == search.Date.Date)
+                .OrderBy(fl => fl.Schedule.TakeOff)
+                .ToList();
+
+                if(flightpath.FlightInstances.Count() != 0)
+                {
+                    searchResult.Add(flightpath);
+                }
+            }
+
+            return searchResult;
+        } 
+
+        private IEnumerable<FlightPath> SearchPaths(FlightSearch search){
+
+            return _dbContext.Paths
                 .Include(p => p.From)
                 .Include(p => p.To)
                 .Include(p => p.FlightInstances)
@@ -35,23 +73,21 @@ namespace JustInTimeCompany.Controllers
                 .ThenInclude(ac => ac.Model)
                 .Include(p => p.FlightInstances)
                 .ThenInclude(fl => fl.Bookings)
-                .Where(p => (p.FromId == search.Path.FromId || search.Path.FromId == 0) 
+                .Where(p => (p.FromId == search.Path.FromId || search.Path.FromId == 0)
                 && (p.ToId == search.Path.ToId || search.Path.ToId == 0));
-
-            foreach(var flightpath in paths)
-            {
-                flightpath.FlightInstances = flightpath.FlightInstances
-                .Where(fl => !fl.IsPassed() && fl.TakeOff.Date == search.Date.Date)
-                .OrderBy(fl => fl.Schedule.TakeOff)
-                .ToList();
-            }
-
-            return View(paths);
         }
 
         public IActionResult Book(int id)
         {
-            var flight = _dbContext.Flights
+            var flight = GetFlightDetails(id);
+
+            //TODO: Récupérer l'id customer du IdentityUser
+            return View(new Booking(flight, new Customer()));
+        }
+
+        private Flight GetFlightDetails(int id)
+        {
+            return _dbContext.Flights
                 .Include(fl => fl.Aircraft)
                 .ThenInclude(ac => ac.Model)
                 .ThenInclude(m => m.Engines)
@@ -62,10 +98,7 @@ namespace JustInTimeCompany.Controllers
                 .Include(fl => fl.Path)
                 .ThenInclude(fl => fl.To)
                 .Include(fl => fl.Schedule)
-                .FirstOrDefault(f => f.Id == id);
-
-            //TODO: Récupérer l'id customer du IdentityUser
-            return View(new Booking(flight, new Customer()));
+                .First(f => f.Id == id);
         }
 
         [HttpPost]

@@ -71,10 +71,13 @@
                     <p id="pilotText">Sélectionnez l'horaire de vol pour choisir un pilote disponible</p>
                     <select class="form-control" asp-for="Flight.PilotId" hidden></select>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Fréquence du vol</label>
-                    <select name="frequency" class="form-control" asp-items="Html.GetEnumSelectList<Frequency>()"></select>
-                </div>
+                @if ("Create".Equals(ViewBag.FormAction))
+                {
+                    <div class="form-group">
+                        <label class="control-label">Fréquence du vol</label>
+                        <select name="frequency" class="form-control" asp-items="Html.GetEnumSelectList<Frequency>()"></select>
+                    </div>
+                }
             </div>
         </div>
         <div class="row">  

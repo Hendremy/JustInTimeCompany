@@ -35,6 +35,8 @@
     from.addEventListener('change', airportChosen);
     to.addEventListener('change', airportChosen);
 
+    airportChosen();
+
     function scheduleChosen(){
         if(Date.parse(landing.value) >= Date.now() && Date.parse(takeOff.value) >= Date.now()){
             let url = '@Url.Action("GetPilotsJson","Flight")'
@@ -64,6 +66,8 @@
         
     landing.addEventListener('change', scheduleChosen);
     takeOff.addEventListener('change', scheduleChosen);
+
+    scheduleChosen();
 
     function displayPilots(pilotList){
         pilots.hidden = false;

@@ -9,6 +9,7 @@
 <p>
     <a class="btn btn-outline-primary" asp-action="Create">Nouveau Vol<i class="bi bi-plus"></i></a>
 </p>
+
 <div id="paths" class="">
         @foreach (var path in Model) {
                 <partial name="_PathRow" model=path/>
@@ -16,5 +17,5 @@
 </div>
 
 @section Scripts{
-    {await @Html.RenderPartialAsync("_BootstrapScriptsPartial")}
+    @{await Html.RenderPartialAsync("_BootstrapScriptsPartial");}
 }
