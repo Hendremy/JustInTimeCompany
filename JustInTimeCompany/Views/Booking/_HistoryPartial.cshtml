@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Booking>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Flight.From)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Flight.To)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Flight.TakeOff)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Flight.Landing)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.SeatsTaken)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model) {
+            <partial name="_BookingRow" model=booking/>
+        }
+    </tbody>
+</table>

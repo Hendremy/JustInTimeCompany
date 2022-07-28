@@ -12,7 +12,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
 builder.Services.AddDbContext<JITCDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+    options.EnableSensitiveDataLogging();
+});
+                
 
 builder.Services.AddRazorPages();
 builder.Services.AddIdentity<JITCUser, IdentityRole>()
@@ -20,6 +24,8 @@ builder.Services.AddIdentity<JITCUser, IdentityRole>()
     .AddEntityFrameworkStores<JITCDbContext>();
 
 builder.Services.AddScoped<IFlightRepeater, FlightRepeater>();
+builder.Services.AddScoped<IModificationLogger, ModificationLogger>();
+builder.Services.AddScoped<ISchedNotifier, SchedNotifier>();
 var app = builder.Build();
 
 

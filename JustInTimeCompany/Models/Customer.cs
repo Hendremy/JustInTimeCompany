@@ -9,6 +9,8 @@ namespace JustInTimeCompany.Models
     {
         public int Id { get; set; }
         public JITCUser User { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
+        public IEnumerable<Booking> Bookings { get; set; }
+
+        public IEnumerable<Notification> Notifications { get; set; }
     }
 }

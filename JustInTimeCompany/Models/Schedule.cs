@@ -46,5 +46,15 @@ namespace JustInTimeCompany.Models
             TakeOff = TakeOff.AddMonths(m);
             Landing = Landing.AddMonths(m);
         }
+
+        public static bool operator ==(Schedule sc1, Schedule sc2)
+        {
+            return sc1.TakeOff == sc2.TakeOff && sc1.Landing == sc2.Landing;
+        }
+
+        public static bool operator !=(Schedule sc1, Schedule sc2)
+        {
+            return !(sc1.TakeOff == sc2.TakeOff && sc1.Landing == sc2.Landing);
+        }
     }
 }

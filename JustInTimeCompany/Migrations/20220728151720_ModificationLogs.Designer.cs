@@ -4,6 +4,7 @@ using JustInTimeCompany.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JustInTimeCompany.Migrations
 {
     [DbContext(typeof(JITCDbContext))]
-    partial class JITCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220728151720_ModificationLogs")]
+    partial class ModificationLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -411,13 +413,13 @@ namespace JustInTimeCompany.Migrations
                     b.Property<int>("AfterLogId")
                         .HasColumnType("int");
 
+                    b.Property<int>("AircradtId")
+                        .HasColumnType("int");
+
                     b.Property<int>("AircraftId")
                         .HasColumnType("int");
 
                     b.Property<int?>("BeforeLogId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FlightId")
                         .HasColumnType("int");
 
                     b.Property<int>("PathId")
@@ -618,31 +620,6 @@ namespace JustInTimeCompany.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Modifications");
-                });
-
-            modelBuilder.Entity("JustInTimeCompany.Models.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ExpireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("JustInTimeCompany.Models.Pilot", b =>
@@ -1026,17 +1003,6 @@ namespace JustInTimeCompany.Migrations
                     b.Navigation("Pilot");
                 });
 
-            modelBuilder.Entity("JustInTimeCompany.Models.Notification", b =>
-                {
-                    b.HasOne("JustInTimeCompany.Models.Customer", "Customer")
-                        .WithMany("Notifications")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1108,8 +1074,6 @@ namespace JustInTimeCompany.Migrations
             modelBuilder.Entity("JustInTimeCompany.Models.Customer", b =>
                 {
                     b.Navigation("Bookings");
-
-                    b.Navigation("Notifications");
 
                     b.Navigation("User")
                         .IsRequired();

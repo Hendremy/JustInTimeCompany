@@ -24,13 +24,13 @@ namespace JustInTimeCompany.Models
             
             BuildUser(modelBuilder);
 
+            BuildModificationLogs(modelBuilder);
+
             Seed(modelBuilder);
         }
 
         private void BuildBooking(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Booking>().HasKey(b => new { b.FlightId, b.CustomerId });
-
             modelBuilder.Entity<Customer>().HasMany(c => c.Bookings)
                 .WithOne(b => b.Customer)
                 .HasForeignKey(c => c.CustomerId);
@@ -81,6 +81,17 @@ namespace JustInTimeCompany.Models
                 .WithOne(pilot => pilot.User);
         }
 
+        private void BuildModificationLogs(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FlightArchive>()
+                .HasOne(fa => fa.AfterLog)
+                .WithOne(ml => ml.After);
+
+            modelBuilder.Entity<FlightArchive>()
+                .HasOne(fa => fa.BeforeLog)
+                .WithOne(ml => ml.Before);
+        }
+
         private void Seed(ModelBuilder modelBuilder)
         {
             AircraftSeed.Generate(modelBuilder);
@@ -106,5 +117,9 @@ namespace JustInTimeCompany.Models
         public DbSet<JITCUser> JITCUsers { get; set; }
 
         public DbSet<Pilot> Pilots { get; set; }
+
+        public DbSet<ModificationLog> Modifications { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

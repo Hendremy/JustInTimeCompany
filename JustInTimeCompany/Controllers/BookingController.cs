@@ -120,6 +120,8 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult History()
         {
+            var notifs = _dbContext.Notifications.ToList()
+                .Where(n => n.ExpireDate > DateTime.Now);//.Where(n => n.CustomerId == id)
             var bookings = _dbContext.Bookings.ToList();
 
             foreach(var booking in bookings)
@@ -133,7 +135,7 @@ namespace JustInTimeCompany.Controllers
                     .First(fl => fl.Id == booking.FlightId);
             }
 
-            return View(bookings);
+            return View(new BookingHistoryViewModel(notifs, bookings));
         }
 
         public IActionResult Details(int id)

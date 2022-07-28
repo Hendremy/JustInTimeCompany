@@ -6,7 +6,7 @@ namespace JustInTimeCompany.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Bookings");
         }
 
         public IActionResult Bookings()
