@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Flight>
 
 @{
-    var flights = Model.OrderByDescending(fl => fl.Landing);
+    var flights = Model.OrderBy(fl => fl.TakeOff);
 }
 <table class="table">
     <thead>
@@ -16,28 +16,14 @@
                 @Html.DisplayNameFor(model => model.Pilot)
             </th>
             <th>
-                <a class="btn btn-outline-primary" asp-action="Add">Ajouter un horaire<i class="bi bi-plus"></i></a>
+                <a class="btn btn-outline-primary" asp-action="AddSchedule" asp-route-id=@ViewBag.PathId>Ajouter un horaire<i class="bi bi-plus"></i></a>
             </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var flight in flights) {
-            if (flight.IsPassed())
+            if (!flight.IsPassed())
             {
-                if (flight.HasReport())
-                {
-                    ViewBag.RowClass = "table-secondary";
-                }
-                else
-                {
-                    ViewBag.RowClass = "table-danger";
-                }
-                //Sans edit ou supp
-                <partial name="_FlightRow" model=flight/>
-            }
-            else
-            {
-                ViewBag.RowClass = "";
                 <partial name="_FlightRow" model=flight/>
             }
         }

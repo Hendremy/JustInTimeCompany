@@ -1,5 +1,9 @@
 ﻿@model FlightPath
 
+@{
+    ViewBag.PathId = Model.Id;
+}
+
 <div class="card text-center">
   <div class="card-header">
     @Model.From.Name <i class="bi bi-arrow-right"></i> @Model.To.Name

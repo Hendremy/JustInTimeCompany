@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Flight>
 
 @{
-    var flights = Model.OrderByDescending(fl => fl.Landing);
+    var flights = Model.OrderBy(fl => fl.TakeOff);
 }
 <table class="table">
     <thead>
@@ -24,20 +24,6 @@
         @foreach (var flight in flights) {
             if (flight.IsPassed())
             {
-                if (flight.HasReport())
-                {
-                    ViewBag.RowClass = "table-secondary";
-                }
-                else
-                {
-                    ViewBag.RowClass = "table-danger";
-                }
-                //Sans edit ou supp
-                <partial name="_FlightRow" model=flight/>
-            }
-            else
-            {
-                ViewBag.RowClass = "";
                 <partial name="_FlightRow" model=flight/>
             }
         }

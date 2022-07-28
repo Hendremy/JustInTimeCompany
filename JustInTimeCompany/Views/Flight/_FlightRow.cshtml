@@ -1,6 +1,6 @@
 ﻿@model Flight
 
-<tr class="@ViewBag.RowClass">
+<tr>
     <td scope="col">
         @Html.DisplayFor(model => model.TakeOff)
     </td>
@@ -12,6 +12,9 @@
     </td>
     <td>
         <a class="btn btn-outline-primary" asp-action="Edit"><i class="bi bi-pencil-square"></i></a>
-        <a class="btn btn-outline-primary" asp-action="Delete"><i class="bi bi-trash"></i></a>
+        <partial name="_DeleteModal" model=Model/>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-@Model.Id">
+                <i class="bi bi-trash"></i>
+        </button>
     </td>
 </tr>

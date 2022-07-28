@@ -37,14 +37,14 @@ namespace JustInTimeCompany.Models
 
         public void AddDays(int d)
         {
-            TakeOff.AddDays(d);
-            Landing.AddDays(d);
+            TakeOff = TakeOff.AddDays(d);
+            Landing = Landing.AddDays(d);
         }
 
         public void AddMonths(int m)
         {
-            TakeOff.AddMonths(m);
-            Landing.AddMonths(m);
+            TakeOff = TakeOff.AddMonths(m);
+            Landing = Landing.AddMonths(m);
         }
     }
 }

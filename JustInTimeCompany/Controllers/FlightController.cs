@@ -70,6 +70,19 @@ namespace JustInTimeCompany.Controllers
             return View(new FlightFormViewModel(flight, airports, aircrafts));
         }
 
+        public IActionResult AddSchedule(int id)
+        {
+            var path = _dbContext.Paths.FirstOrDefault(p => p.Id == id);
+            if(path != null) {
+                var flight = new Flight() { FromId = path.FromId, ToId = path.ToId};
+                var airports = _dbContext.Airports;
+                var aircrafts = _dbContext.Aircrafts.Include(ac => ac.Model);
+                return View("Create", new FlightFormViewModel(flight, airports, aircrafts));
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Edit(int id)
         {
             var flight = _dbContext.Flights
@@ -97,6 +110,12 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Delete(int id)
         {
+            var flight = _dbContext.Flights.FirstOrDefault(f => f.Id == id);
+            if(flight != null)
+            {
+                _dbContext.Flights.Remove(flight);
+                _dbContext.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

@@ -14,3 +14,7 @@
                 <partial name="_PathRow" model=path/>
         }
 </div>
+
+@section Scripts{
+    {await @Html.RenderPartialAsync("_BootstrapScriptsPartial")}
+}
