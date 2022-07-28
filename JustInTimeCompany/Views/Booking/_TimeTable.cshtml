@@ -21,11 +21,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var flight in flights) {
-            if (flight.IsPassed())
-            {
-                <partial name="_FlightRow" model=flight/>
-            }
+        @foreach (var flight in flights)
+        {
+            <partial name="_FlightRow" model=flight/>
         }
     </tbody>
 </table>

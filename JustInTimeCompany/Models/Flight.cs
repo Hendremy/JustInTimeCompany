@@ -76,7 +76,7 @@ namespace JustInTimeCompany.Models
         }
 
         public bool HasReport() => FlightReport != null;
-        public bool IsPassed() => Landing < DateTime.Now;
+        public bool IsPassed() => TakeOff < DateTime.Now;
         public bool IsFullyBooked() => RemainingSeats == 0;
     }
 }
