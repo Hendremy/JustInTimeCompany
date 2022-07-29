@@ -4,33 +4,45 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using JustInTimeCompany.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace JustInTimeCompany.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+    public class EmailModel : PageModel
     {
         private readonly UserManager<JITCUser> _userManager;
         private readonly SignInManager<JITCUser> _signInManager;
+        private readonly IEmailSender _emailSender;
 
-        public IndexModel(
+        public EmailModel(
             UserManager<JITCUser> userManager,
-            SignInManager<JITCUser> signInManager)
+            SignInManager<JITCUser> signInManager,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
         }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string Username { get; set; }
+        public string Email { get; set; }
+
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
+        public bool IsEmailConfirmed { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -56,27 +68,23 @@ namespace JustInTimeCompany.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Prénom")]
-            public string FirstName { get; set; }
-
-            [Display(Name = "Nom")]
-            public string LastName { get; set; }
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Nouvelle adresse e-mail")]
+            public string NewEmail { get; set; }
         }
 
         private async Task LoadAsync(JITCUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            var firstName = user.FirstName;
-            var lastName = user.LastName;
-
-            Username = userName;
+            var email = await _userManager.GetEmailAsync(user);
+            Email = email;
 
             Input = new InputModel
             {
-                FirstName = firstName,
-                LastName = lastName
+                NewEmail = email,
             };
+
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -91,7 +99,7 @@ namespace JustInTimeCompany.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostChangeEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -105,24 +113,52 @@ namespace JustInTimeCompany.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            /*if (Input.PhoneNumber != phoneNumber)
+            var email = await _userManager.GetEmailAsync(user);
+            if (Input.NewEmail != email)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                var userId = await _userManager.GetUserIdAsync(user);
+                var result = await _userManager.SetEmailAsync(user, Input.NewEmail);
+                result = await _userManager.SetUserNameAsync(user, Input.NewEmail);
+                if (result.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Adresse e-mail correctement modifiée.";
                     return RedirectToPage();
                 }
-            }*/
+            }
 
-            user.FirstName = Input.FirstName;
-            user.LastName = Input.LastName;
+            StatusMessage = "L'adresse e-mail n'a pas pu être modifiée.";
+            return RedirectToPage();
+        }
 
-            await _userManager.UpdateAsync(user);
+        public async Task<IActionResult> OnPostSendVerificationEmailAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Modifications enregistrées";
+            if (!ModelState.IsValid)
+            {
+                await LoadAsync(user);
+                return Page();
+            }
+
+            var userId = await _userManager.GetUserIdAsync(user);
+            var email = await _userManager.GetEmailAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = userId, code = code },
+                protocol: Request.Scheme);
+            await _emailSender.SendEmailAsync(
+                email,
+                "Confirm your email",
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
         }
     }
