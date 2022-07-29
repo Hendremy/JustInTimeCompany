@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Flight>
 
 @{
-    var flights = Model.OrderBy(fl => fl.TakeOff);
+    var flights = Model.OrderBy(fl => fl.Schedule.TakeOff);
 }
 <table class="table">
     <thead>

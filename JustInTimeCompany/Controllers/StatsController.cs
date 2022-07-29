@@ -18,10 +18,16 @@ namespace JustInTimeCompany.Controllers
         {
             var delayedFlights = _dbContext.Flights
                 .Include(fl => fl.Schedule)
+                .Include(fl => fl.Path)
+                .ThenInclude(p => p.From)
+                .Include(fl => fl.Path)
+                .ThenInclude(p => p.To)
+                .Include(fl => fl.Pilot)
+                .ThenInclude(p => p.User)
                 .Include(fl => fl.FlightReport)
                 .ThenInclude(fr => fr.ActualSchedule)
                 .ToList()
-                .Where(fl => fl.FlightReport.HasDelay);
+                .Where(fl => fl.HasReport() && fl.FlightReport.HasDelay);
 
             var aircrafts = _dbContext.Aircrafts
                 .Include(ac => ac.Model)

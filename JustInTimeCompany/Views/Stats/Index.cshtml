@@ -1,1 +1,13 @@
-﻿
+﻿@using JustInTimeCompany.Models.ViewModels
+@model StatsViewModel
+
+@{
+    ViewData["Title"] = "Statistiques";
+}
+
+<!-- <div class="row">
+    <partial name="_Aircrafts" model=@Model.Aircrafts/>
+</div> -->
+<div class="row">
+    <partial name="_DelayedFlights" model=@Model.DelayedFlights/>
+</div>

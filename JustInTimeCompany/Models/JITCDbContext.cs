@@ -112,8 +112,8 @@ namespace JustInTimeCompany.Models
 
         public DbSet<Pilot> Pilots { get; set; }
 
-        public DbSet<ModificationLog> Modifications { get; set; }
+        //public DbSet<ModificationLog> Modifications { get; set; }
 
-        public DbSet<Notification> Notifications { get; set; }
+        //public DbSet<Notification> Notifications { get; set; }
     }
 }

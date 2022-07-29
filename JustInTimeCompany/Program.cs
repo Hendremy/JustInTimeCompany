@@ -14,7 +14,6 @@ builder.Services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforge
 builder.Services.AddDbContext<JITCDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
-    options.EnableSensitiveDataLogging();
 });
                 
 

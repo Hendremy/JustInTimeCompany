@@ -4,6 +4,10 @@
     ViewBag.Title = "Rapports de vol";
 }
 
+@{
+    var flights = Model.OrderBy(fl => fl.HasReport()).ThenBy(fl => fl.Schedule.TakeOff);
+}
+
 <h1>Rapports de vol</h1>
 <table class="table">
     <thead>
@@ -26,16 +30,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var flight in Model) {
+        @foreach (var flight in flights) {
                 {
-                if (flight.IsPassed())
-                {
-                    ViewBag.RowClass = flight.HasReport() ? "table-success" : "table-danger" ;
-                }
-                else
-                {
-                    ViewBag.RowClass = " ";
-                }
+                    if (flight.IsPassed())
+                    {
+                        ViewBag.RowClass = flight.HasReport() ? "table-success" : "table-danger" ;
+                    }
+                    else
+                    {
+                        ViewBag.RowClass = " ";
+                    }
 
                 }
                 <partial name="_FlightRow" model=flight/>

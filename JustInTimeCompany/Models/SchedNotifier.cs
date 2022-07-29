@@ -25,7 +25,7 @@ namespace JustInTimeCompany.Models
                 foreach (var booking in flight.Bookings)
                 {
                     var notif = new Notification(booking.CustomerId, message, after.Schedule.Landing);
-                    dbContext.Notifications.Add(notif);
+                    //dbContext.Notifications.Add(notif);
                 }
             }
         }

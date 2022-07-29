@@ -7,7 +7,7 @@ namespace JustInTimeCompany.Models
     //[Delay(ErrorMessage="Veuillez renseigner la raison du retard de votre vol")]
     public class FlightReport
     {
-        private static int MAX_DELAY = 5;
+        private static int MAX_DELAY = 0;
 
         public int Id { get; set; }
         [Required]

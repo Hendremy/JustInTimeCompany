@@ -1,0 +1,22 @@
+﻿@model Flight
+
+<tr>
+    <td scope="col">
+        @Html.DisplayFor(model => model.Path.From.Location)
+    </td>
+    <td scope="col">
+        @Html.DisplayFor(model => model.Path.To.Location)
+    </td>
+    <td scope="col">
+        @Html.DisplayFor(model => model.Schedule.Landing)
+    </td>
+    <td scope="col">
+        @Html.DisplayFor(model => model.FlightReport.ActualSchedule.Landing)
+    </td>
+    <td scope="col">
+        @Html.DisplayFor(model => model.FlightReport.DelayJustification)
+    </td>
+    <td scope="col">
+        @Html.DisplayFor(model => model.Pilot.FullName)
+    </td>
+</tr>
