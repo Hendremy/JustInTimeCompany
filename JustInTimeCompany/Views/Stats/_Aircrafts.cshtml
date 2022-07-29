@@ -1,5 +1,55 @@
 ﻿@model IEnumerable<Aircraft>
+@using System.Text.Json
 
-<canvas>
 
-</canvas>
+@{
+    string[] acLabels = new string[Model.Count()];
+    double[] acPercentages = new double[Model.Count()];
+
+    int i = 0;
+    foreach(var ac in Model)
+    {
+        acLabels[i] = ac.Model.Name;
+        acPercentages[i] = ac.GetOccupationPercentage();
+        ++i;
+    }
+
+    var labels = JsonSerializer.Serialize(acLabels);
+    var values = JsonSerializer.Serialize(acPercentages);
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js" integrity="sha512-zjlf0U0eJmSo1Le4/zcZI51ks5SjuQXkU0yOdsOBubjSmio9iCUp8XPLkEAADZNBdR9crRy3cniZ65LF2w8sRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<canvas id="myChart" width="10" height="10"></canvas>
+<script>
+    const chart = document.getElementById('myChart');
+    const ctx = chart.getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["ok","ok","ok"],
+            datasets: [{
+                label: 'Taux de remplissage des aéronefs (%)',
+                data: @values,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

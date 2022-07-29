@@ -8,7 +8,7 @@ namespace JustInTimeCompany.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Flights");
         }
 
         public IActionResult Flights()

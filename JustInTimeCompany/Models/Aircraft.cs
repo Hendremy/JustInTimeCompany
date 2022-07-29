@@ -39,5 +39,19 @@ namespace JustInTimeCompany.Models
             LastCheckUpDate = DateTime.Now;
         }
 
+        public double GetOccupationPercentage()
+        {
+            int flightCount = FlightInstances.Count();
+            int capacity = Model.PassengerCapacity;
+            double bookedSeats = 0;
+
+            foreach(var fl in FlightInstances)
+            {
+                bookedSeats += fl.Bookings.Sum(b => b.SeatsTaken);
+            }
+
+            return (bookedSeats / (capacity * flightCount)) * 100;
+        }
+
     }
 }
