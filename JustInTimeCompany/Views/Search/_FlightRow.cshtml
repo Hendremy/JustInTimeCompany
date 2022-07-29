@@ -1,0 +1,30 @@
+﻿@model Flight
+
+@{
+    if (Model.IsFullyBooked())
+    {
+        ViewBag.RowClass = "table-secondary";
+    }
+}
+
+<tr class=@ViewBag.RowClass>
+    <td scope="col">
+        @Html.DisplayFor(model => model.TakeOff)
+    </td>
+    <td scope="col">
+        @Html.DisplayFor(model => model.Landing)
+    </td>
+    <td scope="col">
+        @Model.GetRemainingSeats()
+    </td>
+    <td>
+        @if(Model.GetRemainingSeats() > 0)
+        {
+            <a class="btn btn-outline-primary" asp-route-id=@Model.Id asp-action="Book" asp-controller="Booking">Réserver</a>
+        }
+        else
+        {
+            <span> Complet </span>
+        }
+    </td>
+</tr>

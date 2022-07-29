@@ -22,22 +22,20 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Index()
         {
-            var user = GetUser();
-            var flights = _dbContext.Flights
-                .Include(fl => fl.Schedule)
-                .Include(fl => fl.Path.To)
-                .Include(fl => fl.Path.From)
-                .Include(fl => fl.FlightReport)
-                .ToList()
-                .Where(fl => fl.PilotId == user.PilotId);
-            return View(flights);
+            var pilot = GetPilotFlights();
+            return View(pilot.FlightInstances);
         }
 
         public IActionResult Report(int id)
         {
-            var flight = _dbContext.Flights
-                .Include(fl => fl.Schedule)
-                .First(fl => fl.Id == id);
+            var pilot = GetPilotFlights();
+            var flight = pilot.FlightInstances.FirstOrDefault( fl => fl.Id == id);
+
+            if (flight == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             var report = new FlightReport(flight);
             return View(report);
         }
@@ -45,9 +43,9 @@ namespace JustInTimeCompany.Controllers
         [HttpPost]
         public IActionResult Report([Bind("FlightId, ActualSchedule, DelayJustification")]FlightReport report)
         {
-            report.Flight = _dbContext.Flights
-                .Include(fl => fl.Schedule)
-                .First(fl => fl.Id == report.FlightId);
+            var pilot = GetPilotFlights();
+            report.Flight = pilot.FlightInstances
+                .FirstOrDefault(fl => fl.Id == report.FlightId);
 
             if (ModelState.IsValid)
             {
@@ -55,18 +53,25 @@ namespace JustInTimeCompany.Controllers
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return View(report);
         }
 
         public IActionResult SeeReport(int id)
         {
-            var report = _dbContext.FlightReports
-                .Include(fr => fr.Flight)
-                .ThenInclude(fl => fl.Schedule)
-                .Include(fr => fr.ActualSchedule)
-                .ToList();
+           
+            var pilot = GetPilotFlights();
+            var flight = pilot.FlightInstances.FirstOrDefault(fl => fl.Id == id);
+            var report = flight.FlightReport;
+            
+            if(report == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-            return View(report.First(fr => fr.Id == id));
+            _dbContext.Entry(report).Reference(r => r.ActualSchedule).Load();
+
+            return View(report);
         }
 
         private JITCUser GetUser()
@@ -75,6 +80,25 @@ namespace JustInTimeCompany.Controllers
             var user = _dbContext.JITCUsers.Include(user => user.Pilot)
                 .First(user => user.Id == userId);
             return user;
+        }
+
+        private Pilot GetPilotFlights()
+        {
+            var user = GetUser();
+
+            var pilot = _dbContext.Pilots.First(p => p.Id == user.PilotId);
+            _dbContext.Entry(pilot).Collection(p => p.FlightInstances).Load();
+
+            foreach(var flight in pilot.FlightInstances)
+            {
+                _dbContext.Entry(flight).Reference(fl => fl.Schedule).Load();
+                _dbContext.Entry(flight).Reference(fl => fl.Path).Load();
+                _dbContext.Entry(flight.Path).Reference(p => p.To).Load();
+                _dbContext.Entry(flight.Path).Reference(p => p.From).Load();
+                _dbContext.Entry(flight).Reference(fl => fl.FlightReport).Load();
+            }
+
+            return pilot;
         }
 
     }

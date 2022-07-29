@@ -20,66 +20,28 @@ namespace JustInTimeCompany.Controllers
             _userManager = userManager;
         }
 
+
         public IActionResult Index()
         {
-            var airports = _dbContext.Airports;
-            var path = new FlightPath();
-
-            if(TempData["ErrorMessage"] != null)
-            {
-                ViewBag.ErrorMessage = TempData["ErrorMessage"];
-            }
-            return View(new FlightSearch(airports, path));
-        }
-
-        [HttpPost]
-        public IActionResult Search([Bind("Path, Date")] FlightSearch search)
-        {
-            var paths = SearchPaths(search);
-            var result = FilterThroughPaths(paths, search);
-
-            if(result.Count() == 0)
-            {
-                TempData["ErrorMessage"] = "Aucun vol trouvé";
-                return RedirectToAction("Index");
-            }
-
-            return View(paths);
-        }
-
-        private IEnumerable<FlightPath> FilterThroughPaths(IEnumerable<FlightPath> paths, FlightSearch search)
-        {
-            var searchResult = new List<FlightPath>();
-            foreach (var flightpath in paths)
-            {
-                flightpath.FlightInstances = flightpath.FlightInstances
-                .Where(fl => !fl.IsPassed() && fl.TakeOff.Date == search.Date.Date)
-                .OrderBy(fl => fl.Schedule.TakeOff)
+            var user = GetUser();
+            /*var notifs = _dbContext.Notifications.ToList()
+                .Where(n => n.ExpireDate > DateTime.Now);//.Where(n => n.CustomerId == id)*/
+            var bookings = _dbContext.Bookings
+                .Where(b => b.CustomerId == user.CustomerId)
                 .ToList();
 
-                if(flightpath.FlightInstances.Count() != 0)
-                {
-                    searchResult.Add(flightpath);
-                }
+            foreach (var booking in bookings)
+            {
+                booking.Flight = _dbContext.Flights
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.From)
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.To)
+                    .Include(fl => fl.Schedule)
+                    .First(fl => fl.Id == booking.FlightId);
             }
 
-            return searchResult;
-        } 
-
-        private IEnumerable<FlightPath> SearchPaths(FlightSearch search){
-
-            return _dbContext.Paths
-                .Include(p => p.From)
-                .Include(p => p.To)
-                .Include(p => p.FlightInstances)
-                .ThenInclude(fl => fl.Schedule)
-                .Include(p => p.FlightInstances)
-                .ThenInclude(fl => fl.Aircraft)
-                .ThenInclude(ac => ac.Model)
-                .Include(p => p.FlightInstances)
-                .ThenInclude(fl => fl.Bookings)
-                .Where(p => (p.FromId == search.Path.FromId || search.Path.FromId == 0)
-                && (p.ToId == search.Path.ToId || search.Path.ToId == 0));
+            return View(new BookingHistoryViewModel(null, bookings));
         }
 
         public IActionResult Book(int id)
@@ -87,6 +49,81 @@ namespace JustInTimeCompany.Controllers
             var flight = GetFlightDetails(id);
             var user = GetUser();
             return View(new Booking(flight, user.Customer));
+        }
+
+        [HttpPost]
+        public IActionResult Book([Bind("FlightId, CustomerId, SeatsTaken")]Booking booking)
+        {
+            var user = GetUser();
+            booking.Flight = GetFlightDetails(booking.FlightId);
+
+            if(booking.CustomerId == user.CustomerId)
+            {
+                if (ModelState.IsValid)
+                {
+                    _dbContext.Add(booking);
+                    _dbContext.SaveChanges();
+                    return RedirectToAction("Success", new {id = booking.Id});
+                }
+            }
+            return View(booking);
+        }
+
+        public IActionResult Success(int id)
+        {
+            var booking = GetBooking(id);
+
+            if (booking == null)
+            {
+                return RedirectToAction("Index");
+            }
+            
+            return View(booking);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var booking = GetBooking(id);
+
+            if(booking == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(booking);
+        }
+
+        public IActionResult Cancel(int id)
+        {
+            var user = GetUser();
+            var booking = _dbContext.Bookings.FirstOrDefault(b => b.Id == id && b.CustomerId == user.CustomerId);
+            
+            if(booking != null)
+            {
+                _dbContext.Remove(booking);
+                _dbContext.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        private Booking GetBooking(int id)
+        {
+            var user = GetUser();
+            var booking = _dbContext.Bookings.FirstOrDefault(b => b.Id == id && b.CustomerId == user.CustomerId);
+            if (booking == null) return null;
+            booking.Flight = _dbContext.Flights
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.From)
+                    .Include(fl => fl.Path)
+                    .ThenInclude(p => p.To)
+                    .Include(fl => fl.Schedule)
+                    .Include(fl => fl.Aircraft)
+                    .ThenInclude(ac => ac.Model)
+                    .ThenInclude(m => m.Engines)
+                    .ThenInclude(e => e.Engine)
+                    .First(fl => fl.Id == booking.FlightId);
+            return booking;
         }
 
         private JITCUser GetUser()
@@ -111,81 +148,6 @@ namespace JustInTimeCompany.Controllers
                 .ThenInclude(fl => fl.To)
                 .Include(fl => fl.Schedule)
                 .First(f => f.Id == id);
-        }
-
-        [HttpPost]
-        public IActionResult Book([Bind("FlightId, CustomerId, SeatsTaken")]Booking booking)
-        {
-            var user = GetUser();
-            if(booking.CustomerId == user.CustomerId)
-            {
-                var allErrors = ModelState.Values.SelectMany(v => v.Errors);
-                if (ModelState.IsValid)
-                {
-                    _dbContext.Add(booking);
-                    _dbContext.SaveChanges();
-                    return RedirectToAction("Success", new {id = booking.Id});
-                }
-            }
-            return View(booking);
-        }
-
-        public IActionResult Success(int id)
-        {
-            var booking = GetBooking(id);
-            return View(booking);
-        }
-
-        public IActionResult History()
-        {
-            var user = GetUser();
-            /*var notifs = _dbContext.Notifications.ToList()
-                .Where(n => n.ExpireDate > DateTime.Now);//.Where(n => n.CustomerId == id)*/
-            var bookings = _dbContext.Bookings
-                .Where(b => b.CustomerId == user.CustomerId)
-                .ToList();
-
-            foreach(var booking in bookings)
-            {
-                booking.Flight = _dbContext.Flights
-                    .Include(fl => fl.Path)
-                    .ThenInclude(p => p.From)
-                    .Include(fl => fl.Path)
-                    .ThenInclude(p => p.To)
-                    .Include(fl => fl.Schedule)
-                    .First(fl => fl.Id == booking.FlightId);
-            }
-
-            return View(new BookingHistoryViewModel(null, bookings));
-        }
-
-        public IActionResult Details(int id)
-        {
-            var booking = GetBooking(id);
-
-            return View(booking);
-        }
-
-        private Booking GetBooking(int id)
-        {
-            var booking = _dbContext.Bookings.First(b => b.Id == id);
-            booking.Flight = _dbContext.Flights
-                    .Include(fl => fl.Path)
-                    .ThenInclude(p => p.From)
-                    .Include(fl => fl.Path)
-                    .ThenInclude(p => p.To)
-                    .Include(fl => fl.Schedule)
-                    .Include(fl => fl.Aircraft)
-                    .ThenInclude(ac => ac.Model)
-                    .ThenInclude(m => m.Engines)
-                    .ThenInclude(e => e.Engine)
-                    .First(fl => fl.Id == booking.FlightId);
-            return booking;
-        }
-
-        public IActionResult Cancel(int id)
-        {
-            return RedirectToAction("History");
         }
     }
 }

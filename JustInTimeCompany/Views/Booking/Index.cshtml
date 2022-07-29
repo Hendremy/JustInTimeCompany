@@ -1,69 +1,15 @@
 ﻿@using JustInTimeCompany.Models.ViewModels
-@model FlightSearch
+@model BookingHistoryViewModel
 
 @{
-    ViewData["Title"] = "Recherche de vols";
+    ViewBag.Title = "Mes réservations";
 }
 
+<h1>Mes réservations</h1>
 
-<a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Retour</a>
+<partial name="_NotifsPartial" model=Model.Notifications />
+<partial name="_HistoryPartial" model=Model.Bookings/>
 
-@{
-    List<SelectListItem> airports = new List<SelectListItem>();
-
-    airports.Add(new SelectListItem()
-    {
-        Text = "Toutes directions",
-        Value = "0"
-    });
-
-    foreach(var airport in Model.Airports)
-    {
-        airports.Add(new SelectListItem() 
-        {
-            Text = airport.Name,
-            Value = airport.Id.ToString()
-        });
-    }
-}
-
-<h4>Chercher un vol</h4>
-<hr/>
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="alert alert-primary row col-4" role="alert">
-            <span><i class="bi bi-info-square"></i>   @ViewBag.ErrorMessage</span>
-        </div>
-    }
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Search" method="post">
-            <input type="hidden"/>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Path.From" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Path.FromId,
-                    airports, new { @class = "form-control" })
-                <span asp-validation-for="Path.From" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Path.To" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Path.ToId,
-                    airports, new { @class = "form-control" })
-                <span asp-validation-for="Path.To" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Chercher" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts{
+    @{await Html.RenderPartialAsync("_BootstrapScriptsPartial");}
 }

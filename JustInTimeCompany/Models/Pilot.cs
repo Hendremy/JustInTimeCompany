@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public ICollection<Flight> FlightInstances;
+        public IEnumerable<Flight> FlightInstances;
 
         public JITCUser User { get; set; }
 

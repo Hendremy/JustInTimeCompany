@@ -13,12 +13,12 @@ namespace JustInTimeCompany.Controllers
 
         public IActionResult Bookings()
         {
-            return RedirectToAction("History", "Booking");
+            return RedirectToAction("Index", "Booking");
         }
 
         public IActionResult Search()
         {
-            return RedirectToAction("Index", "Booking");
+            return RedirectToAction("Index", "Search");
         }
     }
 }

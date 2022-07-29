@@ -40,10 +40,6 @@ namespace JustInTimeCompany.Models
         public IEnumerable<Booking>? Bookings { get; set; }
 
         [NotMapped]
-        [Display(Name ="Places restantes")]
-        public int? RemainingSeats => Aircraft != null && Bookings != null ? Aircraft.Capacity - Bookings.Sum(b => b.SeatsTaken) : -1;
-
-        [NotMapped]
         [Display (Name = "Arrivée")]
         public DateTime Landing => Schedule.Landing;
 
@@ -77,6 +73,8 @@ namespace JustInTimeCompany.Models
 
         public bool HasReport() => FlightReport != null;
         public bool IsPassed() => TakeOff < DateTime.Now;
-        public bool IsFullyBooked() => RemainingSeats == 0;
+        public bool IsFullyBooked() => GetRemainingSeats() == 0;
+
+        public int? GetRemainingSeats() => Aircraft.Capacity - Bookings.Sum(b => b.SeatsTaken);
     }
 }
