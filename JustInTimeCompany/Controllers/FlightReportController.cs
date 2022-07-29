@@ -1,5 +1,6 @@
 ﻿using JustInTimeCompany.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,19 +10,26 @@ namespace JustInTimeCompany.Controllers
     public class FlightReportController : Controller
     {
         private readonly JITCDbContext _dbContext;
+        private readonly UserManager<JITCUser> _userManager;
 
-        public FlightReportController([FromServices] JITCDbContext dbContext)
+
+        public FlightReportController([FromServices] JITCDbContext dbContext
+            , [FromServices] UserManager<JITCUser> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
+            var user = GetUser();
             var flights = _dbContext.Flights
                 .Include(fl => fl.Schedule)
                 .Include(fl => fl.Path.To)
                 .Include(fl => fl.Path.From)
-                .Include(fl => fl.FlightReport);
+                .Include(fl => fl.FlightReport)
+                .ToList()
+                .Where(fl => fl.PilotId == user.PilotId);
             return View(flights);
         }
 
@@ -60,5 +68,14 @@ namespace JustInTimeCompany.Controllers
 
             return View(report.First(fr => fr.Id == id));
         }
+
+        private JITCUser GetUser()
+        {
+            string userId = _userManager.GetUserId(HttpContext.User);
+            var user = _dbContext.JITCUsers.Include(user => user.Pilot)
+                .First(user => user.Id == userId);
+            return user;
+        }
+
     }
 }

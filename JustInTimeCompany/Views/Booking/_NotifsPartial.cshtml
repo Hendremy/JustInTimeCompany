@@ -1,14 +1,17 @@
 ﻿@model IEnumerable<Notification>
 
-<div class="container">
-    <div class="row">
-        <div class="col-10">
-            @foreach(var notif in Model)
-            {
-                <div class="alert alert-danger" role="alert">
-                     @notif.Message
-                </div>
-            }
+@if(Model != null && Model.Count() > 0)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                @foreach(var notif in Model)
+                {
+                    <div class="alert alert-danger" role="alert">
+                         @notif.Message
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
+}

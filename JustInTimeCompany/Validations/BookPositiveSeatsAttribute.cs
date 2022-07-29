@@ -15,7 +15,7 @@ namespace JustInTimeCompany.Validations
                 return false;
             }
 
-            return base.IsValid(value);
+            return true;
         }
     }
 }

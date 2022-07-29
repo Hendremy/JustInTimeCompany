@@ -14,6 +14,7 @@
     <div class="col-md-6">
         <form asp-action="Book" method="post">
             <input type="hidden" asp-for="FlightId" />
+            <input type="hidden" asp-for="CustomerId" />
             <div class="form-group">
                 <label asp-for="SeatsTaken" class="control-label">Nombres de places</label>
                 <input asp-for="SeatsTaken" class="form-control" />

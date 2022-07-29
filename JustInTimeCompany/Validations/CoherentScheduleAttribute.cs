@@ -7,6 +7,7 @@ namespace JustInTimeCompany.Validations
     {
         public override bool IsValid(object? value)
         {
+            if (value == null) return true;
             Flight flight = (Flight)value;
             Schedule sched = flight.Schedule;
 

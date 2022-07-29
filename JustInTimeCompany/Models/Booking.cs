@@ -14,12 +14,15 @@ namespace JustInTimeCompany.Models
     public class Booking
     {
         public int Id { get; set; }
+        [Required]
         public int FlightId { get; set; }
-        public Flight Flight { get; set; }
+        public Flight? Flight { get; set; }
         
+        [Required]
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public Customer? Customer { get; set; }
 
+        [Required]
         [Display(Name="Places réservées")]
         public int SeatsTaken { get; set; }
         public Booking()
@@ -29,8 +32,10 @@ namespace JustInTimeCompany.Models
 
         public Booking(Flight flight, Customer customer)
         {
+            FlightId = flight.Id;
             Flight = flight;
             Customer = customer;
+            CustomerId = customer.Id;
         }
 
         public bool IsPassed() => Flight.IsPassed();
