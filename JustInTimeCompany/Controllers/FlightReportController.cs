@@ -1,9 +1,11 @@
 ﻿using JustInTimeCompany.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace JustInTimeCompany.Controllers
 {
+    [Authorize(Roles="Pilot")]
     public class FlightReportController : Controller
     {
         private readonly JITCDbContext _dbContext;

@@ -1,11 +1,13 @@
 ﻿using JustInTimeCompany.Models;
 using JustInTimeCompany.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace JustInTimeCompany.Controllers
 {
+    [Authorize(Roles="Customer")]
     public class BookingController : Controller
     {
         private readonly JITCDbContext _dbContext;

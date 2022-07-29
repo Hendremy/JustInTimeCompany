@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JustInTimeCompany.Controllers
 {
+    [Authorize(Roles="Pilot")]
     public class PilotController : Controller
     {
         public IActionResult Index()

@@ -1,10 +1,12 @@
 ﻿using JustInTimeCompany.Models;
 using JustInTimeCompany.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace JustInTimeCompany.Controllers
 {
+    [Authorize(Roles="Manager")]
     public class StatsController : Controller
     {
         private readonly JITCDbContext _dbContext;

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JustInTimeCompany.Controllers
 {
+    [Authorize(Roles="Customer")]
     public class CustomerController : Controller
     {
         public IActionResult Index()
