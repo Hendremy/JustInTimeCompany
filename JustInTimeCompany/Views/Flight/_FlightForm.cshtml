@@ -1,7 +1,7 @@
 ﻿@using JustInTimeCompany.Models.ViewModels
 @model FlightFormViewModel
 
-<a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Retour</a>
+<a asp-action="Index" class="btn btn-primary m-3"><i class="bi bi-arrow-left"></i>Retour</a>
 
 @{
     List<SelectListItem> airports = new List<SelectListItem>();
@@ -29,7 +29,7 @@
 
 <h4>Vol</h4>
 <hr/>
-<div class="container">
+<div class="container mx-auto">
         <form asp-action="@ViewBag.FormAction" method="post">
         <div class="row">
             <input type="hidden" asp-for="Flight.Id" />
@@ -80,7 +80,7 @@
                 }
             </div>
         </div>
-        <div class="row">  
+        <div class="mx-auto m-3">  
             <div class="form-group">
                 <input type="submit" value="@ViewBag.ButtonValue" class="btn btn-primary" />
             </div>

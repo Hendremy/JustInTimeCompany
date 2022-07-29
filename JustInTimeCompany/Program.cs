@@ -15,7 +15,6 @@ builder.Services.AddDbContext<JITCDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
 });
-                
 
 builder.Services.AddRazorPages();
 builder.Services.AddIdentity<JITCUser, IdentityRole>()
