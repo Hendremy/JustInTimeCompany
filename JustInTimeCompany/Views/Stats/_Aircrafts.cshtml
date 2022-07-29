@@ -27,7 +27,7 @@
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ["ok","ok","ok"],
+            labels: @Html.Raw(labels),
             datasets: [{
                 label: 'Taux de remplissage des aéronefs (%)',
                 data: @values,
