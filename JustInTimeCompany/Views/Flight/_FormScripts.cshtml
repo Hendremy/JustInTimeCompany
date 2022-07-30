@@ -1,10 +1,10 @@
-﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Csrf
 
 @functions
 {
-    public string GetAntiXsrfRequestToken()
+    public string GetAntiCsrfRequestToken()
     {
-        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+        return Csrf.GetAndStoreTokens(Context).RequestToken;
     }
 }
 
@@ -21,7 +21,7 @@
     function airportChosen(){
         if(from.value > 0 && to.value > 0){
             let url = '@Url.Action("GetAirportDistance","Flight")'
-            let token = '@GetAntiXsrfRequestToken()';
+            let token = '@GetAntiCsrfRequestToken()';
             getDistance(from.value, to.value, url, token)
             .then(response => {
                 distance.innerText = `${response} km`;
@@ -40,7 +40,7 @@
     function scheduleChosen(){
         if(Date.parse(landing.value) >= Date.now() && Date.parse(takeOff.value) >= Date.now()){
             let url = '@Url.Action("GetPilotsJson","Flight")'
-            let token = '@GetAntiXsrfRequestToken()';
+            let token = '@GetAntiCsrfRequestToken()';
             getPilots(takeOff.value, landing.value, url, token)
             .then(pilotArray => {
                 if(pilotArray.length > 0){
