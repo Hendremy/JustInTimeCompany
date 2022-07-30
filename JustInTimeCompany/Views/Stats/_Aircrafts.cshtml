@@ -18,8 +18,9 @@
     var values = JsonSerializer.Serialize(acPercentages);
 }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js" integrity="sha512-zjlf0U0eJmSo1Le4/zcZI51ks5SjuQXkU0yOdsOBubjSmio9iCUp8XPLkEAADZNBdR9crRy3cniZ65LF2w8sRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<h5>Taux de remplissage des aéronefs</h5>
 
+<script src="~/lib/Chart.js/chart.js"></script>
 <canvas id="myChart" width="10" height="10"></canvas>
 <script>
     const chart = document.getElementById('myChart');
