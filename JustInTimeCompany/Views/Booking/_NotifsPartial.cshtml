@@ -8,7 +8,7 @@
                 @foreach(var notif in Model)
                 {
                     <div class="alert alert-danger" role="alert">
-                         @notif.Message
+                         @Html.Raw(notif.Message)
                     </div>
                 }
             </div>

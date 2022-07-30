@@ -24,8 +24,11 @@ namespace JustInTimeCompany.Controllers
         public IActionResult Index()
         {
             var user = GetUser();
-            /*var notifs = _dbContext.Notifications.ToList()
-                .Where(n => n.ExpireDate > DateTime.Now);//.Where(n => n.CustomerId == id)*/
+            var notifs = _dbContext.Notifications
+                .Where(n => n.ExpireDate > DateTime.Now)
+                .Where(n => n.CustomerId == user.CustomerId)
+                .ToList();
+
             var bookings = _dbContext.Bookings
                 .Where(b => b.CustomerId == user.CustomerId)
                 .ToList();
@@ -41,7 +44,7 @@ namespace JustInTimeCompany.Controllers
                     .First(fl => fl.Id == booking.FlightId);
             }
 
-            return View(new BookingHistoryViewModel(null, bookings));
+            return View(new BookingHistoryViewModel(notifs, bookings));
         }
 
         public IActionResult Book(int id)

@@ -24,7 +24,7 @@ namespace JustInTimeCompany.Models
             
             BuildUser(modelBuilder);
 
-            BuildModificationLogs(modelBuilder);
+            BuilEditLog(modelBuilder);
 
             Seed(modelBuilder);
         }
@@ -81,9 +81,22 @@ namespace JustInTimeCompany.Models
                 .WithOne(pilot => pilot.User);
         }
 
-        private void BuildModificationLogs(ModelBuilder modelBuilder)
+        private void BuilEditLog(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<EditLog>().HasKey(log => new { log.BeforeId, log.AfterId });
+
+            modelBuilder.Entity<EditLog>()
+                .HasOne(log => log.Before)
+                .WithOne(fa => fa.BeforeLog)
+                .HasForeignKey<EditLog>(log => log.BeforeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EditLog>()
+                .HasOne(log => log.After)
+                .WithOne(fa => fa.AfterLog)
+                .HasForeignKey<EditLog>(log => log.AfterId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
 
         private void Seed(ModelBuilder modelBuilder)
@@ -112,8 +125,8 @@ namespace JustInTimeCompany.Models
 
         public DbSet<Pilot> Pilots { get; set; }
 
-        //public DbSet<ModificationLog> Modifications { get; set; }
+        public DbSet<EditLog> EditLogs { get; set; }
 
-        //public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

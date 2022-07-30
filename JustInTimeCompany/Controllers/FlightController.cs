@@ -12,18 +12,18 @@ namespace JustInTimeCompany.Controllers
 
         private readonly JITCDbContext _dbContext;
         private readonly IFlightRepeater _flightRepeater;
-        private readonly IModificationLogger _modifLog;
+        private readonly IEditLogger _editLog;
         private readonly ISchedNotifier _schedNotifier;
 
 
         public FlightController([FromServices] JITCDbContext dbContext
             ,[FromServices]IFlightRepeater repeat
-            ,[FromServices]IModificationLogger modificationLogger
+            ,[FromServices]IEditLogger editLog
             ,[FromServices]ISchedNotifier schedNotifier)
         {
             _dbContext = dbContext;
             _flightRepeater = repeat;
-            _modifLog = modificationLogger;
+            _editLog = editLog;
             _schedNotifier = schedNotifier;
         }
 
@@ -117,10 +117,13 @@ namespace JustInTimeCompany.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    //var log = LogModification(flight);
-                    //NotifySchedChange(log);
+                    var flightBefore = GetFlight(flight.Id);
                     _dbContext.Update(flight);
                     _dbContext.SaveChanges();
+
+                    var log = LogEdit(flight.Id, flightBefore, flight);
+                    NotifySchedChange(log);
+
                     return RedirectToAction("Index");
                 }
             }
@@ -143,20 +146,26 @@ namespace JustInTimeCompany.Controllers
             flight.Pilot = _dbContext.Pilots.FirstOrDefault(p => p.Id == flight.PilotId);
         }
 
-        private ModificationLog LogModification (Flight after)
+        private Flight GetFlight(int id)
         {
-            var before = _dbContext.Flights
+            return _dbContext.Flights
+                .AsNoTracking()
                 .Include(fl => fl.Schedule)
-                .First(fl => fl.Id == after.Id);
-
-            _dbContext.Entry<Flight>(before).State = EntityState.Detached;
-
-            return _modifLog.Log(before, after, _dbContext);
+                .Include(fl => fl.Path)
+                .First(fl => fl.Id == id);
         }
 
-        private void NotifySchedChange(ModificationLog log)
+        private EditLog LogEdit (int flightId, Flight before, Flight after)
         {
-            //_schedNotifier.NotifyChanges(log, _dbContext);
+            return _editLog.Log(flightId, before, after, _dbContext);
+        }
+
+        private void NotifySchedChange(EditLog log)
+        {
+            _dbContext.Entry<FlightArchive>(log.Before).Reference(fa => fa.Schedule).Load();
+            _dbContext.Entry<FlightArchive>(log.After).Reference(fa => fa.Schedule).Load();
+
+            _schedNotifier.NotifyChanges(log, _dbContext);
         }
 
         public IActionResult Delete(int id)

@@ -22,7 +22,7 @@ builder.Services.AddIdentity<JITCUser, IdentityRole>()
     .AddEntityFrameworkStores<JITCDbContext>();
 
 builder.Services.AddScoped<IFlightRepeater, FlightRepeater>();
-builder.Services.AddScoped<IModificationLogger, ModificationLogger>();
+builder.Services.AddScoped<IEditLogger, EditLogger>();
 builder.Services.AddScoped<ISchedNotifier, SchedNotifier>();
 var app = builder.Build();
 
