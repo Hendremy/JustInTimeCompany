@@ -1,0 +1,19 @@
+
+				Login					Password
+				--------------------------------
+
+Manager:
+
+				m.ney@jitc.com			Test123/       
+
+Pilot:
+
+				d.balav@jitc.com		Test123/
+				t.sabine@jitc.com		Test123/
+				e.coptere@jitc.com		Test123/
+
+Customer:
+
+				test@test.com			Test123/
+				test2@test.com			Test123/
+				test3@test.com			Test123/
