@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustInTimeCompany.Models
 {
-    [CoherentSchedule(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]
+    [PathFromToDifferent(ErrorMessage = "L'aéroport de départ et d'arrivée doivent être différents")]
 
     public class Flight
     {
@@ -33,6 +33,8 @@ namespace JustInTimeCompany.Models
         public Aircraft? Aircraft { get; set; }
         
         [Required]
+        [FutureSchedule(ErrorMessage ="L'horaire ne peut être dans le passé")]
+        [CoherentSchedule(ErrorMessage = "L'heure de décollage doit être avant l'heure d'atterrissage")]
         public Schedule Schedule { get; set; }
 
         public FlightReport? FlightReport { get; set; }

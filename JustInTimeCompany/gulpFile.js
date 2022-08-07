@@ -2,13 +2,15 @@
     concat = require('gulp-concat'),
     cssmin = require('gulp-cssmin'),
     uglify = require('gulp-uglify'),
-    del = require('del');
+    del = require('del'),
+    imagemin = require('gulp-imagemin');
 
 var webrootFolder = "wwwroot";
 var paths = { webroot: "./" + webrootFolder + "/" };
-paths.js = paths.webroot + "js/**/*.js";
-paths.css = paths.webroot + "css/**/*.css";
+paths.js = paths.webroot + "js/*.js";
+paths.css = paths.webroot + "css/*.css";
 paths.mylib = paths.webroot + "mylib";
+paths.img = paths.webroot + "images/**/*.*";
 
 gulp.task("clean", function () {
     return del.sync(paths.mylib + "/*");
@@ -27,3 +29,9 @@ gulp.task("mincss", function () {
         .pipe(cssmin())
         .pipe(gulp.dest(paths.mylib));
 });
+
+gulp.task("minimage", function () {
+    return gulp.src(paths.img)
+        .pipe(imagemin())
+        .pipe(gulp.dest(paths.mylib));
+})

@@ -15,7 +15,7 @@ namespace JustInTimeCompany.Validations
                 .Include(fl => fl.Schedule)
                 .First(fl => fl.Id == report.FlightId);
 
-            if(report.HasDelay && String.IsNullOrEmpty(report.DelayJustification))
+            if(report.HasDelay && String.IsNullOrWhiteSpace(report.DelayJustification))
             {
                 return new ValidationResult("Veuillez renseigner la raison du retard de votre vol");
             }

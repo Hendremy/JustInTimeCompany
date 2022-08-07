@@ -5,18 +5,17 @@ namespace JustInTimeCompany.Validations
 {
     public class CoherentScheduleAttribute : ValidationAttribute
     {
-        public override bool IsValid(object? value)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
-            if (value == null) return true;
-            Flight flight = (Flight)value;
-            Schedule sched = flight.Schedule;
+            if (value == null) return ValidationResult.Success;
+            Schedule sched = (Schedule) value;
 
             if (sched.TakeOff >= sched.Landing)
             {
-                return false;
+                return new ValidationResult("L'heure de départ doit être avant l'heure d'arrivée");
             }
 
-            return true;
+            return ValidationResult.Success;
         }
     }
 }

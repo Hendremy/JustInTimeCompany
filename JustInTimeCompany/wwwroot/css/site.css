@@ -16,3 +16,40 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+body {
+    background-image: url(../img/background/bg.jpg);
+    background-attachment: fixed;
+    background-position-y: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+body > footer {
+    background-color: white;
+}
+
+main {
+    background-color: white;
+    padding: 25px;
+    border-radius: 25px;
+    min-height: 80vh;
+}
+
+img {
+    object-fit: cover;
+}
+
+.carousel-image{
+    max-height: 50vh;
+    max-width: 80vw;
+    border-radius: 25px;
+}
+
+.carousel-item h5{
+    color: dodgerblue;
+    background-color: white;
+    border: 2px solid dodgerblue;
+    border-radius: 25px;
+
+}

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JustInTimeCompany.Models
 {
-    //[Delay(ErrorMessage="Veuillez renseigner la raison du retard de votre vol")]
+    [Delay(ErrorMessage="Veuillez renseigner la raison du retard de votre vol")]
     public class FlightReport
     {
         private static int MAX_DELAY = 0;
@@ -44,7 +44,7 @@ namespace JustInTimeCompany.Models
             ActualSchedule = new Schedule(flight.TakeOff, flight.Landing);
             Flight = flight;
             FlightId = flight.Id;
-            DelayJustification = " ";
+            DelayJustification = "";
         }
     }
 }

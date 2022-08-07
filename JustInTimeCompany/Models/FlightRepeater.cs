@@ -4,6 +4,7 @@
     {
         private const int MAX_MONTHS = 6;
         private const int WEEKDAYS = 7;
+        private const int MONTHSDAYS = 31;
 
         public IEnumerable<Flight> RepeatFlight(Flight flight, Frequency frequency) {
             return frequency switch
@@ -36,7 +37,7 @@
         private IEnumerable<Flight> RepeatWeekly(Flight flight)
         {
             var repeatList = new List<Flight>();
-            for (int d = 0; d < WEEKDAYS * MAX_MONTHS; d += WEEKDAYS)
+            for (int d = 0; d < MONTHSDAYS * MAX_MONTHS; d += WEEKDAYS)
             {
                 var newSched = new Schedule(flight.TakeOff, flight.Landing);
                 newSched.AddDays(d);
