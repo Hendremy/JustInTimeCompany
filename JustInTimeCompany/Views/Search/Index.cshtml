@@ -5,8 +5,7 @@
     ViewData["Title"] = "Recherche de vols";
 }
 
-
-<a asp-action="Index" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Retour</a>
+<h1>Chercher un vol</h1>
 
 @{
     List<SelectListItem> airports = new List<SelectListItem>();
@@ -26,8 +25,6 @@
         });
     }
 }
-
-<h4>Chercher un vol</h4>
 <hr/>
     @if (ViewBag.ErrorMessage != null)
     {
