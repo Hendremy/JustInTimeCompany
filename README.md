@@ -12,3 +12,5 @@ For the databases migrations, in the package manager console:
 => Update-Database
 
 The database is then ready to use
+
+The documents directory contains the credentials of the seeded users
